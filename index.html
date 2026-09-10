@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Discrédit 125</title>
+
+    <link rel="stylesheet" href="/styles.css">
+
+    <style>
+
+        .statut-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.75);
+        }
+
+        .statut-modal.active {
+            display: flex;
+        }
+
+        .statut-modal-window {
+            position: relative;
+            width: min(1100px, 95vw);
+            height: min(850px, 92vh);
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .statut-modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: #fff;
+            color: #111;
+            font-size: 28px;
+            line-height: 1;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+        }
+
+        .statut-modal-close:hover {
+            background: #eee;
+        }
+
+        #statut-modal-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .hero-tagline {
+            white-space: nowrap;
+        }
+
+        /* DERNIERS BADGES */
+
+        .recent-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .recent-badge:last-child {
+            border-bottom: none;
+        }
+
+        .recent-badge-image {
+            width: 45px;
+            height: 45px;
+            object-fit: contain;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .recent-badge-info {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .recent-badge-name {
+            font-weight: bold;
+            font-size: 0.95rem;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .recent-badge-person {
+            margin: 0;
+        }
+
+        .recent-badge-person a {
+            cursor: pointer;
+        }
+
+        .recent-badge-party {
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 700px) {
+
+            .statut-modal {
+                padding: 10px;
+            }
+
+            .statut-modal-window {
+                width: 100%;
+                height: 95vh;
+                border-radius: 8px;
+            }
+
+            .recent-badge {
+                gap: 10px;
+            }
+
+            .recent-badge-image {
+                width: 40px;
+                height: 40px;
+            }
+
+            .recent-badge-info {
+                flex-wrap: wrap;
+                gap: 3px 8px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header class="site-header">
+
+    <div class="header-inner">
+
+        <a href="/" class="logo">
+            DISCRÉDIT <span>125</span>
+        </a>
+
+        <nav class="main-nav">
+
+            <a href="/">Accueil</a>
+            <a href="/personnes.html">Candidats</a>
+            <a href="/badges.html">Badges</a>
+            <a href="/statuts.html">Statuts</a>
+            <a href="/trophees.html">Trophées</a>
+            <a href="/soumettre.html">Soumettre</a>
+            <a href="/erreur.html">Signaler</a>
+            <a href="/a-propos.html">À propos</a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<main>
+
+<section class="hero">
+
+    <div class="hero-inner">
+
+        <h1>
+            Discrédit <span>125</span>
+        </h1>
+
+        <p>
+            Répertoire satirique des candidats aux élections québécoises.
+        </p>
+
+        <p class="hero-tagline">
+            « Certains font des agrégateurs de sondages. Nous, on fait des agrégats de marde. » — La direction
+        </p>
+
+    </div>
+
+</section>
+
+
+<div class="container">
+
+<section class="section">
+
+    <div class="stats">
+
+        <div class="stat-card">
+
+            <div class="stat-number">
+                125
+            </div>
+
+            <div class="stat-label">
+                Circonscriptions
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div
+                class="stat-number"
+                id="candidate-count"
+            >
+                —
+            </div>
+
+            <div class="stat-label">
+                Candidats
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div
+                class="stat-number"
+                id="badge-count"
+            >
+                —
+            </div>
+
+            <div class="stat-label">
+                Badges attribués
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div
+                class="stat-number"
+                id="retired-count"
+            >
+                —
+            </div>
+
+            <div class="stat-label">
+                Candidats retirés
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="section">
+
+    <h2 class="section-title">
+        Badges attribués par parti
+    </h2>
+
+    <div class="chart-container">
+
+        <div id="party-chart">
+            Chargement des données…
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="section">
+
+    <h2 class="section-title">
+        Derniers badges décernés
+    </h2>
+
+    <div class="chart-container">
+
+        <div id="recent-badges">
+            Chargement des données…
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="section">
+
+    <h2 class="section-title">
+        Explorer
+    </h2>
+
+
+    <div class="stats">
+
+
+        <div class="stat-card">
+
+            <h3>
+                Candidats
+            </h3>
+
+            <p>
+                Consultez les candidats et découvrez les badges qui leur sont attribués.
+            </p>
+
+            <a
+                href="/personnes.html"
+                class="button"
+            >
+                Voir les candidats
+            </a>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>
+                Badges
+            </h3>
+
+            <p>
+                Parcourez les différentes catégories de badges satiriques.
+            </p>
+
+            <a
+                href="/badges.html"
+                class="button"
+            >
+                Voir les badges
+            </a>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>
+                Statuts
+            </h3>
+
+            <p>
+                Découvrez les candidats ayant atteint les différents niveaux de statut.
+            </p>
+
+            <a
+                href="/statuts.html"
+                class="button"
+            >
+                Voir les statuts
+            </a>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>
+                Trophées
+            </h3>
+
+            <p>
+                Les distinctions les plus douteusement prestigieuses de Discrédit 125.
+            </p>
+
+            <a
+                href="/trophees.html"
+                class="button"
+            >
+                Voir les trophées
+            </a>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+</div>
+
+</main>
+
+
+<!-- FENÊTRE MODALE -->
+
+<div
+    id="statut-modal"
+    class="statut-modal"
+>
+
+    <div class="statut-modal-window">
+
+        <button
+            id="statut-modal-close"
+            class="statut-modal-close"
+            aria-label="Fermer"
+        >
+            ×
+        </button>
+
+        <iframe
+            id="statut-modal-frame"
+            title="Détail du candidat"
+        ></iframe>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    <p>
+        Discrédit 125 — Projet satirique et humoristique.
+    </p>
+
+    <p>
+
+        <a href="/a-propos.html">
+            À propos
+        </a>
+
+        ·
+
+        <a href="/soumettre.html">
+            Soumettre
+        </a>
+
+        ·
+
+        <a href="/erreur.html">
+            Signaler une erreur
+        </a>
+
+    </p>
+
+</footer>
+
+
+<script>
+
+
+/* =========================
+   CHARGEMENT CSV
+========================= */
+
+async function chargerCSV(url) {
+
+    const separateur =
+        url.includes("?")
+            ? "&"
+            : "?";
+
+
+    const urlFraiche =
+        url +
+        separateur +
+        "t=" +
+        Date.now();
+
+
+    const response =
+        await fetch(
+            urlFraiche,
+            {
+                cache: "no-store"
+            }
+        );
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            "Impossible de charger " + url
+        );
+
+    }
+
+
+    const texte =
+        await response.text();
+
+
+    return texte
+        .replace(/^\uFEFF/, "")
+        .trim()
+        .split(/\r?\n/)
+        .filter(
+            ligne =>
+                ligne.trim() !== ""
+        );
+
+}
+
+
+
+function analyserCSV(lignes) {
+
+    if (lignes.length === 0) {
+        return [];
+    }
+
+
+    const entetes =
+        lignes[0]
+            .split(";")
+            .map(
+                entete =>
+                    entete.trim()
+            );
+
+
+    return lignes
+        .slice(1)
+        .map(ligne => {
+
+            const valeurs =
+                ligne.split(";");
+
+
+            const objet = {};
+
+
+            entetes.forEach(
+                (entete, index) => {
+
+                    objet[entete] =
+                        (
+                            valeurs[index] || ""
+                        ).trim();
+
+                }
+            );
+
+
+            return objet;
+
+        });
+
+}
+
+
+
+/* =========================
+   STATUT GAME OVER
+========================= */
+
+function estGameOver(personne) {
+
+    return (
+        (
+            personne.statut || ""
+        )
+            .trim()
+            .toUpperCase()
+            .includes("GAME OVER")
+    );
+
+}
+
+
+
+/* =========================
+   FENÊTRE MODALE
+========================= */
+
+function ouvrirPersonne(personneId) {
+
+    if (!personneId) {
+        return;
+    }
+
+
+    const modal =
+        document.getElementById(
+            "statut-modal"
+        );
+
+
+    const frame =
+        document.getElementById(
+            "statut-modal-frame"
+        );
+
+
+    frame.src =
+        "/individus.html#" +
+        encodeURIComponent(
+            personneId
+        );
+
+
+    modal.classList.add(
+        "active"
+    );
+
+
+    document.body.style.overflow =
+        "hidden";
+
+}
+
+
+
+function fermerPersonne() {
+
+    const modal =
+        document.getElementById(
+            "statut-modal"
+        );
+
+
+    const frame =
+        document.getElementById(
+            "statut-modal-frame"
+        );
+
+
+    modal.classList.remove(
+        "active"
+    );
+
+
+    frame.src =
+        "";
+
+
+    document.body.style.overflow =
+        "";
+
+}
+
+
+
+document
+    .getElementById(
+        "statut-modal-close"
+    )
+    .addEventListener(
+        "click",
+        fermerPersonne
+    );
+
+
+document
+    .getElementById(
+        "statut-modal"
+    )
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target === this
+            ) {
+
+                fermerPersonne();
+
+            }
+
+        }
+    );
+
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            const modal =
+                document.getElementById(
+                    "statut-modal"
+                );
+
+
+            if (
+                modal.classList.contains(
+                    "active"
+                )
+            ) {
+
+                fermerPersonne();
+
+            }
+
+        }
+
+    }
+);
+
+
+
+/* =========================
+   CHARGEMENT ACCUEIL
+========================= */
+
+async function chargerAccueil() {
+
+    try {
+
+        const [
+
+            personnesLignes,
+            badgesLignes,
+            attributionsLignes,
+            attributionSourcesLignes
+
+        ] = await Promise.all([
+
+            chargerCSV(
+                "/data/personnes.csv"
+            ),
+
+            chargerCSV(
+                "/data/badges.csv"
+            ),
+
+            chargerCSV(
+                "/data/attributions.csv"
+            ),
+
+            chargerCSV(
+                "/data/attributions_sources.csv"
+            )
+
+        ]);
+
+
+        const personnes =
+            analyserCSV(
+                personnesLignes
+            );
+
+
+        const badges =
+            analyserCSV(
+                badgesLignes
+            );
+
+
+        const attributions =
+            analyserCSV(
+                attributionsLignes
+            );
+
+
+        const attributionSources =
+            analyserCSV(
+                attributionSourcesLignes
+            );
+
+
+        const personnesActives =
+            personnes.filter(
+                personne =>
+                    !estGameOver(personne)
+            );
+
+
+        const personnesRetirees =
+            personnes.filter(
+                personne =>
+                    estGameOver(personne)
+            );
+
+
+        document.getElementById(
+            "candidate-count"
+        ).textContent =
+            personnesActives.length;
+
+
+        document.getElementById(
+            "retired-count"
+        ).textContent =
+            personnesRetirees.length;
+
+
+        const personnesActivesIds =
+            new Set(
+                personnesActives.map(
+                    personne =>
+                        (
+                            personne.personne_id || ""
+                        ).trim()
+                )
+            );
+
+
+        const attributionsValides =
+            attributions.filter(
+                attribution =>
+                    (
+                        attribution.personne_id || ""
+                    ).trim() !== "" &&
+                    (
+                        attribution.badge_id || ""
+                    ).trim() !== "" &&
+                    personnesActivesIds.has(
+                        (
+                            attribution.personne_id || ""
+                        ).trim()
+                    )
+            );
+
+
+        document.getElementById(
+            "badge-count"
+        ).textContent =
+            attributionsValides.length;
+
+
+        afficherGraphiquePartis(
+            personnesActives,
+            attributionsValides
+        );
+
+
+        afficherDerniersBadges(
+            personnes,
+            badges,
+            attributionSources
+        );
+
+
+    } catch (erreur) {
+
+        console.error(
+            "Erreur accueil :",
+            erreur
+        );
+
+
+        document.getElementById(
+            "candidate-count"
+        ).textContent =
+            "—";
+
+
+        document.getElementById(
+            "badge-count"
+        ).textContent =
+            "—";
+
+
+        document.getElementById(
+            "retired-count"
+        ).textContent =
+            "—";
+
+
+        document.getElementById(
+            "party-chart"
+        ).textContent =
+            "Les statistiques sont temporairement indisponibles.";
+
+
+        document.getElementById(
+            "recent-badges"
+        ).textContent =
+            "Les derniers badges sont temporairement indisponibles.";
+
+    }
+
+}
+
+
+
+/* =========================
+   GRAPHIQUE DES PARTIS
+========================= */
+
+function afficherGraphiquePartis(
+    personnes,
+    attributions
+) {
+
+    const compteurs =
+        {};
+
+
+    personnes.forEach(
+        personne => {
+
+            const personneId =
+                (
+                    personne.personne_id || ""
+                ).trim();
+
+
+            if (personneId) {
+
+                compteurs[personneId] =
+                    0;
+
+            }
+
+        }
+    );
+
+
+    const badgesUniquesParPersonne =
+        {};
+
+
+    personnes.forEach(
+        personne => {
+
+            const personneId =
+                (
+                    personne.personne_id || ""
+                ).trim();
+
+
+            if (personneId) {
+
+                badgesUniquesParPersonne[
+                    personneId
+                ] =
+                    new Set();
+
+            }
+
+        }
+    );
+
+
+    attributions.forEach(
+        attribution => {
+
+            const personneId =
+                (
+                    attribution.personne_id || ""
+                ).trim();
+
+
+            const badgeId =
+                (
+                    attribution.badge_id || ""
+                ).trim();
+
+
+            if (
+                Object.prototype.hasOwnProperty.call(
+                    badgesUniquesParPersonne,
+                    personneId
+                ) &&
+                badgeId
+            ) {
+
+                badgesUniquesParPersonne[
+                    personneId
+                ].add(
+                    badgeId
+                );
+
+            }
+
+        }
+    );
+
+
+    Object.keys(
+        badgesUniquesParPersonne
+    ).forEach(
+        personneId => {
+
+            compteurs[personneId] =
+                badgesUniquesParPersonne[
+                    personneId
+                ].size;
+
+        }
+    );
+
+
+    const parParti =
+        {};
+
+
+    personnes.forEach(
+        personne => {
+
+            const parti =
+                (
+                    personne.parti ||
+                    "Autre"
+                ).trim() ||
+                "Autre";
+
+
+            const personneId =
+                (
+                    personne.personne_id || ""
+                ).trim();
+
+
+            if (!parParti[parti]) {
+
+                parParti[parti] =
+                    0;
+
+            }
+
+
+            parParti[parti] +=
+                compteurs[personneId] ||
+                0;
+
+        }
+    );
+
+
+    const conteneur =
+        document.getElementById(
+            "party-chart"
+        );
+
+
+    conteneur.innerHTML =
+        "";
+
+
+    const maximum =
+        Math.max(
+            ...Object.values(parParti),
+            1
+        );
+
+
+    Object.entries(parParti)
+
+        .sort(
+            (a, b) =>
+                b[1] - a[1]
+        )
+
+        .forEach(
+            ([parti, total]) => {
+
+                const ligne =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                ligne.style.marginBottom =
+                    "15px";
+
+
+                const etiquette =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                etiquette.style.display =
+                    "flex";
+
+
+                etiquette.style.justifyContent =
+                    "space-between";
+
+
+                etiquette.style.marginBottom =
+                    "5px";
+
+
+                etiquette.style.fontWeight =
+                    "bold";
+
+
+                const nomParti =
+                    document.createElement(
+                        "span"
+                    );
+
+
+                nomParti.textContent =
+                    parti;
+
+
+                const valeur =
+                    document.createElement(
+                        "span"
+                    );
+
+
+                valeur.textContent =
+                    total;
+
+
+                etiquette.appendChild(
+                    nomParti
+                );
+
+
+                etiquette.appendChild(
+                    valeur
+                );
+
+
+                const barreFond =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                barreFond.style.width =
+                    "100%";
+
+
+                barreFond.style.height =
+                    "24px";
+
+
+                barreFond.style.background =
+                    "#eeeeee";
+
+
+                barreFond.style.borderRadius =
+                    "4px";
+
+
+                barreFond.style.overflow =
+                    "hidden";
+
+
+                const barre =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                barre.style.width =
+                    (
+                        (total / maximum) *
+                        100
+                    ) + "%";
+
+
+                barre.style.height =
+                    "100%";
+
+
+                barre.style.background =
+                    getCouleurParti(
+                        parti
+                    );
+
+
+                barre.style.borderRadius =
+                    "4px";
+
+
+                barreFond.appendChild(
+                    barre
+                );
+
+
+                ligne.appendChild(
+                    etiquette
+                );
+
+
+                ligne.appendChild(
+                    barreFond
+                );
+
+
+                conteneur.appendChild(
+                    ligne
+                );
+
+            }
+
+        );
+
+}
+
+
+
+function getCouleurParti(parti) {
+
+    switch (
+        parti
+            .trim()
+            .toUpperCase()
+    ) {
+
+        case "CAQ":
+            return "#0055a4";
+
+
+        case "PLQ":
+            return "#d71920";
+
+
+        case "PQ":
+            return "#4b9cd3";
+
+
+        case "QS":
+            return "#f58220";
+
+
+        case "PCQ":
+            return "#183b70";
+
+
+        default:
+            return "#777777";
+
+    }
+
+}
+
+
+
+/* =========================
+   DERNIERS BADGES
+========================= */
+
+function afficherDerniersBadges(
+    personnes,
+    badges,
+    attributionSources
+) {
+
+    const conteneur =
+        document.getElementById(
+            "recent-badges"
+        );
+
+
+    const personnesIndex =
+        {};
+
+
+    personnes.forEach(
+        personne => {
+
+            const id =
+                (
+                    personne.personne_id || ""
+                ).trim();
+
+
+            if (id) {
+
+                personnesIndex[id] =
+                    personne;
+
+            }
+
+        }
+    );
+
+
+    const badgesIndex =
+        {};
+
+
+    badges.forEach(
+        badge => {
+
+            const id =
+                (
+                    badge.id || ""
+                ).trim();
+
+
+            if (id) {
+
+                badgesIndex[id] =
+                    badge;
+
+            }
+
+        }
+    );
+
+
+    const resultats =
+        attributionSources
+
+            .map(
+                attribution => {
+
+                    const personneId =
+                        (
+                            attribution.personne_id ||
+                            ""
+                        ).trim();
+
+
+                    const badgeId =
+                        (
+                            attribution.badge_id ||
+                            ""
+                        ).trim();
+
+
+                    const sourceId =
+                        (
+                            attribution.source_id ||
+                            ""
+                        ).trim();
+
+
+                    const correspondance =
+                        sourceId.match(
+                            /^S(\d+)$/
+                        );
+
+
+                    if (
+                        !correspondance
+                    ) {
+
+                        return null;
+
+                    }
+
+
+                    const personne =
+                        personnesIndex[
+                            personneId
+                        ];
+
+
+                    const badge =
+                        badgesIndex[
+                            badgeId
+                        ];
+
+
+                    if (
+                        !personne ||
+                        !badge
+                    ) {
+
+                        return null;
+
+                    }
+
+
+                    return {
+
+                        personne:
+                            personne,
+
+                        badge:
+                            badge,
+
+                        numeroSource:
+                            parseInt(
+                                correspondance[1],
+                                10
+                            )
+
+                    };
+
+                }
+            )
+
+            .filter(
+                resultat =>
+                    resultat !== null
+            )
+
+            .sort(
+                (a, b) =>
+                    b.numeroSource -
+                    a.numeroSource
+            )
+
+            .slice(
+                0,
+                5
+            );
+
+
+    conteneur.innerHTML =
+        "";
+
+
+    if (
+        resultats.length === 0
+    ) {
+
+        conteneur.textContent =
+            "Aucun badge récent à afficher.";
+
+        return;
+
+    }
+
+
+    resultats.forEach(
+        resultat => {
+
+            const personne =
+                resultat.personne;
+
+
+            const badge =
+                resultat.badge;
+
+
+            const personneId =
+                (
+                    personne.personne_id || ""
+                ).trim();
+
+
+            const bloc =
+                document.createElement(
+                    "div"
+                );
+
+
+            bloc.className =
+                "recent-badge";
+
+
+            /*
+                IMAGE DU BADGE
+            */
+
+            if (
+                badge.image &&
+                badge.image.trim()
+            ) {
+
+                const image =
+                    document.createElement(
+                        "img"
+                    );
+
+
+                image.className =
+                    "recent-badge-image";
+
+
+                image.src =
+                    "/images/badges/" +
+                    badge.image.trim();
+
+
+                image.alt =
+                    badge.nom ||
+                    "";
+
+
+                image.addEventListener(
+                    "click",
+                    function() {
+
+                        ouvrirPersonne(
+                            personneId
+                        );
+
+                    }
+                );
+
+
+                image.onerror =
+                    function() {
+
+                        this.style.display =
+                            "none";
+
+                    };
+
+
+                bloc.appendChild(
+                    image
+                );
+
+            }
+
+
+            /*
+                INFORMATIONS
+            */
+
+            const informations =
+                document.createElement(
+                    "div"
+                );
+
+
+            informations.className =
+                "recent-badge-info";
+
+
+            /*
+                NOM DU BADGE
+            */
+
+            const nomBadge =
+                document.createElement(
+                    "div"
+                );
+
+
+            nomBadge.className =
+                "recent-badge-name";
+
+
+            nomBadge.textContent =
+                badge.nom ||
+                badge.id;
+
+
+            nomBadge.addEventListener(
+                "click",
+                function() {
+
+                    ouvrirPersonne(
+                        personneId
+                    );
+
+                }
+            );
+
+
+            informations.appendChild(
+                nomBadge
+            );
+
+
+            /*
+                NOM DU CANDIDAT
+            */
+
+            const nomPersonne =
+                document.createElement(
+                    "div"
+                );
+
+
+            nomPersonne.className =
+                "recent-badge-person";
+
+
+            const lienPersonne =
+                document.createElement(
+                    "a"
+                );
+
+
+            lienPersonne.href =
+                "#";
+
+
+            lienPersonne.textContent =
+                personne.nom ||
+                "Candidat";
+
+
+            lienPersonne.addEventListener(
+                "click",
+                function(event) {
+
+                    event.preventDefault();
+
+
+                    ouvrirPersonne(
+                        personneId
+                    );
+
+                }
+            );
+
+
+            nomPersonne.appendChild(
+                lienPersonne
+            );
+
+
+            informations.appendChild(
+                nomPersonne
+            );
+
+
+            /*
+                PARTI
+            */
+
+            const parti =
+                document.createElement(
+                    "div"
+                );
+
+
+            parti.className =
+                "recent-badge-party";
+
+
+            parti.textContent =
+                personne.parti ||
+                "";
+
+
+            informations.appendChild(
+                parti
+            );
+
+
+            bloc.appendChild(
+                informations
+            );
+
+
+            conteneur.appendChild(
+                bloc
+            );
+
+        }
+    );
+
+}
+
+
+
+/* =========================
+   DÉMARRAGE
+========================= */
+
+chargerAccueil();
+
+
+</script>
+
+</body>
+
+</html>

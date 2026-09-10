@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Signaler une erreur — Discrédit 125</title>
+
+<link rel="stylesheet" href="/styles.css">
+
+</head>
+
+<body>
+
+<header class="site-header">
+    <div class="header-inner">
+
+    <a href="/" class="logo">
+        DISCRÉDIT <span>125</span>
+    </a>
+
+    <nav class="main-nav">
+        <a href="/">Accueil</a>
+        <a href="/personnes.html">Candidats</a>
+        <a href="/badges.html">Badges</a>
+        <a href="/statuts.html">Statuts</a>
+        <a href="/trophees.html">Trophées</a>
+        <a href="/soumettre.html">Soumettre</a>
+        <a href="/erreur.html">Signaler</a>
+        <a href="/a-propos.html">À propos</a>
+    </nav>
+
+</div>
+
+</header>
+
+<main class="container">
+
+<section class="page-header">
+
+    <h1>Signaler une erreur</h1>
+
+    <p>
+        Vous avez repéré une erreur, une information inexacte,
+        une attribution discutable ou une source problématique?
+        Faites-nous-le savoir.
+    </p>
+
+</section>
+
+
+<section class="content-card">
+
+    <form id="error-form" novalidate>
+
+        <div class="form-group">
+            <label for="candidate">
+                Candidat concerné
+            </label>
+
+            <input
+                type="text"
+                id="candidate"
+                name="candidate"
+                placeholder="Nom du candidat"
+                autocomplete="off"
+                maxlength="150"
+                required
+            >
+        </div>
+
+
+        <div class="form-group">
+            <label for="party">
+                Parti
+            </label>
+
+            <input
+                type="text"
+                id="party"
+                name="party"
+                placeholder="Parti politique"
+                autocomplete="off"
+                maxlength="150"
+            >
+        </div>
+
+
+        <div class="form-group">
+            <label for="riding">
+                Circonscription
+            </label>
+
+            <input
+                type="text"
+                id="riding"
+                name="riding"
+                placeholder="Circonscription"
+                autocomplete="off"
+                maxlength="150"
+            >
+        </div>
+
+
+        <div class="form-group">
+            <label for="badge">
+                Badge concerné
+            </label>
+
+            <input
+                type="text"
+                id="badge"
+                name="badge"
+                placeholder="Nom du badge, si applicable"
+                autocomplete="off"
+                maxlength="150"
+            >
+        </div>
+
+
+        <div class="form-group">
+            <label for="problem">
+                Description du problème
+            </label>
+
+            <textarea
+                id="problem"
+                name="problem"
+                rows="6"
+                maxlength="5000"
+                placeholder="Expliquez précisément ce qui vous semble incorrect : fait erroné, mauvaise attribution, source inadéquate, information retirée, etc."
+                required
+            ></textarea>
+        </div>
+
+
+        <div class="form-group">
+            <label for="source">
+                Source ou preuve
+            </label>
+
+            <input
+                type="url"
+                id="source"
+                name="source"
+                placeholder="https://..."
+                maxlength="2000"
+            >
+        </div>
+
+
+        <div class="form-group">
+            <label for="date">
+                Date de la source
+            </label>
+
+            <input
+                type="date"
+                id="date"
+                name="date"
+            >
+        </div>
+
+
+        <div class="form-group">
+            <label for="comment">
+                Commentaire supplémentaire
+            </label>
+
+            <textarea
+                id="comment"
+                name="comment"
+                rows="4"
+                maxlength="3000"
+                placeholder="Toute information supplémentaire pouvant aider à vérifier le signalement."
+            ></textarea>
+        </div>
+
+
+        <div class="form-group checkbox-group">
+
+            <label>
+                <input
+                    type="checkbox"
+                    id="verification"
+                    name="verification"
+                    required
+                >
+
+                Je confirme que les informations fournies sont exactes
+                au meilleur de ma connaissance.
+            </label>
+
+        </div>
+
+
+        <div
+            style="
+                position: absolute;
+                left: -10000px;
+                top: auto;
+                width: 1px;
+                height: 1px;
+                overflow: hidden;
+            "
+            aria-hidden="true"
+        >
+
+            <label for="website">
+                Ne pas remplir ce champ
+            </label>
+
+            <input
+                type="text"
+                id="website"
+                name="website"
+                tabindex="-1"
+                autocomplete="off"
+            >
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="button submit-button"
+            id="submit-button"
+        >
+            Préparer le signalement
+        </button>
+
+    </form>
+
+
+    <div
+        id="confirmation"
+        class="message"
+        style="display: none;"
+    >
+
+        <h2>Signalement préparé</h2>
+
+        <p>
+            Votre signalement a été préparé.
+        </p>
+
+        <p>
+            Dans cette version prototype du site, aucune donnée
+            n'est transmise ni enregistrée automatiquement.
+        </p>
+
+    </div>
+
+
+    <div
+        id="form-error"
+        class="message"
+        style="display: none;"
+    >
+
+        <p id="form-error-text"></p>
+
+    </div>
+
+</section>
+
+</main>
+
+<footer class="site-footer">
+
+<div class="container">
+
+    <p>
+        Discrédit 125 — Projet satirique et humoristique.
+    </p>
+
+</div>
+
+</footer>
+
+<script>
+
+const formulaire =
+    document.getElementById(
+        "error-form"
+    );
+
+
+const confirmation =
+    document.getElementById(
+        "confirmation"
+    );
+
+
+const erreur =
+    document.getElementById(
+        "form-error"
+    );
+
+
+const erreurTexte =
+    document.getElementById(
+        "form-error-text"
+    );
+
+
+const bouton =
+    document.getElementById(
+        "submit-button"
+    );
+
+
+const champHoneypot =
+    document.getElementById(
+        "website"
+    );
+
+
+const momentOuverture =
+    Date.now();
+
+
+const DELAI_MINIMUM =
+    3000;
+
+
+let soumissionEffectuee =
+    false;
+
+
+function afficherErreur(
+    message
+) {
+
+    erreurTexte.textContent =
+        message;
+
+    erreur.style.display =
+        "block";
+
+}
+
+
+function cacherErreur() {
+
+    erreur.style.display =
+        "none";
+
+    erreurTexte.textContent =
+        "";
+
+}
+
+
+function sourceValide(
+    valeur
+) {
+
+    try {
+
+        const url =
+            new URL(
+                valeur
+            );
+
+
+        return (
+            url.protocol ===
+                "http:" ||
+
+            url.protocol ===
+                "https:"
+        );
+
+    }
+    catch {
+
+        return false;
+
+    }
+
+}
+
+
+formulaire.addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+
+        cacherErreur();
+
+
+        /*
+         * 1. HONEYPOT
+         *
+         * Un humain ne doit jamais remplir ce champ.
+         */
+
+        if (
+            champHoneypot.value.trim() !==
+            ""
+        ) {
+
+            afficherErreur(
+                "Le signalement n'a pas pu être traité."
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * 2. DÉLAI MINIMUM
+         */
+
+        const tempsEcoule =
+            Date.now() -
+            momentOuverture;
+
+
+        if (
+            tempsEcoule <
+            DELAI_MINIMUM
+        ) {
+
+            afficherErreur(
+                "Veuillez prendre quelques secondes pour remplir le formulaire."
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * 3. EMPÊCHER UNE DOUBLE SOUMISSION
+         */
+
+        if (
+            soumissionEffectuee
+        ) {
+
+            return;
+
+        }
+
+
+        /*
+         * 4. VALIDATION DES CHAMPS
+         */
+
+        if (
+            !formulaire.checkValidity()
+        ) {
+
+            formulaire.reportValidity();
+
+            return;
+
+        }
+
+
+        /*
+         * 5. VALIDATION SUPPLÉMENTAIRE DE LA SOURCE
+         *
+         * La source est facultative.
+         * Si elle est fournie, elle doit être une URL valide.
+         */
+
+        const source =
+            document
+                .getElementById(
+                    "source"
+                )
+                .value
+                .trim();
+
+
+        if (
+            source !==
+            "" &&
+            !sourceValide(
+                source
+            )
+        ) {
+
+            afficherErreur(
+                "La source doit être une adresse Web valide commençant par http:// ou https://."
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * 6. RÉCUPÉRATION DES DONNÉES
+         */
+
+        const donnees = {
+
+            candidate:
+                document
+                    .getElementById(
+                        "candidate"
+                    )
+                    .value
+                    .trim(),
+
+            party:
+                document
+                    .getElementById(
+                        "party"
+                    )
+                    .value
+                    .trim(),
+
+            riding:
+                document
+                    .getElementById(
+                        "riding"
+                    )
+                    .value
+                    .trim(),
+
+            badge:
+                document
+                    .getElementById(
+                        "badge"
+                    )
+                    .value
+                    .trim(),
+
+            problem:
+                document
+                    .getElementById(
+                        "problem"
+                    )
+                    .value
+                    .trim(),
+
+            source:
+                source,
+
+            date:
+                document
+                    .getElementById(
+                        "date"
+                    )
+                    .value,
+
+            comment:
+                document
+                    .getElementById(
+                        "comment"
+                    )
+                    .value
+                    .trim(),
+
+            verification:
+                document
+                    .getElementById(
+                        "verification"
+                    )
+                    .checked
+
+        };
+
+
+        /*
+         * 7. MARQUER LE SIGNALEMENT
+         */
+
+        soumissionEffectuee =
+            true;
+
+
+        bouton.disabled =
+            true;
+
+
+        /*
+         * Pour le moment, les données restent
+         * uniquement dans le navigateur.
+         *
+         * Plus tard, cet endroit sera remplacé
+         * par l'envoi sécurisé vers le serveur.
+         */
+
+        console.log(
+            "Signalement préparé :",
+            donnees
+        );
+
+
+        formulaire.style.display =
+            "none";
+
+
+        confirmation.style.display =
+            "block";
+
+    }
+);
+
+</script>
+
+</body>
+</html>

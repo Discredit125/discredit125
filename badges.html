@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
+
+<title>Badges — Discrédit 125</title>
+
+<link
+    rel="stylesheet"
+    href="/styles.css"
+>
+
+<style>
+
+    /* =====================================================
+       CATÉGORIES
+       ===================================================== */
+
+    #badges-container {
+        display: block;
+        width: 100%;
+    }
+
+    .badge-category-section {
+        width: 100%;
+        margin-bottom: 45px;
+    }
+
+    .badge-category-section h2 {
+        margin: 0 0 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #ddd;
+    }
+
+    .badge-category-grid {
+        display: grid;
+        grid-template-columns:
+            repeat(5, minmax(0, 1fr));
+        gap: 18px;
+        width: 100%;
+    }
+
+
+    /* =====================================================
+       CARTES
+       ===================================================== */
+
+    .badge-category-grid .badge-card {
+        display: block;
+        width: 100%;
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    .badge-category-grid .badge-card > img {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+    }
+
+    .badge-category-grid .badge-content {
+        display: block;
+        width: 100%;
+        min-width: 0;
+        padding: 13px;
+        overflow: hidden;
+    }
+
+    .badge-category-grid .badge-category {
+        display: block;
+        width: 100%;
+        margin-bottom: 6px;
+        font-size: 12px;
+        line-height: 1.2;
+        white-space: normal;
+        overflow-wrap: normal;
+        word-break: normal;
+    }
+
+    .badge-category-grid .badge-content h2 {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+        font-size: 14px;
+        line-height: 1.2;
+        font-weight: 800;
+        white-space: normal;
+        overflow-wrap: normal;
+        word-break: normal;
+    }
+
+
+    /* =====================================================
+       CASE À COCHER
+       ===================================================== */
+
+    .badge-unawarded-control label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        white-space: nowrap;
+    }
+
+    .badge-unawarded-control input[type="checkbox"] {
+        width: auto;
+        height: auto;
+        margin: 0;
+    }
+
+
+    /* =====================================================
+       MODAL BADGE
+       ===================================================== */
+
+    .badge-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.75);
+    }
+
+    .badge-modal.active {
+        display: flex;
+    }
+
+    .badge-modal-window {
+        position: relative;
+        width: min(1100px, 95vw);
+        height: min(850px, 92vh);
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow:
+            0 20px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    .badge-modal-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 10;
+        width: 40px;
+        height: 40px;
+        border: none;
+        border-radius: 50%;
+        background: #fff;
+        color: #111;
+        font-size: 28px;
+        line-height: 1;
+        cursor: pointer;
+        box-shadow:
+            0 2px 8px rgba(0, 0, 0, 0.25);
+    }
+
+    .badge-modal-close:hover {
+        background: #eee;
+    }
+
+    #badge-modal-frame {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @media (max-width: 1000px) {
+
+        .badge-category-grid {
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+        }
+
+    }
+
+    @media (max-width: 800px) {
+
+        .badge-category-grid {
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+        }
+
+    }
+
+    @media (max-width: 500px) {
+
+        .badge-category-grid {
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+        }
+
+        .badge-category-section h2 {
+            font-size: 20px;
+        }
+
+        .badge-modal {
+            padding: 10px;
+        }
+
+        .badge-modal-window {
+            width: 100%;
+            height: 95vh;
+            border-radius: 8px;
+        }
+
+    }
+
+</style>
+
+</head>
+
+<body>
+
+<header class="site-header">
+
+<div class="header-inner">
+
+<a
+href="/"
+class="logo"
+>
+
+DISCRÉDIT <span>125</span>
+
+</a>
+
+<nav class="main-nav">
+
+<a href="/">Accueil</a>
+
+<a href="/personnes.html">
+    Candidats
+</a>
+
+<a href="/badges.html">
+    Badges
+</a>
+
+<a href="/statuts.html">
+    Statuts
+</a>
+
+<a href="/trophees.html">
+    Trophées
+</a>
+
+<a href="/soumettre.html">
+    Soumettre
+</a>
+
+<a href="/erreur.html">
+    Signaler
+</a>
+
+<a href="/a-propos.html">
+    À propos
+</a>
+
+</nav>
+
+</div>
+
+</header>
+
+<main class="container">
+
+<section class="page-header">
+
+<h1>
+    Les badges
+</h1>
+
+<p>
+    Le répertoire des badges satiriques de Discrédit 125.
+</p>
+
+</section>
+
+<section class="badge-controls">
+
+<div class="form-group">
+
+<label for="search">
+    Rechercher
+</label>
+
+<input
+    type="search"
+    id="search"
+    placeholder="Nom, catégorie ou description..."
+    autocomplete="off"
+>
+
+</div>
+
+<div class="form-group">
+
+<label for="category">
+    Catégorie
+</label>
+
+<select id="category">
+
+    <option value="">
+        Toutes les catégories
+    </option>
+
+</select>
+
+</div>
+
+<div class="form-group badge-unawarded-control">
+
+<label>
+    <input
+        type="checkbox"
+        id="show-unawarded"
+    >
+    Afficher aussi les badges non décernés
+</label>
+
+</div>
+
+</section>
+
+<section>
+
+<div
+    id="badges-container"
+></div>
+
+<div
+    class="message"
+    id="empty-message"
+    style="display: none;"
+>
+    Aucun badge ne correspond à votre recherche.
+</div>
+
+<div
+    class="message"
+    id="error-message"
+    style="display: none;"
+></div>
+
+</section>
+
+</main>
+
+<footer class="site-footer">
+
+<div class="container">
+
+<p>
+    Discrédit 125 — Projet satirique et humoristique.
+</p>
+
+</div>
+
+</footer>
+
+<!-- =====================================================
+     MODAL BADGE
+     ===================================================== -->
+
+<div
+    id="badge-modal"
+    class="badge-modal"
+>
+
+<div class="badge-modal-window">
+
+<button
+id="badge-modal-close"
+class="badge-modal-close"
+aria-label="Fermer"
+>
+
+×
+
+</button>
+
+<iframe
+    id="badge-modal-frame"
+    title="Détail du badge"
+></iframe>
+
+</div>
+
+</div>
+
+<script>
+
+
+/* =====================================================
+   PARSEUR CSV
+   ===================================================== */
+
+function parserCSV(texte) {
+
+    const lignes =
+        texte
+            .replace(/^\uFEFF/, "")
+            .split(/\r?\n/)
+            .filter(
+                ligne =>
+                    ligne.trim() !== ""
+            );
+
+
+    if (lignes.length === 0) {
+        return [];
+    }
+
+
+    function parserLigne(ligne) {
+
+        const valeurs = [];
+
+        let valeur = "";
+
+        let entreGuillemets = false;
+
+
+        for (
+            let i = 0;
+            i < ligne.length;
+            i++
+        ) {
+
+            const caractere =
+                ligne[i];
+
+
+            if (caractere === '"') {
+
+                if (
+                    entreGuillemets &&
+                    ligne[i + 1] === '"'
+                ) {
+
+                    valeur += '"';
+
+                    i++;
+
+                }
+                else {
+
+                    entreGuillemets =
+                        !entreGuillemets;
+
+                }
+
+            }
+
+            else if (
+                caractere === ";" &&
+                !entreGuillemets
+            ) {
+
+                valeurs.push(valeur);
+
+                valeur = "";
+
+            }
+
+            else {
+
+                valeur += caractere;
+
+            }
+
+        }
+
+
+        valeurs.push(valeur);
+
+        return valeurs;
+
+    }
+
+
+    const entetes =
+        parserLigne(lignes[0])
+            .map(
+                entete =>
+                    entete.trim()
+            );
+
+
+    return lignes
+        .slice(1)
+        .map(ligne => {
+
+            const valeurs =
+                parserLigne(ligne);
+
+            const objet = {};
+
+
+            entetes.forEach(
+                (entete, index) => {
+
+                    objet[entete] =
+                        (
+                            valeurs[index] ||
+                            ""
+                        ).trim();
+
+                }
+            );
+
+
+            return objet;
+
+        });
+
+}
+
+
+/* =====================================================
+   CHARGEMENT CSV
+   ===================================================== */
+
+async function chargerCSV(url) {
+
+    const reponse =
+        await fetch(url);
+
+
+    if (!reponse.ok) {
+
+        throw new Error(
+            "Impossible de charger " +
+            url
+        );
+
+    }
+
+
+    return parserCSV(
+        await reponse.text()
+    );
+
+}
+
+
+/* =====================================================
+   ORDRE EXACT DES CATÉGORIES
+   ===================================================== */
+
+const ordreCategories = [
+
+    "Désintégrité, Populisme et Écarts de langage",
+
+    "Droito-religioso-Intoléro-Xénophobadges",
+
+    "Trumpibadges",
+
+    "Badges spirituels",
+
+    "Conspibadges"
+
+];
+
+
+/* =====================================================
+   MODAL
+   ===================================================== */
+
+function ouvrirBadge(badgeId) {
+
+    const modal =
+        document.getElementById(
+            "badge-modal"
+        );
+
+    const frame =
+        document.getElementById(
+            "badge-modal-frame"
+        );
+
+
+    frame.src =
+        "/badge?id=" +
+        encodeURIComponent(
+            badgeId
+        );
+
+
+    modal.classList.add(
+        "active"
+    );
+
+
+    document.body.style.overflow =
+        "hidden";
+
+}
+
+
+function fermerBadge() {
+
+    const modal =
+        document.getElementById(
+            "badge-modal"
+        );
+
+    const frame =
+        document.getElementById(
+            "badge-modal-frame"
+        );
+
+
+    modal.classList.remove(
+        "active"
+    );
+
+
+    frame.src = "";
+
+
+    document.body.style.overflow =
+        "";
+
+}
+
+
+/* =====================================================
+   ERREUR
+   ===================================================== */
+
+function afficherErreur(message) {
+
+    const element =
+        document.getElementById(
+            "error-message"
+        );
+
+
+    element.textContent =
+        message;
+
+
+    element.style.display =
+        "block";
+
+}
+
+
+/* =====================================================
+   AFFICHAGE
+   ===================================================== */
+
+function afficherBadges(badges) {
+
+    const conteneur =
+        document.getElementById(
+            "badges-container"
+        );
+
+    const messageVide =
+        document.getElementById(
+            "empty-message"
+        );
+
+
+    conteneur.innerHTML =
+        "";
+
+
+    if (badges.length === 0) {
+
+        messageVide.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    messageVide.style.display =
+        "none";
+
+
+    /*
+     * Création des groupes.
+     *
+     * IMPORTANT :
+     * aucune catégorie « Autres ».
+     */
+
+    const groupes = {};
+
+
+    ordreCategories.forEach(
+        categorie => {
+
+            groupes[categorie] = [];
+
+        }
+    );
+
+
+    /*
+     * Classement des badges selon
+     * leur catégorie EXACTE.
+     */
+
+    badges.forEach(
+        badge => {
+
+            const categorie =
+                String(
+                    badge.categorie || ""
+                ).trim();
+
+
+            if (
+                Object.prototype.hasOwnProperty.call(
+                    groupes,
+                    categorie
+                )
+            ) {
+
+                groupes[categorie].push(
+                    badge
+                );
+
+            }
+
+        }
+    );
+
+
+    /*
+     * Affichage dans l'ordre demandé.
+     */
+
+    ordreCategories.forEach(
+        categorie => {
+
+            const badgesCategorie =
+                groupes[categorie];
+
+
+            if (
+                badgesCategorie.length === 0
+            ) {
+
+                return;
+
+            }
+
+
+            const section =
+                document.createElement(
+                    "section"
+                );
+
+
+            section.className =
+                "badge-category-section";
+
+
+            const titre =
+                document.createElement(
+                    "h2"
+                );
+
+
+            titre.textContent =
+                categorie;
+
+
+            section.appendChild(
+                titre
+            );
+
+
+            const grille =
+                document.createElement(
+                    "div"
+                );
+
+
+            grille.className =
+                "badge-category-grid";
+
+
+            badgesCategorie.forEach(
+                badge => {
+
+                    const carte =
+                        document.createElement(
+                            "a"
+                        );
+
+
+                    carte.className =
+                        "badge-card";
+
+
+                    carte.href =
+                        "#";
+
+
+                    carte.addEventListener(
+                        "click",
+                        function(event) {
+
+                            event.preventDefault();
+
+                            ouvrirBadge(
+                                badge.id
+                            );
+
+                        }
+                    );
+
+
+                    const image =
+                        document.createElement(
+                            "img"
+                        );
+
+
+                    image.src =
+                        "/images/badges/" +
+                        encodeURIComponent(
+                            badge.image
+                        );
+
+
+                    image.alt =
+                        badge.nom;
+
+
+                    image.loading =
+                        "lazy";
+
+
+                    image.onerror =
+                        function() {
+
+                            this.style.display =
+                                "none";
+
+                        };
+
+
+                    const contenu =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    contenu.className =
+                        "badge-content";
+
+
+                    const categorieElement =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    categorieElement.className =
+                        "badge-category";
+
+
+                    categorieElement.textContent =
+                        categorie;
+
+
+                    const nom =
+                        document.createElement(
+                            "h2"
+                        );
+
+
+                    nom.textContent =
+                        badge.nom;
+
+
+                    contenu.appendChild(
+                        categorieElement
+                    );
+
+                    contenu.appendChild(
+                        nom
+                    );
+
+
+                    carte.appendChild(
+                        image
+                    );
+
+                    carte.appendChild(
+                        contenu
+                    );
+
+
+                    grille.appendChild(
+                        carte
+                    );
+
+                }
+            );
+
+
+            section.appendChild(
+                grille
+            );
+
+
+            conteneur.appendChild(
+                section
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   MENU CATÉGORIES
+   ===================================================== */
+
+function remplirCategories(badges) {
+
+    const select =
+        document.getElementById(
+            "category"
+        );
+
+
+    select.innerHTML =
+        "";
+
+
+    const optionToutes =
+        document.createElement(
+            "option"
+        );
+
+
+    optionToutes.value =
+        "";
+
+
+    optionToutes.textContent =
+        "Toutes les catégories";
+
+
+    select.appendChild(
+        optionToutes
+    );
+
+
+    const categoriesExistantes =
+        new Set();
+
+
+    badges.forEach(
+        badge => {
+
+            const categorie =
+                String(
+                    badge.categorie || ""
+                ).trim();
+
+
+            if (
+                ordreCategories.includes(
+                    categorie
+                )
+            ) {
+
+                categoriesExistantes.add(
+                    categorie
+                );
+
+            }
+
+        }
+    );
+
+
+    ordreCategories.forEach(
+        categorie => {
+
+            if (
+                !categoriesExistantes.has(
+                    categorie
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                categorie;
+
+
+            option.textContent =
+                categorie;
+
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   FILTRAGE
+   ===================================================== */
+
+function filtrerBadges(
+    badges,
+    badgesDecernes
+) {
+
+    const recherche =
+        document
+            .getElementById("search")
+            .value
+            .trim()
+            .toLowerCase();
+
+
+    const categorie =
+        document
+            .getElementById("category")
+            .value;
+
+
+    const afficherNonDecernes =
+        document
+            .getElementById("show-unawarded")
+            .checked;
+
+
+    const resultats =
+        badges.filter(
+            badge => {
+
+                /*
+                 * Par défaut, seuls les badges
+                 * déjà décernés sont affichés.
+                 */
+
+                const estDecerne =
+                    badgesDecernes.has(
+                        String(badge.id).trim()
+                    );
+
+
+                if (
+                    !afficherNonDecernes &&
+                    !estDecerne
+                ) {
+
+                    return false;
+
+                }
+
+
+                const texte =
+                    [
+                        badge.nom,
+                        badge.categorie,
+                        badge.description
+                    ]
+                    .join(" ")
+                    .toLowerCase();
+
+
+                const correspondRecherche =
+                    !recherche ||
+                    texte.includes(
+                        recherche
+                    );
+
+
+                const correspondCategorie =
+                    !categorie ||
+                    badge.categorie ===
+                        categorie;
+
+
+                return (
+                    correspondRecherche &&
+                    correspondCategorie
+                );
+
+            }
+        );
+
+
+    afficherBadges(
+        resultats
+    );
+
+}
+
+
+/* =====================================================
+   INITIALISATION
+   ===================================================== */
+
+async function initialiser() {
+
+    try {
+
+        const badges =
+            await chargerCSV(
+                "/data/badges.csv"
+            );
+
+
+        const attributions =
+            await chargerCSV(
+                "/data/attributions.csv"
+            );
+
+
+        /*
+         * Liste des IDs de badges déjà décernés.
+         */
+
+        const badgesDecernes =
+            new Set();
+
+
+        attributions.forEach(
+            attribution => {
+
+                const badgeId =
+                    String(
+                        attribution.badge_id || ""
+                    ).trim();
+
+
+                if (badgeId !== "") {
+
+                    badgesDecernes.add(
+                        badgeId
+                    );
+
+                }
+
+            }
+        );
+
+
+        remplirCategories(
+            badges
+        );
+
+
+        filtrerBadges(
+            badges,
+            badgesDecernes
+        );
+
+
+        document
+            .getElementById("search")
+            .addEventListener(
+                "input",
+                () =>
+                    filtrerBadges(
+                        badges,
+                        badgesDecernes
+                    )
+            );
+
+
+        document
+            .getElementById("category")
+            .addEventListener(
+                "change",
+                () =>
+                    filtrerBadges(
+                        badges,
+                        badgesDecernes
+                    )
+            );
+
+
+        document
+            .getElementById("show-unawarded")
+            .addEventListener(
+                "change",
+                () =>
+                    filtrerBadges(
+                        badges,
+                        badgesDecernes
+                    )
+            );
+
+    }
+
+    catch (erreur) {
+
+        console.error(
+            erreur
+        );
+
+
+        document
+            .getElementById(
+                "badges-container"
+            )
+            .innerHTML =
+                "";
+
+
+        afficherErreur(
+            "Impossible de charger les badges. Vérifiez que le serveur local est bien démarré."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   FERMETURE DU MODAL
+   ===================================================== */
+
+document
+    .getElementById(
+        "badge-modal-close"
+    )
+    .addEventListener(
+        "click",
+        fermerBadge
+    );
+
+
+document
+    .getElementById(
+        "badge-modal"
+    )
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target === this
+            ) {
+
+                fermerBadge();
+
+            }
+
+        }
+    );
+
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            fermerBadge();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   DÉMARRAGE
+   ===================================================== */
+
+initialiser();
+
+</script>
+
+</body>
+
+</html>

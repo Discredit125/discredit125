@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Badge — Discrédit 125</title>
+
+    <link
+        rel="stylesheet"
+        href="/styles.css"
+    >
+
+    <style>
+
+        /* =====================================================
+           STATUT SUR LA PHOTO
+           ===================================================== */
+
+        .badge-candidates .candidate-photo {
+            position: relative;
+        }
+
+        .badge-candidates .candidate-photo .candidate-status {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 60px;
+            height: 60px;
+            max-width: none;
+            object-fit: contain;
+            z-index: 5;
+            margin: 0;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<main class="container">
+
+    <div id="badge-container"></div>
+
+
+    <section
+        id="candidats-section"
+        class="candidate-section"
+        style="display: none;"
+    >
+
+        <h2 class="section-title">
+            Candidats associés
+        </h2>
+
+
+        <div
+            id="candidats-container"
+            class="badge-candidates"
+        ></div>
+
+    </section>
+
+</main>
+
+
+
+<script>
+
+
+/* ============================================================
+   PARSEUR CSV
+   ============================================================ */
+
+function parserCSV(texte) {
+
+    texte = texte
+        .replace(/^\uFEFF/, "")
+        .trim();
+
+
+    if (!texte) {
+        return [];
+    }
+
+
+    const lignes =
+        texte.split(/\r?\n/);
+
+
+    const entetes =
+        lignes[0]
+            .split(";")
+            .map(
+                entete =>
+                    entete.trim()
+            );
+
+
+    return lignes
+        .slice(1)
+        .filter(
+            ligne =>
+                ligne.trim() !== ""
+        )
+        .map(
+            ligne => {
+
+                const valeurs =
+                    ligne.split(";");
+
+
+                const objet = {};
+
+
+                entetes.forEach(
+                    (
+                        entete,
+                        index
+                    ) => {
+
+                        objet[entete] =
+                            (
+                                valeurs[index] ||
+                                ""
+                            ).trim();
+
+                    }
+                );
+
+
+                return objet;
+
+            }
+        );
+
+}
+
+
+
+/* ============================================================
+   CHARGEMENT CSV
+   ============================================================ */
+
+async function chargerCSV(url) {
+
+    const response =
+        await fetch(url);
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            "Impossible de charger " +
+            url
+        );
+
+    }
+
+
+    return parserCSV(
+        await response.text()
+    );
+
+}
+
+
+
+/* ============================================================
+   NORMALISATION DU STATUT
+   ============================================================ */
+
+function normaliserStatut(statut) {
+
+    return String(
+        statut || ""
+    )
+        .normalize("NFD")
+        .replace(
+            /[\u0300-\u036f]/g,
+            ""
+        )
+        .trim()
+        .toUpperCase();
+
+}
+
+
+/* ============================================================
+   CARTE CANDIDAT
+   ============================================================ */
+
+function creerCarteCandidat(
+    candidat,
+    nombreBadges
+) {
+
+    const carte =
+        document.createElement(
+            "a"
+        );
+
+
+    carte.className =
+        "candidate-card";
+
+
+    /*
+     * Page individuelle du candidat.
+     */
+
+    carte.href =
+        "/individus.html#" +
+        encodeURIComponent(
+            candidat.personne_id
+        );
+
+
+
+    /* ========================================================
+       PHOTO
+       ======================================================== */
+
+    const photo =
+        document.createElement(
+            "div"
+        );
+
+
+    photo.className =
+        "candidate-photo";
+
+
+    const image =
+        document.createElement(
+            "img"
+        );
+
+
+    image.src =
+        "/images/personnes/" +
+        encodeURIComponent(
+            candidat.personne_id
+        ) +
+        ".webp";
+
+
+    image.alt =
+        candidat.nom;
+
+
+    image.loading =
+        "lazy";
+
+
+    photo.appendChild(
+        image
+    );
+
+
+    /* ========================================================
+       STATUT
+       ======================================================== */
+
+    const statut =
+        normaliserStatut(
+            candidat.statut
+        );
+
+
+    let imageStatut = "";
+
+
+    if (
+        statut.includes("GAME OVER")
+    ) {
+
+        imageStatut =
+            "/images/statuts/GAME_OVER.webp";
+
+    }
+
+    else if (
+        statut === "RADIOACTIF"
+    ) {
+
+        imageStatut =
+            "/images/statuts/RADIOACTIF.webp";
+
+    }
+
+
+    if (imageStatut) {
+
+        const statutImage =
+            document.createElement(
+                "img"
+            );
+
+
+        statutImage.className =
+            "candidate-status";
+
+
+        statutImage.src =
+            imageStatut;
+
+
+        statutImage.alt =
+            candidat.statut;
+
+
+        photo.appendChild(
+            statutImage
+        );
+
+    }
+
+
+
+    /* ========================================================
+       INFORMATIONS
+       ======================================================== */
+
+    const informations =
+        document.createElement(
+            "div"
+        );
+
+
+    informations.className =
+        "candidate-info";
+
+
+
+    /* NOM */
+
+    const nom =
+        document.createElement(
+            "h3"
+        );
+
+
+    nom.className =
+        "candidate-name";
+
+
+    nom.textContent =
+        candidat.nom;
+
+
+
+    /* PARTI */
+
+    const parti =
+        document.createElement(
+            "div"
+        );
+
+
+    parti.className =
+        "candidate-party";
+
+
+    parti.textContent =
+        candidat.parti;
+
+
+
+    /* CIRCONSCRIPTION */
+
+    const circonscription =
+        document.createElement(
+            "div"
+        );
+
+
+    circonscription.className =
+        "candidate-riding";
+
+
+    circonscription.textContent =
+        candidat.circonscription;
+
+
+
+    /* NOMBRE DE BADGES */
+
+    const nombreBadgesElement =
+        document.createElement(
+            "div"
+        );
+
+
+    nombreBadgesElement.className =
+        "candidate-badge-count";
+
+
+    nombreBadgesElement.textContent =
+        nombreBadges +
+        (
+            nombreBadges === 1
+                ? " badge"
+                : " badges"
+        );
+
+
+
+    informations.appendChild(
+        nom
+    );
+
+
+    informations.appendChild(
+        parti
+    );
+
+
+    informations.appendChild(
+        circonscription
+    );
+
+
+    informations.appendChild(
+        nombreBadgesElement
+    );
+
+
+
+    carte.appendChild(
+        photo
+    );
+
+
+    carte.appendChild(
+        informations
+    );
+
+
+    return carte;
+
+}
+
+
+
+/* ============================================================
+   AFFICHER ERREUR
+   ============================================================ */
+
+function afficherErreur(message) {
+
+    const conteneur =
+        document.getElementById(
+            "badge-container"
+        );
+
+
+    conteneur.innerHTML =
+        "";
+
+
+    const bloc =
+        document.createElement(
+            "div"
+        );
+
+
+    bloc.className =
+        "message message-error";
+
+
+    bloc.textContent =
+        message;
+
+
+    conteneur.appendChild(
+        bloc
+    );
+
+}
+
+
+
+/* ============================================================
+   CHARGER LE BADGE
+   ============================================================ */
+
+async function chargerBadge() {
+
+    const parametres =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const badgeId =
+        parametres.get("id");
+
+
+    if (!badgeId) {
+
+        afficherErreur(
+            "Aucun badge n'a été spécifié."
+        );
+
+
+        return;
+
+    }
+
+
+
+    try {
+
+        const [
+            badges,
+            personnes,
+            attributions,
+            attributionsSources
+        ] = await Promise.all([
+
+            chargerCSV(
+                "/data/badges.csv"
+            ),
+
+            chargerCSV(
+                "/data/personnes.csv"
+            ),
+
+            chargerCSV(
+                "/data/attributions.csv"
+            ),
+
+            chargerCSV(
+                "/data/attributions_sources.csv"
+            )
+
+        ]);
+
+
+
+        /* ====================================================
+           TROUVER LE BADGE
+           ==================================================== */
+
+        const badge =
+            badges.find(
+                item =>
+                    item.id ===
+                    badgeId
+            );
+
+
+        if (!badge) {
+
+            afficherErreur(
+                "Badge introuvable."
+            );
+
+
+            return;
+
+        }
+
+
+
+        document.title =
+            badge.nom +
+            " — Discrédit 125";
+
+
+
+        /* ====================================================
+           CONTENEUR
+           ==================================================== */
+
+        const badgeContainer =
+            document.getElementById(
+                "badge-container"
+            );
+
+
+        badgeContainer.innerHTML =
+            "";
+
+
+
+        /* ====================================================
+           DÉTAIL DU BADGE
+           ==================================================== */
+
+        const detail =
+            document.createElement(
+                "div"
+            );
+
+
+        detail.className =
+            "badge-detail";
+
+
+
+        /* IMAGE */
+
+        const imageContainer =
+            document.createElement(
+                "div"
+            );
+
+
+        imageContainer.className =
+            "badge-detail-image";
+
+
+
+        const image =
+            document.createElement(
+                "img"
+            );
+
+
+        image.src =
+            "/images/badges/" +
+            encodeURIComponent(
+                badge.image
+            );
+
+
+        image.alt =
+            badge.nom;
+
+
+        image.loading =
+            "eager";
+
+
+
+        imageContainer.appendChild(
+            image
+        );
+
+
+
+        /* INFORMATIONS */
+
+        const informations =
+            document.createElement(
+                "div"
+            );
+
+
+        informations.className =
+            "badge-detail-info";
+
+
+
+        /* TITRE */
+
+        const titre =
+            document.createElement(
+                "h1"
+            );
+
+
+        titre.textContent =
+            badge.nom;
+
+
+
+        /* CATÉGORIE */
+
+        const categorie =
+            document.createElement(
+                "div"
+            );
+
+
+        categorie.className =
+            "badge-detail-category";
+
+
+        categorie.textContent =
+            badge.categorie;
+
+
+
+        /* DESCRIPTION */
+
+        const description =
+            document.createElement(
+                "p"
+            );
+
+
+        description.className =
+            "badge-detail-description";
+
+
+        description.textContent =
+            badge.description;
+
+
+
+        informations.appendChild(
+            titre
+        );
+
+
+        informations.appendChild(
+            categorie
+        );
+
+
+        informations.appendChild(
+            description
+        );
+
+
+
+        detail.appendChild(
+            imageContainer
+        );
+
+
+        detail.appendChild(
+            informations
+        );
+
+
+
+        badgeContainer.appendChild(
+            detail
+        );
+
+
+
+        /* ====================================================
+           CANDIDATS ASSOCIÉS
+           ==================================================== */
+
+        let candidatsAssocies =
+            attributions
+
+                .filter(
+                    attribution =>
+                        attribution.badge_id ===
+                        badge.id
+                )
+
+                .map(
+                    attribution =>
+                        personnes.find(
+                            personne =>
+                                personne.personne_id ===
+                                attribution.personne_id
+                        )
+                )
+
+                .filter(
+                    personne =>
+                        personne
+                )
+
+                /* DÉDUPLICATION DES CANDIDATS */
+
+                .filter(
+                    (
+                        personne,
+                        index,
+                        tableau
+                    ) =>
+                        index ===
+                        tableau.findIndex(
+                            autre =>
+                                autre.personne_id ===
+                                personne.personne_id
+                        )
+                );
+
+
+
+        /* ====================================================
+           GRAND CHAMPION INTERNATIONNAL DE COURSE
+           ==================================================== */
+
+        if (
+            badge.nom.trim() ===
+            "Grand champion internationnal de course"
+        ) {
+
+            const nombreSourcesParCandidat =
+                new Map();
+
+
+            candidatsAssocies.forEach(
+                candidat => {
+
+                    const sources =
+                        new Set();
+
+
+                    attributionsSources.forEach(
+                        attributionSource => {
+
+                            if (
+                                attributionSource.personne_id ===
+                                    candidat.personne_id &&
+                                attributionSource.badge_id ===
+                                    badge.id &&
+                                attributionSource.source_id
+                            ) {
+
+                                sources.add(
+                                    attributionSource.source_id
+                                );
+
+                            }
+
+                        }
+                    );
+
+
+                    nombreSourcesParCandidat.set(
+                        candidat.personne_id,
+                        sources.size
+                    );
+
+                }
+            );
+
+
+            let maximumSources = 0;
+
+
+            nombreSourcesParCandidat.forEach(
+                nombreSources => {
+
+                    if (
+                        nombreSources >
+                        maximumSources
+                    ) {
+
+                        maximumSources =
+                            nombreSources;
+
+                    }
+
+                }
+            );
+
+
+            candidatsAssocies =
+                candidatsAssocies.filter(
+                    candidat =>
+                        nombreSourcesParCandidat.get(
+                            candidat.personne_id
+                        ) ===
+                        maximumSources
+                );
+
+        }
+
+
+
+        const section =
+            document.getElementById(
+                "candidats-section"
+            );
+
+
+        const candidatsContainer =
+            document.getElementById(
+                "candidats-container"
+            );
+
+
+
+        if (
+            candidatsAssocies.length > 0
+        ) {
+
+            section.style.display =
+                "block";
+
+
+            candidatsContainer.innerHTML =
+                "";
+
+
+
+            candidatsAssocies.forEach(
+                personne => {
+
+                    const nombreBadges =
+                        attributions.filter(
+                            attribution =>
+                                attribution.personne_id ===
+                                personne.personne_id
+                        ).length;
+
+
+
+                    candidatsContainer.appendChild(
+
+                        creerCarteCandidat(
+                            personne,
+                            nombreBadges
+                        )
+
+                    );
+
+                }
+            );
+
+        }
+
+    }
+
+    catch (erreur) {
+
+        console.error(
+            erreur
+        );
+
+
+        afficherErreur(
+            "Impossible de charger les données du badge."
+        );
+
+    }
+
+}
+
+
+
+/* ============================================================
+   DÉMARRAGE
+   ============================================================ */
+
+chargerBadge();
+
+
+</script>
+
+
+</body>
+
+</html>

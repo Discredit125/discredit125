@@ -1,0 +1,3071 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Candidat — Discrédit 125</title>
+
+<link rel="stylesheet" href="/styles.css">
+
+<style>
+
+    .candidate-photo-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        aspect-ratio: 1;
+        background: var(--gris);
+        color: var(--texte);
+        font-size: 4rem;
+        font-weight: 700;
+    }
+
+    .candidate-detail .candidate-photo-container {
+        position: relative;
+        width: 260px;
+        height: 260px;
+        margin: 0 auto;
+        background: #eeeeee;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .candidate-detail .candidate-photo-container .candidate-photo {
+        display: block;
+        width: 260px;
+        height: 260px;
+        margin: 0 auto;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .candidate-detail .candidate-photo-container .candidate-photo-placeholder {
+        width: 260px;
+        height: 260px;
+        margin: 0;
+        aspect-ratio: auto;
+        box-sizing: border-box;
+    }
+
+    .candidate-detail .candidate-photo-container .candidate-status {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        width: 60px;
+        height: 60px;
+        max-width: none;
+        object-fit: contain;
+        z-index: 5;
+        margin: 0;
+    }
+
+    .reaction {
+        margin-top: 12px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .reaction-contrition {
+        background: #e8f5e9;
+    }
+
+    .reaction-denegation {
+        background: #fff3e0;
+    }
+
+    .reaction-pli {
+        background: #e3f2fd;
+    }
+
+    .candidate-error {
+        padding: 30px;
+        text-align: center;
+        background: var(--blanc);
+        border: 1px solid var(--bordure);
+        border-radius: 8px;
+    }
+
+    .candidate-badge-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .candidate-badge-list .candidate-badge-card {
+        display: grid;
+        grid-template-columns: 50px minmax(180px, 1fr) minmax(250px, 2fr);
+        align-items: center;
+        gap: 15px;
+        width: 100%;
+        padding: 6px 10px;
+        background: var(--blanc);
+        border: 1px solid var(--bordure);
+        border-radius: 6px;
+        box-sizing: border-box;
+    }
+
+    .candidate-badge-list .candidate-badge-image-link {
+        display: block;
+        width: 50px;
+        height: 50px;
+    }
+
+    .candidate-badge-list .candidate-badge-image-link img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+
+    .candidate-badge-list .candidate-badge-name {
+        color: var(--texte);
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 800;
+    }
+
+    .candidate-badge-list .candidate-badge-name:hover {
+        color: var(--bleu-discredit);
+    }
+
+    .candidate-badge-list .candidate-badge-source {
+        color: var(--gris);
+        font-size: 13px;
+        line-height: 1.4;
+    }
+
+    .candidate-badge-list .candidate-badge-source a {
+        color: var(--bleu-discredit);
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .candidate-badge-list .candidate-badge-source a:hover {
+        text-decoration: underline;
+    }
+
+    .candidate-badge-list .candidate-source-date {
+        margin-left: 4px;
+        color: var(--gris);
+        font-size: 11px;
+        font-weight: normal;
+    }
+
+    .candidate-badge-list .reaction {
+        grid-column: 2 / 4;
+        margin-top: 0;
+    }
+
+    .candidate-trophies {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .candidate-trophy {
+        padding: 10px 14px;
+        background: var(--blanc);
+        border: 1px solid var(--bordure);
+        border-radius: 6px;
+        font-weight: 700;
+    }
+
+    .candidate-trophy-individual {
+        border-left: 4px solid var(--bleu-discredit);
+    }
+
+    .candidate-trophy-party {
+        border-left: 4px solid #111;
+    }
+
+    .candidate-trophy-label {
+        font-weight: 900;
+    }
+
+    .candidate-trophy-score {
+        margin-left: 6px;
+        color: var(--gris);
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .candidate-no-trophies {
+        color: var(--gris);
+        padding: 10px 0;
+    }
+
+
+    /* =====================================================
+       MODALE — PREUVE IMAGE
+       ===================================================== */
+
+    .source-image-link {
+        cursor: pointer;
+    }
+
+    .source-modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.85);
+        align-items: center;
+        justify-content: center;
+        padding: 30px;
+        box-sizing: border-box;
+    }
+
+    .source-modal.active {
+        display: flex;
+    }
+
+    .source-modal-content {
+        position: relative;
+        max-width: 95vw;
+        max-height: 95vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .source-modal-image {
+        display: block;
+        max-width: 95vw;
+        max-height: 90vh;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        border-radius: 6px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .source-modal-close {
+        position: absolute;
+        top: -15px;
+        right: -15px;
+        width: 40px;
+        height: 40px;
+        border: none;
+        border-radius: 50%;
+        background: #ffffff;
+        color: #111111;
+        font-size: 28px;
+        line-height: 40px;
+        text-align: center;
+        cursor: pointer;
+        font-weight: 700;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+        z-index: 2;
+    }
+
+    .source-modal-close:hover {
+        background: #eeeeee;
+    }
+
+
+    /* =====================================================
+       MOBILE
+       ===================================================== */
+
+    @media (max-width: 700px) {
+
+        .candidate-detail {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .candidate-detail .candidate-photo-container {
+            margin: 0 auto;
+        }
+
+        .candidate-detail .candidate-info {
+            text-align: center;
+        }
+
+        .candidate-badge-list .candidate-badge-card {
+            grid-template-columns: 45px 1fr;
+            gap: 10px;
+        }
+
+        .candidate-badge-list .candidate-badge-image-link,
+        .candidate-badge-list .candidate-badge-image-link img {
+            width: 45px;
+            height: 45px;
+        }
+
+        .candidate-badge-list .candidate-badge-source {
+            grid-column: 2;
+        }
+
+        .candidate-badge-list .reaction {
+            grid-column: 2;
+        }
+
+        .source-modal {
+            padding: 15px;
+        }
+
+        .source-modal-image {
+            max-width: 100%;
+            max-height: 85vh;
+        }
+
+        .source-modal-close {
+            top: -10px;
+            right: -5px;
+        }
+
+    }
+
+</style>
+
+</head>
+
+<body>
+
+<main class="container">
+
+<div id="candidate-container">
+
+<div class="message">
+    Chargement...
+</div>
+
+</div>
+
+</main>
+
+<footer class="site-footer">
+
+<div class="container">
+
+<p>
+    Discrédit 125 — Projet satirique et humoristique.
+</p>
+
+</div>
+
+</footer>
+
+<!-- =========================================================
+     MODALE — PREUVE IMAGE
+     ========================================================= -->
+
+<div
+    id="source-modal"
+    class="source-modal"
+    aria-hidden="true"
+>
+
+<div class="source-modal-content">
+
+<button
+type="button"
+id="source-modal-close"
+class="source-modal-close"
+aria-label="Fermer"
+
+>
+
+×
+</button>
+
+<img
+id="source-modal-image"
+class="source-modal-image"
+src=""
+alt="Capture d'écran de la source"
+
+>
+
+</div>
+
+</div>
+
+<script>
+
+
+/* =========================================================
+   MODALE — PREUVE IMAGE
+   ========================================================= */
+
+function ouvrirSourceImage(imageUrl) {
+
+    const modal =
+        document.getElementById(
+            "source-modal"
+        );
+
+    const image =
+        document.getElementById(
+            "source-modal-image"
+        );
+
+    if (
+        !modal ||
+        !image ||
+        !imageUrl
+    ) {
+        return;
+    }
+
+    image.src =
+        imageUrl;
+
+    modal.classList.add(
+        "active"
+    );
+
+    modal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+    document.body.style.overflow =
+        "hidden";
+
+}
+
+
+function fermerSourceImage() {
+
+    const modal =
+        document.getElementById(
+            "source-modal"
+        );
+
+    const image =
+        document.getElementById(
+            "source-modal-image"
+        );
+
+    if (
+        !modal ||
+        !image
+    ) {
+
+        return;
+
+    }
+
+    modal.classList.remove(
+        "active"
+    );
+
+    modal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+    image.src =
+        "";
+
+    document.body.style.overflow =
+        "";
+
+}
+
+
+/* =========================================================
+   FERMETURE — X
+   ========================================================= */
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target &&
+            event.target.id ===
+            "source-modal-close"
+        ) {
+
+            fermerSourceImage();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   FERMETURE — CLIC SUR LE FOND
+   ========================================================= */
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        const modal =
+            document.getElementById(
+                "source-modal"
+            );
+
+        if (
+            event.target ===
+            modal
+        ) {
+
+            fermerSourceImage();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   FERMETURE — ESC
+   ========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key ===
+            "Escape"
+        ) {
+
+            fermerSourceImage();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   CSV
+   ========================================================= */
+
+function parserCSV(texte) {
+
+    const lignes =
+        texte
+            .replace(/^\uFEFF/, "")
+            .split(/\r?\n/)
+            .filter(
+                ligne =>
+                    ligne.trim() !== ""
+            );
+
+
+    if (
+        lignes.length === 0
+    ) {
+
+        return [];
+
+    }
+
+
+    const entetes =
+        lignes[0]
+            .split(";")
+            .map(
+                entete =>
+                    entete
+                        .trim()
+                        .replace(
+                            /^"(.*)"$/,
+                            "$1"
+                        )
+            );
+
+
+    return lignes
+        .slice(1)
+        .map(
+            ligne => {
+
+                const valeurs =
+                    ligne.split(";");
+
+                const objet = {};
+
+
+                entetes.forEach(
+                    (
+                        entete,
+                        index
+                    ) => {
+
+                        objet[entete] =
+                            (
+                                valeurs[index] ||
+                                ""
+                            )
+                            .trim()
+                            .replace(
+                                /^"(.*)"$/,
+                                "$1"
+                            );
+
+                    }
+                );
+
+
+                return objet;
+
+            }
+        );
+
+}
+
+
+async function chargerCSV(url) {
+
+    const reponse =
+        await fetch(url);
+
+
+    if (
+        !reponse.ok
+    ) {
+
+        throw new Error(
+            "Impossible de charger " +
+            url
+        );
+
+    }
+
+
+    return parserCSV(
+        await reponse.text()
+    );
+
+}
+
+
+/* =========================================================
+   ERREUR
+   ========================================================= */
+
+function afficherErreur(message) {
+
+    const conteneur =
+        document.getElementById(
+            "candidate-container"
+        );
+
+
+    conteneur.innerHTML =
+        "";
+
+
+    const erreur =
+        document.createElement(
+            "div"
+        );
+
+
+    erreur.className =
+        "candidate-error";
+
+
+    erreur.textContent =
+        message;
+
+
+    conteneur.appendChild(
+        erreur
+    );
+
+}
+
+
+/* =========================================================
+   INDIVIDU
+   ========================================================= */
+
+function creerImageCandidat(personne) {
+
+    const personneId =
+        (
+            personne.personne_id ||
+            ""
+        )
+        .trim();
+
+
+    if (
+        personneId
+    ) {
+
+        const image =
+            document.createElement(
+                "img"
+            );
+
+
+        image.className =
+            "candidate-photo";
+
+
+        image.src =
+            "/images/personnes/" +
+            encodeURIComponent(
+                personneId
+            ) +
+            ".webp";
+
+
+        image.alt =
+            personne.nom;
+
+
+        image.onerror =
+            function() {
+
+                const placeholder =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                placeholder.className =
+                    "candidate-photo-placeholder";
+
+
+                placeholder.textContent =
+                    "?";
+
+
+                this.replaceWith(
+                    placeholder
+                );
+
+            };
+
+
+        return image;
+
+    }
+
+
+    const placeholder =
+        document.createElement(
+            "div"
+        );
+
+
+    placeholder.className =
+        "candidate-photo-placeholder";
+
+
+    placeholder.textContent =
+        "?";
+
+
+    return placeholder;
+
+}
+
+
+/* =========================================================
+   STATUT
+   ========================================================= */
+
+function creerStatut(statut) {
+
+    const valeur =
+        (statut || "")
+            .trim()
+            .toUpperCase();
+
+
+    if (
+        valeur !== "RADIOACTIF" &&
+        valeur !== "GAME OVER" &&
+        valeur !== "GAME_OVER"
+    ) {
+
+        return null;
+
+    }
+
+
+    const image =
+        document.createElement(
+            "img"
+        );
+
+
+    image.className =
+        "candidate-status";
+
+
+    image.alt =
+        valeur;
+
+
+    image.title =
+        valeur;
+
+
+    image.src =
+        valeur === "RADIOACTIF"
+            ? "/images/statuts/RADIOACTIF.webp"
+            : "/images/statuts/GAME_OVER.webp";
+
+
+    return image;
+
+}
+
+
+/* =========================================================
+   RÉACTION
+   ========================================================= */
+
+function creerReaction(statut) {
+
+    const valeur =
+        (statut || "")
+            .trim();
+
+
+    if (
+        !valeur
+    ) {
+
+        return null;
+
+    }
+
+
+    const reaction =
+        document.createElement(
+            "div"
+        );
+
+
+    reaction.className =
+        "reaction";
+
+
+    if (
+        valeur.toLowerCase() ===
+        "contrition / rétractation".toLowerCase()
+    ) {
+
+        reaction.classList.add(
+            "reaction-contrition"
+        );
+
+
+        reaction.textContent =
+            "🤝 Contrition / rétractation";
+
+
+    } else if (
+        valeur.toLowerCase() ===
+        "dénégation"
+    ) {
+
+        reaction.classList.add(
+            "reaction-denegation"
+        );
+
+
+        reaction.textContent =
+            "🙅 Dénégation";
+
+
+    } else if (
+        valeur.toLowerCase() ===
+        "ça m'fait pas un pli"
+    ) {
+
+        reaction.classList.add(
+            "reaction-pli"
+        );
+
+
+        reaction.textContent =
+            "😎 Ça m'fait pas un pli";
+
+
+    } else {
+
+        reaction.textContent =
+            valeur;
+
+    }
+
+
+    return reaction;
+
+}
+
+
+/* =========================================================
+   BADGE
+   ========================================================= */
+
+function creerCarteBadge(
+    badge,
+    sources,
+    reaction
+) {
+
+    const carte =
+        document.createElement(
+            "div"
+        );
+
+
+    carte.className =
+        "candidate-badge-card";
+
+
+    /* =====================================================
+       IMAGE DU BADGE
+       ===================================================== */
+
+    const lien =
+        document.createElement(
+            "a"
+        );
+
+
+    lien.href =
+        "/badge?id=" +
+        encodeURIComponent(
+            badge.id
+        );
+
+
+    lien.className =
+        "candidate-badge-image-link";
+
+
+    const image =
+        document.createElement(
+            "img"
+        );
+
+
+    image.src =
+        "/images/badges/" +
+        encodeURIComponent(
+            badge.image
+        );
+
+
+    image.alt =
+        badge.nom;
+
+
+    image.loading =
+        "lazy";
+
+
+    lien.appendChild(
+        image
+    );
+
+
+    /* =====================================================
+       NOM DU BADGE
+       ===================================================== */
+
+    const nom =
+        document.createElement(
+            "a"
+        );
+
+
+    nom.href =
+        "/badge?id=" +
+        encodeURIComponent(
+            badge.id
+        );
+
+
+    nom.className =
+        "candidate-badge-name";
+
+
+    nom.textContent =
+        badge.nom;
+
+
+    /* =====================================================
+       SOURCES
+       ===================================================== */
+
+    const sourceElement =
+        document.createElement(
+            "div"
+        );
+
+
+    sourceElement.className =
+        "candidate-badge-source";
+
+
+    if (
+        sources &&
+        sources.length > 0
+    ) {
+
+        sources.forEach(
+            (
+                source,
+                index
+            ) => {
+
+                if (
+                    index > 0
+                ) {
+
+                    sourceElement.appendChild(
+                        document.createElement(
+                            "br"
+                        )
+                    );
+
+                }
+
+
+                if (
+                    source.url
+                ) {
+
+                    const sourceLien =
+                        document.createElement(
+                            "a"
+                        );
+
+
+                    sourceLien.textContent =
+                        source.Description ||
+                        "Source";
+
+
+                    const urlImage =
+                        source.url
+                            .toLowerCase()
+                            .split("?")[0];
+
+
+                    const estImage =
+                        /\.(jpg|jpeg|png|webp|gif)$/i.test(
+                            urlImage
+                        );
+
+
+                    if (
+                        estImage
+                    ) {
+
+                        sourceLien.href =
+                            "#";
+
+
+                        sourceLien.className =
+                            "source-image-link";
+
+
+                        sourceLien.addEventListener(
+                            "click",
+                            function(event) {
+
+                                event.preventDefault();
+
+
+                                ouvrirSourceImage(
+                                    source.url
+                                );
+
+                            }
+                        );
+
+
+                    } else {
+
+                        sourceLien.href =
+                            source.url;
+
+
+                        sourceLien.target =
+                            "_blank";
+
+
+                        sourceLien.rel =
+                            "noopener noreferrer";
+
+                    }
+
+
+                    sourceElement.appendChild(
+                        sourceLien
+                    );
+
+
+                } else {
+
+                    const sourceTexte =
+                        document.createElement(
+                            "span"
+                        );
+
+
+                    sourceTexte.textContent =
+                        source.Description ||
+                        "Source";
+
+
+                    sourceElement.appendChild(
+                        sourceTexte
+                    );
+
+                }
+
+
+                if (
+                    source.date
+                ) {
+
+                    const date =
+                        document.createElement(
+                            "span"
+                        );
+
+
+                    date.className =
+                        "candidate-source-date";
+
+
+                    date.textContent =
+                        "(" +
+                        source.date +
+                        ")";
+
+
+                    sourceElement.appendChild(
+                        date
+                    );
+
+                }
+
+            }
+        );
+
+
+    } else {
+
+        sourceElement.textContent =
+            "Source non disponible";
+
+    }
+
+
+    /* =====================================================
+       ASSEMBLAGE
+       ===================================================== */
+
+    carte.appendChild(
+        lien
+    );
+
+
+    carte.appendChild(
+        nom
+    );
+
+
+    carte.appendChild(
+        sourceElement
+    );
+
+
+    /* =====================================================
+       RÉACTION
+       ===================================================== */
+
+    const reactionElement =
+        creerReaction(
+            reaction
+        );
+
+
+    if (
+        reactionElement
+    ) {
+
+        carte.appendChild(
+            reactionElement
+        );
+
+    }
+
+
+    return carte;
+
+}
+
+
+/* =========================================================
+   FAMILLES DE BADGES
+   ========================================================= */
+
+const CATEGORIES = {
+
+    CONSPI:
+        "Conspibadges",
+
+    SPIRITUEL:
+        "Badges spirituels",
+
+    TRUMP:
+        "Trumpibadges",
+
+    GUERRE_CULTURELLE:
+        "Droito-religioso-xénophobadges",
+
+    DESINTEGRITE:
+        "Désintégrité, Populisme et Écarts de langage"
+
+};
+
+
+/* =========================================================
+   OUTILS POUR LES TROPHÉES
+   ========================================================= */
+
+function trouverMaximum(compteurs) {
+
+    const valeurs =
+        Object.values(
+            compteurs
+        );
+
+
+    if (
+        valeurs.length === 0
+    ) {
+
+        return 0;
+
+    }
+
+
+    return Math.max(
+        ...valeurs
+    );
+
+}
+
+
+function trouverGagnants(compteurs) {
+
+    const maximum =
+        trouverMaximum(
+            compteurs
+        );
+
+
+    if (
+        maximum === 0
+    ) {
+
+        return [];
+
+    }
+
+
+    return Object.keys(
+        compteurs
+    )
+    .filter(
+        id =>
+            compteurs[id] ===
+            maximum
+    )
+    .map(
+        id => ({
+            id: id,
+            score: maximum
+        })
+    );
+
+}
+
+
+/* =========================================================
+   TROPHÉES — COMPTER LES BADGES
+   ========================================================= */
+
+function compterBadgesParCandidat(
+    personnes,
+    badges,
+    attributions
+) {
+
+    const badgeParId =
+        Object.fromEntries(
+            badges.map(
+                badge => [
+                    badge.id,
+                    badge
+                ]
+            )
+        );
+
+
+    const compteurs = {};
+
+
+    personnes.forEach(
+        personne => {
+
+            compteurs[
+                personne.personne_id
+            ] = 0;
+
+        }
+    );
+
+
+    const dejaComptes =
+        new Set();
+
+
+    attributions.forEach(
+        attribution => {
+
+            const personneId =
+                (
+                    attribution.personne_id ||
+                    ""
+                ).trim();
+
+
+            const badgeId =
+                (
+                    attribution.badge_id ||
+                    ""
+                ).trim();
+
+
+            const cle =
+                personneId +
+                "|" +
+                badgeId;
+
+
+            if (
+                dejaComptes.has(
+                    cle
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                badgeParId[
+                    badgeId
+                ] &&
+                compteurs[
+                    personneId
+                ] !== undefined
+            ) {
+
+                compteurs[
+                    personneId
+                ]++;
+
+
+                dejaComptes.add(
+                    cle
+                );
+
+            }
+
+        }
+    );
+
+
+    return compteurs;
+
+}
+
+
+/* =========================================================
+   TROPHÉES — COMPTER UNE CATÉGORIE
+   ========================================================= */
+
+function compterCategorieParCandidat(
+    categorie,
+    personnes,
+    badges,
+    attributions
+) {
+
+    const badgeIds =
+        new Set(
+            badges
+                .filter(
+                    badge =>
+                        badge.categorie ===
+                        categorie
+                )
+                .map(
+                    badge =>
+                        badge.id
+                )
+        );
+
+
+    const compteurs = {};
+
+
+    personnes.forEach(
+        personne => {
+
+            compteurs[
+                personne.personne_id
+            ] = 0;
+
+        }
+    );
+
+
+    const dejaComptes =
+        new Set();
+
+
+    attributions.forEach(
+        attribution => {
+
+            const personneId =
+                (
+                    attribution.personne_id ||
+                    ""
+                ).trim();
+
+
+            const badgeId =
+                (
+                    attribution.badge_id ||
+                    ""
+                ).trim();
+
+
+            const cle =
+                personneId +
+                "|" +
+                badgeId;
+
+
+            if (
+                dejaComptes.has(
+                    cle
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                badgeIds.has(
+                    badgeId
+                ) &&
+                compteurs[
+                    personneId
+                ] !== undefined
+            ) {
+
+                compteurs[
+                    personneId
+                ]++;
+
+
+                dejaComptes.add(
+                    cle
+                );
+
+            }
+
+        }
+    );
+
+
+    return compteurs;
+
+}
+
+
+/* =========================================================
+   TROPHÉES — CATÉGORIES DISTINCTES
+   ========================================================= */
+
+function compterCategoriesDistinctes(
+    personnes,
+    badges,
+    attributions
+) {
+
+    const badgeParId =
+        Object.fromEntries(
+            badges.map(
+                badge => [
+                    badge.id,
+                    badge
+                ]
+            )
+        );
+
+
+    const categories = {};
+
+
+    personnes.forEach(
+        personne => {
+
+            categories[
+                personne.personne_id
+            ] =
+                new Set();
+
+        }
+    );
+
+
+    attributions.forEach(
+        attribution => {
+
+            const badge =
+                badgeParId[
+                    attribution.badge_id
+                ];
+
+
+            const personneId =
+                (
+                    attribution.personne_id ||
+                    ""
+                ).trim();
+
+
+            if (
+                badge &&
+                categories[
+                    personneId
+                ]
+            ) {
+
+                categories[
+                    personneId
+                ].add(
+                    badge.categorie
+                );
+
+            }
+
+        }
+    );
+
+
+    const compteurs = {};
+
+
+    Object.keys(
+        categories
+    ).forEach(
+        personneId => {
+
+            compteurs[
+                personneId
+            ] =
+                categories[
+                    personneId
+                ].size;
+
+        }
+    );
+
+
+    return compteurs;
+
+}
+
+
+/* =========================================================
+   TROPHÉES INDIVIDUELS
+   ========================================================= */
+
+function calculerTropheesIndividuels(
+    personnes,
+    badges,
+    attributions,
+    attributionSources
+) {
+
+    const resultats = [];
+
+
+    /* COMBO ULTIME */
+
+    resultats.push({
+
+        nom:
+            "Le combo ultime",
+
+        gagnants:
+            trouverGagnants(
+                compterCategoriesDistinctes(
+                    personnes,
+                    badges,
+                    attributions
+                )
+            )
+
+    });
+
+
+    /* MAÎTRE CONSPI */
+
+    resultats.push({
+
+        nom:
+            "Maître Conspi",
+
+        gagnants:
+            trouverGagnants(
+                compterCategorieParCandidat(
+                    CATEGORIES.CONSPI,
+                    personnes,
+                    badges,
+                    attributions
+                )
+            )
+
+    });
+
+
+    /* GOUROU SUPRÊME */
+
+    resultats.push({
+
+        nom:
+            "Gourou suprême",
+
+        gagnants:
+            trouverGagnants(
+                compterCategorieParCandidat(
+                    CATEGORIES.SPIRITUEL,
+                    personnes,
+                    badges,
+                    attributions
+                )
+            )
+
+    });
+
+
+    /* SALLE DE BALLE DORÉE */
+
+    resultats.push({
+
+        nom:
+            "Salle de balle dorée",
+
+        gagnants:
+            trouverGagnants(
+                compterCategorieParCandidat(
+                    CATEGORIES.TRUMP,
+                    personnes,
+                    badges,
+                    attributions
+                )
+            )
+
+    });
+
+
+    /* GRAND CHAMPION INTERNATIONAL DE COURSE */
+
+    const sourcesAutoParCandidat = {};
+
+
+    personnes.forEach(
+        personne => {
+
+            sourcesAutoParCandidat[
+                personne.personne_id
+            ] =
+                new Set();
+
+        }
+    );
+
+
+    attributionSources.forEach(
+        attributionSource => {
+
+            if (
+                (
+                    attributionSource.badge_id ||
+                    ""
+                ).trim() !==
+                "B029"
+            ) {
+
+                return;
+
+            }
+
+
+            const personneId =
+                (
+                    attributionSource.personne_id ||
+                    ""
+                ).trim();
+
+
+            const sourceId =
+                (
+                    attributionSource.source_id ||
+                    ""
+                ).trim();
+
+
+            if (
+                sourcesAutoParCandidat[
+                    personneId
+                ] &&
+                sourceId
+            ) {
+
+                sourcesAutoParCandidat[
+                    personneId
+                ].add(
+                    sourceId
+                );
+
+            }
+
+        }
+    );
+
+
+    const compteursAuto = {};
+
+
+    Object.keys(
+        sourcesAutoParCandidat
+    ).forEach(
+        personneId => {
+
+            compteursAuto[
+                personneId
+            ] =
+                sourcesAutoParCandidat[
+                    personneId
+                ].size;
+
+        }
+    );
+
+
+    const maximumAuto =
+        trouverMaximum(
+            compteursAuto
+        );
+
+
+    let gagnantAuto =
+        null;
+
+
+    if (
+        maximumAuto > 0
+    ) {
+
+        gagnantAuto =
+            Object.keys(
+                compteursAuto
+            ).find(
+                personneId =>
+                    compteursAuto[
+                        personneId
+                    ] ===
+                    maximumAuto
+            );
+
+    }
+
+
+    resultats.push({
+
+        nom:
+            "Grand Champion International de Course",
+
+        gagnants:
+            gagnantAuto
+                ? [{
+                    id:
+                        gagnantAuto,
+
+                    score:
+                        maximumAuto
+                }]
+                : []
+
+    });
+
+
+    /* PRIX DE LA DÉSINTÉGRITÉ */
+
+    resultats.push({
+
+        nom:
+            "Prix de la désintégrité",
+
+        gagnants:
+            trouverGagnants(
+                compterCategorieParCandidat(
+                    CATEGORIES.DESINTEGRITE,
+                    personnes,
+                    badges,
+                    attributions
+                )
+            )
+
+    });
+
+
+    /* GRAND INQUISITEUR */
+
+    resultats.push({
+
+        nom:
+            "Grand Inquisiteur",
+
+        gagnants:
+            trouverGagnants(
+                compterCategorieParCandidat(
+                    CATEGORIES.GUERRE_CULTURELLE,
+                    personnes,
+                    badges,
+                    attributions
+                )
+            )
+
+    });
+
+
+    /* GRAND CHAMPION 2026 */
+
+    resultats.push({
+
+        nom:
+            "Grand Champion 2026",
+
+        gagnants:
+            trouverGagnants(
+                compterBadgesParCandidat(
+                    personnes,
+                    badges,
+                    attributions
+                )
+            )
+
+    });
+
+
+    return resultats;
+
+}
+
+
+/* =========================================================
+   TROPHÉES DE PARTI
+   ========================================================= */
+
+function calculerTropheesPartis(
+    personnes,
+    badges,
+    attributions
+) {
+
+    const resultats = [];
+
+
+    function ajouterTrophee(
+        nom,
+        categorie
+    ) {
+
+        const compteurs = {};
+
+
+        const dejaComptes =
+            new Set();
+
+
+        attributions.forEach(
+            attribution => {
+
+                const personneId =
+                    (
+                        attribution.personne_id ||
+                        ""
+                    ).trim();
+
+
+                const badgeId =
+                    (
+                        attribution.badge_id ||
+                        ""
+                    ).trim();
+
+
+                const cle =
+                    personneId +
+                    "|" +
+                    badgeId;
+
+
+                if (
+                    dejaComptes.has(
+                        cle
+                    )
+                ) {
+
+                    return;
+
+                }
+
+
+                const badge =
+                    badges.find(
+                        element =>
+                            element.id ===
+                            badgeId
+                    );
+
+
+                if (
+                    !badge ||
+                    badge.categorie !==
+                    categorie
+                ) {
+
+                    return;
+
+                }
+
+
+                const personne =
+                    personnes.find(
+                        element =>
+                            (
+                                element.personne_id ||
+                                ""
+                            ).trim() ===
+                            personneId
+                    );
+
+
+                if (
+                    !personne ||
+                    !personne.parti
+                ) {
+
+                    return;
+
+                }
+
+
+                compteurs[
+                    personne.parti
+                ] =
+                    (
+                        compteurs[
+                            personne.parti
+                        ] || 0
+                    ) + 1;
+
+
+                dejaComptes.add(
+                    cle
+                );
+
+            }
+        );
+
+
+        const maximum =
+            trouverMaximum(
+                compteurs
+            );
+
+
+        if (
+            maximum === 0
+        ) {
+
+            return;
+
+        }
+
+
+        const partis =
+            Object.keys(
+                compteurs
+            ).filter(
+                parti =>
+                    compteurs[
+                        parti
+                    ] ===
+                    maximum
+            );
+
+
+        resultats.push({
+
+            nom:
+                nom,
+
+            partis:
+                partis
+
+        });
+
+    }
+
+
+    ajouterTrophee(
+        "Parti le plus conspi",
+        CATEGORIES.CONSPI
+    );
+
+
+    ajouterTrophee(
+        "Parti le plus Trump",
+        CATEGORIES.TRUMP
+    );
+
+
+    ajouterTrophee(
+        "Parti le plus perché",
+        CATEGORIES.SPIRITUEL
+    );
+
+
+    ajouterTrophee(
+        "Parti de la désintégrité",
+        CATEGORIES.DESINTEGRITE
+    );
+
+
+    ajouterTrophee(
+        "Parti de la guerre culturelle",
+        CATEGORIES.GUERRE_CULTURELLE
+    );
+
+
+    /* PRIX HIVER NUCLÉAIRE */
+
+    const radioactifs = {};
+
+
+    personnes.forEach(
+        personne => {
+
+            const statut =
+                (personne.statut || "")
+                    .trim()
+                    .toUpperCase();
+
+
+            if (
+                statut !==
+                "RADIOACTIF"
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                !personne.parti
+            ) {
+
+                return;
+
+            }
+
+
+            radioactifs[
+                personne.parti
+            ] =
+                (
+                    radioactifs[
+                        personne.parti
+                    ] || 0
+                ) + 1;
+
+        }
+    );
+
+
+    const maximumRadioactifs =
+        trouverMaximum(
+            radioactifs
+        );
+
+
+    if (
+        maximumRadioactifs > 0
+    ) {
+
+        resultats.push({
+
+            nom:
+                "Prix Hiver Nucléaire",
+
+            partis:
+                Object.keys(
+                    radioactifs
+                ).filter(
+                    parti =>
+                        radioactifs[
+                            parti
+                        ] ===
+                        maximumRadioactifs
+                )
+
+        });
+
+    }
+
+
+    return resultats;
+
+}
+
+
+/* =========================================================
+   TROPHÉES DE L'INDIVIDU
+   ========================================================= */
+
+function trouverTropheesDuCandidat(
+    personne,
+    tropheesIndividuels,
+    tropheesPartis
+) {
+
+    const trophees = [];
+
+
+    tropheesIndividuels.forEach(
+        trophee => {
+
+            const gagnant =
+                trophee.gagnants.find(
+                    element =>
+                        element.id ===
+                        personne.personne_id
+                );
+
+
+            if (
+                !gagnant
+            ) {
+
+                return;
+
+            }
+
+
+            trophees.push({
+
+                type:
+                    "individual",
+
+                nom:
+                    trophee.nom,
+
+                score:
+                    gagnant.score
+
+            });
+
+        }
+    );
+
+
+    tropheesPartis.forEach(
+        trophee => {
+
+            if (
+                !trophee.partis.includes(
+                    personne.parti
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            trophees.push({
+
+                type:
+                    "party",
+
+                nom:
+                    trophee.nom
+
+            });
+
+        }
+    );
+
+
+    return trophees;
+
+}
+
+
+/* =========================================================
+   AFFICHAGE DES TROPHÉES
+   ========================================================= */
+
+function afficherTrophees(
+    personne,
+    trophees
+) {
+
+    const section =
+        document.createElement(
+            "section"
+        );
+
+
+    section.className =
+        "candidate-section";
+
+
+    const titre =
+        document.createElement(
+            "h2"
+        );
+
+
+    titre.textContent =
+        "🏆 Trophées";
+
+
+    section.appendChild(
+        titre
+    );
+
+
+    if (
+        trophees.length === 0
+    ) {
+
+        const message =
+            document.createElement(
+                "div"
+            );
+
+
+        message.className =
+            "candidate-no-trophies";
+
+
+        message.textContent =
+            "Aucun trophée en tête pour le moment.";
+
+
+        section.appendChild(
+            message
+        );
+
+
+        return section;
+
+    }
+
+
+    const tropheesIndividuels =
+        trophees.filter(
+            trophee =>
+                trophee.type ===
+                "individual"
+        );
+
+
+    const tropheesPartis =
+        trophees.filter(
+            trophee =>
+                trophee.type ===
+                "party"
+        );
+
+
+    /* =====================================================
+       TROPHÉES INDIVIDUELS
+       ===================================================== */
+
+    if (
+        tropheesIndividuels.length > 0
+    ) {
+
+        const labelIndividuels =
+            document.createElement(
+                "div"
+            );
+
+
+        labelIndividuels.className =
+            "candidate-trophy-label";
+
+
+        labelIndividuels.textContent =
+            "🏆 En tête dans :";
+
+
+        section.appendChild(
+            labelIndividuels
+        );
+
+
+        const listeIndividuels =
+            document.createElement(
+                "div"
+            );
+
+
+        listeIndividuels.className =
+            "candidate-trophies";
+
+
+        tropheesIndividuels.forEach(
+            trophee => {
+
+                const element =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                element.className =
+                    "candidate-trophy candidate-trophy-individual";
+
+
+                const nom =
+                    document.createElement(
+                        "span"
+                    );
+
+
+                nom.textContent =
+                    "« " +
+                    trophee.nom +
+                    " »";
+
+
+                element.appendChild(
+                    nom
+                );
+
+
+                if (
+                    trophee.score !==
+                    undefined
+                ) {
+
+                    const score =
+                        document.createElement(
+                            "span"
+                        );
+
+
+                    score.className =
+                        "candidate-trophy-score";
+
+
+                    score.textContent =
+                        "— " +
+                        trophee.score +
+                        " badges";
+
+
+                    element.appendChild(
+                        score
+                    );
+
+                }
+
+
+                listeIndividuels.appendChild(
+                    element
+                );
+
+            }
+        );
+
+
+        section.appendChild(
+            listeIndividuels
+        );
+
+    }
+
+
+    /* =====================================================
+       TROPHÉES DE PARTI
+       ===================================================== */
+
+    if (
+        tropheesPartis.length > 0
+    ) {
+
+        const labelPartis =
+            document.createElement(
+                "div"
+            );
+
+
+        labelPartis.className =
+            "candidate-trophy-label";
+
+
+        labelPartis.textContent =
+            "🏅 Parti en tête dans :";
+
+
+        section.appendChild(
+            labelPartis
+        );
+
+
+        const listePartis =
+            document.createElement(
+                "div"
+            );
+
+
+        listePartis.className =
+            "candidate-trophies";
+
+
+        tropheesPartis.forEach(
+            trophee => {
+
+                const element =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                element.className =
+                    "candidate-trophy candidate-trophy-party";
+
+
+                const nom =
+                    document.createElement(
+                        "span"
+                    );
+
+
+                nom.textContent =
+                    "« " +
+                    trophee.nom +
+                    " »";
+
+
+                element.appendChild(
+                    nom
+                );
+
+
+                listePartis.appendChild(
+                    element
+                );
+
+            }
+        );
+
+
+        section.appendChild(
+            listePartis
+        );
+
+    }
+
+
+    return section;
+
+}
+
+
+/* =========================================================
+   PAGE INDIVIDU
+   ========================================================= */
+
+async function chargerCandidat() {
+
+    const parametres =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const candidatId =
+        (
+            parametres.get("id") ||
+            parametres.get("personne_id") ||
+            window.location.hash.substring(1) ||
+            ""
+        )
+        .trim();
+
+
+    console.log(
+        "URL actuelle :",
+        window.location.href
+    );
+
+
+    console.log(
+        "Individu recherché :",
+        candidatId
+    );
+
+
+    if (
+        !candidatId
+    ) {
+
+        afficherErreur(
+            "Aucun candidat n'a été spécifié."
+        );
+
+
+        return;
+
+    }
+
+
+    try {
+
+        const [
+
+            personnes,
+            badges,
+            attributions,
+            attributionSources,
+            sources,
+            reactions
+
+        ] = await Promise.all([
+
+            chargerCSV(
+                "/data/personnes.csv"
+            ),
+
+            chargerCSV(
+                "/data/badges.csv"
+            ),
+
+            chargerCSV(
+                "/data/attributions.csv"
+            ),
+
+            chargerCSV(
+                "/data/attributions_sources.csv"
+            ),
+
+            chargerCSV(
+                "/data/sources.csv"
+            ),
+
+            chargerCSV(
+                "/data/reactions.csv"
+            )
+
+        ]);
+
+
+        const reactionsParId = {};
+
+
+        reactions.forEach(
+            reaction => {
+
+                reactionsParId[
+                    reaction.id
+                ] =
+                    reaction.nom;
+
+            }
+        );
+
+
+        const personne =
+            personnes.find(
+                element =>
+                    (
+                        element.personne_id ||
+                        ""
+                    ).trim() ===
+                    candidatId
+            );
+
+
+        if (
+            !personne
+        ) {
+
+            afficherErreur(
+                "Candidat introuvable."
+            );
+
+
+            return;
+
+        }
+
+
+        document.title =
+            personne.nom +
+            " — Discrédit 125";
+
+
+        const conteneur =
+            document.getElementById(
+                "candidate-container"
+            );
+
+
+        conteneur.innerHTML =
+            "";
+
+
+        const detail =
+            document.createElement(
+                "section"
+            );
+
+
+        detail.className =
+            "candidate-detail";
+
+
+        const photoContainer =
+            document.createElement(
+                "div"
+            );
+
+
+        photoContainer.className =
+            "candidate-photo-container";
+
+
+        photoContainer.appendChild(
+            creerImageCandidat(
+                personne
+            )
+        );
+
+
+        const statut =
+            creerStatut(
+                personne.statut
+            );
+
+
+        if (
+            statut
+        ) {
+
+            photoContainer.appendChild(
+                statut
+            );
+
+        }
+
+
+        detail.appendChild(
+            photoContainer
+        );
+
+
+        const informations =
+            document.createElement(
+                "div"
+            );
+
+
+        informations.className =
+            "candidate-info";
+
+
+        const nom =
+            document.createElement(
+                "h1"
+            );
+
+
+        nom.className =
+            "candidate-name";
+
+
+        nom.textContent =
+            personne.nom;
+
+
+        const parti =
+            document.createElement(
+                "div"
+            );
+
+
+        parti.className =
+            "candidate-party";
+
+
+        parti.textContent =
+            personne.parti;
+
+
+        const circonscription =
+            document.createElement(
+                "div"
+            );
+
+
+        circonscription.className =
+            "candidate-riding";
+
+
+        circonscription.textContent =
+            personne.circonscription;
+
+
+        informations.appendChild(
+            nom
+        );
+
+
+        informations.appendChild(
+            parti
+        );
+
+
+        informations.appendChild(
+            circonscription
+        );
+
+
+        detail.appendChild(
+            informations
+        );
+
+
+        conteneur.appendChild(
+            detail
+        );
+
+
+        const attributionsCandidat =
+            attributions.filter(
+                attribution =>
+                    (
+                        attribution.personne_id ||
+                        ""
+                    ).trim() ===
+                    personne.personne_id
+            );
+
+
+        const badgesCandidat = [];
+
+
+        const badgesDejaAjoutes =
+            new Set();
+
+
+        attributionsCandidat.forEach(
+            attribution => {
+
+                const badgeId =
+                    (
+                        attribution.badge_id ||
+                        ""
+                    ).trim();
+
+
+                if (
+                    badgesDejaAjoutes.has(
+                        badgeId
+                    )
+                ) {
+
+                    return;
+
+                }
+
+
+                badgesDejaAjoutes.add(
+                    badgeId
+                );
+
+
+                badgesCandidat.push(
+                    attribution
+                );
+
+            }
+        );
+
+
+        const sectionBadges =
+            document.createElement(
+                "section"
+            );
+
+
+        sectionBadges.className =
+            "candidate-section";
+
+
+        const titreBadges =
+            document.createElement(
+                "h2"
+            );
+
+
+        titreBadges.textContent =
+            "Badges (" +
+            badgesCandidat.length +
+            ")";
+
+
+        sectionBadges.appendChild(
+            titreBadges
+        );
+
+
+        if (
+            badgesCandidat.length ===
+            0
+        ) {
+
+            const message =
+                document.createElement(
+                    "div"
+                );
+
+
+            message.className =
+                "message";
+
+
+            message.textContent =
+                "Aucun badge attribué.";
+
+
+            sectionBadges.appendChild(
+                message
+            );
+
+
+        } else {
+
+            const grille =
+                document.createElement(
+                    "div"
+                );
+
+
+            grille.className =
+                "candidate-badge-list";
+
+
+            badgesCandidat.forEach(
+                attribution => {
+
+                    const badge =
+                        badges.find(
+                            element =>
+                                (
+                                    element.id ||
+                                    ""
+                                ).trim() ===
+                                (
+                                    attribution.badge_id ||
+                                    ""
+                                ).trim()
+                        );
+
+
+                    if (
+                        !badge
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const liensSources =
+                        attributionSources.filter(
+                            lien =>
+                                (
+                                    lien.personne_id ||
+                                    ""
+                                ).trim() ===
+                                    personne.personne_id
+                                &&
+                                (
+                                    lien.badge_id ||
+                                    ""
+                                ).trim() ===
+                                    (
+                                        attribution.badge_id ||
+                                        ""
+                                    ).trim()
+                        );
+
+
+                    const sourcesDuBadge =
+                        liensSources
+                            .map(
+                                lien =>
+                                    sources.find(
+                                        source =>
+                                            (
+                                                source.source_id ||
+                                                ""
+                                            ).trim() ===
+                                            (
+                                                lien.source_id ||
+                                                ""
+                                            ).trim()
+                                    )
+                            )
+                            .filter(
+                                source =>
+                                    source
+                            );
+
+
+                    const carte =
+                        creerCarteBadge(
+                            badge,
+                            sourcesDuBadge,
+                            reactionsParId[
+                                attribution.reaction_id
+                            ] || ""
+                        );
+
+
+                    grille.appendChild(
+                        carte
+                    );
+
+                }
+            );
+
+
+            sectionBadges.appendChild(
+                grille
+            );
+
+        }
+
+
+        conteneur.appendChild(
+            sectionBadges
+        );
+
+
+        const tropheesIndividuels =
+            calculerTropheesIndividuels(
+                personnes,
+                badges,
+                attributions,
+                attributionSources
+            );
+
+
+        const tropheesPartis =
+            calculerTropheesPartis(
+                personnes,
+                badges,
+                attributions
+            );
+
+
+        const tropheesCandidat =
+            trouverTropheesDuCandidat(
+                personne,
+                tropheesIndividuels,
+                tropheesPartis
+            );
+
+
+        conteneur.appendChild(
+            afficherTrophees(
+                personne,
+                tropheesCandidat
+            )
+        );
+
+    }
+
+
+    catch (
+        erreur
+    ) {
+
+        console.error(
+            erreur
+        );
+
+
+        afficherErreur(
+            "Impossible de charger les informations du candidat."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   DÉMARRAGE
+   ========================================================= */
+
+chargerCandidat();
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,2817 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Trophées — Discrédit 125</title>
+
+<link rel="stylesheet" href="/styles.css">
+
+<style>
+
+    .trophy-section {
+        margin-bottom: 50px;
+    }
+
+    .trophy-table-wrapper {
+        background: var(--blanc);
+        border: 1px solid var(--bordure);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .trophy-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .trophy-table th,
+    .trophy-table td {
+        padding: 15px 18px;
+        border-bottom: 1px solid var(--bordure);
+        vertical-align: middle;
+    }
+
+    .trophy-table th {
+        background: #f5f5f5;
+        font-size: 13px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        color: var(--gris);
+        text-align: left;
+    }
+
+    .trophy-table th:last-child,
+    .trophy-table td:last-child {
+        text-align: right;
+    }
+
+    .trophy-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .trophy-name {
+        font-weight: 900;
+        font-size: 17px;
+    }
+
+    .trophy-criterion {
+        display: block;
+        margin-top: 5px;
+        color: var(--gris);
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .trophy-winner,
+    .trophy-party {
+        font-weight: 900;
+    }
+
+    .trophy-score {
+        display: block;
+        margin-left: 0;
+        margin-top: 3px;
+        color: var(--gris);
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .trophy-editorial {
+        color: var(--gris);
+        font-style: italic;
+        font-weight: 700;
+    }
+
+    .trophy-table a {
+        text-decoration: none;
+        font-weight: 900;
+    }
+
+    .trophy-table a:hover {
+        text-decoration: underline;
+    }
+
+    .trophy-winner-person {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        vertical-align: top;
+        margin-right: 12px;
+        margin-bottom: 8px;
+        text-decoration: none !important;
+        cursor: pointer;
+    }
+
+    .trophy-winner-photo-wrapper {
+        position: relative;
+        width: 90px;
+        height: 110px;
+        overflow: hidden;
+        border-radius: 8px;
+        background: #eee;
+    }
+
+    .trophy-winner-photo {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .trophy-winner-label {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 5px 4px;
+        background: rgba(0, 0, 0, 0.78);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 900;
+        text-align: center;
+        line-height: 1.1;
+    }
+
+    .trophy-winner-name {
+        margin-top: 5px;
+        max-width: 90px;
+        color: inherit;
+        font-size: 13px;
+        font-weight: 900;
+        line-height: 1.15;
+        text-align: center;
+        overflow-wrap: anywhere;
+    }
+
+    .trophy-winner-person:hover .trophy-winner-name {
+        text-decoration: underline;
+    }
+
+
+    /* =========================================================
+       FENÊTRE MODALE PERSONNE
+       ========================================================= */
+
+    .statut-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.75);
+    }
+
+    .statut-modal.active {
+        display: flex;
+    }
+
+    .statut-modal-window {
+        position: relative;
+        width: min(1100px, 95vw);
+        height: min(850px, 92vh);
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    .statut-modal-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 10;
+        width: 40px;
+        height: 40px;
+        border: none;
+        border-radius: 50%;
+        background: #fff;
+        color: #111;
+        font-size: 28px;
+        line-height: 1;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    }
+
+    .statut-modal-close:hover {
+        background: #eee;
+    }
+
+    #statut-modal-frame {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+
+    @media (max-width: 800px) {
+
+        .trophy-table-wrapper {
+            overflow-x: auto;
+        }
+
+        .trophy-table {
+            min-width: 650px;
+        }
+
+    }
+
+
+    @media (max-width: 700px) {
+
+        .statut-modal {
+            padding: 10px;
+        }
+
+        .statut-modal-window {
+            width: 100%;
+            height: 95vh;
+            border-radius: 8px;
+        }
+
+    }
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header class="site-header">
+
+<div class="header-inner">
+
+<a href="/" class="logo">
+    DISCRÉDIT <span>125</span>
+</a>
+
+<nav class="main-nav">
+
+    <a href="/">Accueil</a>
+
+    <a href="/personnes.html">
+        Candidats
+    </a>
+
+    <a href="/badges.html">
+        Badges
+    </a>
+
+    <a href="/statuts.html">
+        Statuts
+    </a>
+
+    <a href="/trophees.html" class="active">
+        Trophées
+    </a>
+
+    <a href="/soumettre.html">
+        Soumettre
+    </a>
+
+    <a href="/erreur.html">
+        Signaler
+    </a>
+
+    <a href="/a-propos.html">
+        À propos
+    </a>
+
+</nav>
+
+</div>
+
+</header>
+
+
+<main class="container">
+
+
+<section class="page-header">
+
+<h1>
+    Les trophées
+</h1>
+
+<p>
+    Les distinctions satiriques de Discrédit 125.
+</p>
+
+</section>
+
+
+<section class="content-card">
+
+<h2>
+    🏆 Le principe
+</h2>
+
+<p>
+    Les trophées récompensent les candidats et les partis
+    actuellement en tête dans différentes catégories.
+</p>
+
+<p>
+    Les résultats sont calculés automatiquement à partir
+    des badges, des attributions, des sources et des statuts
+    présents dans le répertoire.
+</p>
+
+<p>
+    <strong>
+        En cas d’égalité, tous les ex æquo sont en tête.
+        Aucun deuxième, troisième ou « runner-up » n'est affiché.
+    </strong>
+</p>
+
+<p>
+    Évidemment, tout ceci est entièrement satirique.
+</p>
+
+</section>
+
+
+<section class="trophy-section">
+
+<h2 class="section-title">
+    🏆 Trophées individuels
+</h2>
+
+<div class="trophy-table-wrapper">
+
+    <table class="trophy-table">
+
+        <thead>
+
+            <tr>
+
+                <th>
+                    Trophée
+                </th>
+
+                <th>
+                    En tête
+                </th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="trophees-individuels">
+
+            <tr>
+
+                <td colspan="2">
+                    Calcul en cours...
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+</section>
+
+
+<section class="trophy-section">
+
+<h2 class="section-title">
+    🏅 Trophées partis et campagne
+</h2>
+
+<div class="trophy-table-wrapper">
+
+    <table class="trophy-table">
+
+        <thead>
+
+            <tr>
+
+                <th>
+                    Trophée
+                </th>
+
+                <th>
+                    En tête
+                </th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="trophees-partis">
+
+            <tr>
+
+                <td colspan="2">
+                    Calcul en cours...
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+</section>
+
+
+</main>
+
+
+<!-- =========================================================
+     FENÊTRE MODALE PERSONNE
+     ========================================================= -->
+
+<div id="statut-modal" class="statut-modal">
+
+    <div class="statut-modal-window">
+
+        <button
+            id="statut-modal-close"
+            class="statut-modal-close"
+            aria-label="Fermer"
+        >
+            ×
+        </button>
+
+        <iframe
+            id="statut-modal-frame"
+            title="Détail du candidat"
+        ></iframe>
+
+    </div>
+
+</div>
+
+
+<footer class="site-footer">
+
+<div class="container">
+
+<p>
+    Discrédit 125 — Projet satirique et humoristique.
+</p>
+
+</div>
+
+</footer>
+
+
+<script>
+
+
+/* =========================================================
+   LECTURE CSV
+   ========================================================= */
+
+function parserCSV(texte) {
+
+    texte =
+        texte.replace(/^\uFEFF/, "");
+
+
+    const lignes =
+        texte
+            .split(/\r?\n/)
+            .filter(
+                ligne =>
+                    ligne.trim() !== ""
+            );
+
+
+    if (lignes.length === 0) {
+
+        return [];
+
+    }
+
+
+    const entetes =
+        lignes[0]
+            .split(";")
+            .map(
+                entete =>
+                    entete
+                        .trim()
+                        .replace(
+                            /^"(.*)"$/,
+                            "$1"
+                        )
+            );
+
+
+    return lignes
+        .slice(1)
+        .map(ligne => {
+
+            const valeurs =
+                ligne.split(";");
+
+
+            const objet = {};
+
+
+            entetes.forEach(
+                (entete, index) => {
+
+                    objet[entete] =
+                        (
+                            valeurs[index] ||
+                            ""
+                        )
+                        .trim()
+                        .replace(
+                            /^"(.*)"$/,
+                            "$1"
+                        );
+
+                }
+            );
+
+
+            return objet;
+
+        });
+
+}
+
+
+async function chargerCSV(url) {
+
+    const reponse =
+        await fetch(url);
+
+
+    if (!reponse.ok) {
+
+        throw new Error(
+            "Impossible de charger " + url
+        );
+
+    }
+
+
+    return parserCSV(
+        await reponse.text()
+    );
+
+}
+
+
+/* =========================================================
+   FAMILLES DE BADGES
+   ========================================================= */
+
+const CATEGORIES = {
+
+    CONSPI:
+        "Conspibadges",
+
+    SPIRITUEL:
+        "Badges spirituels",
+
+    TRUMP:
+        "Trumpibadges",
+
+    GUERRE_CULTURELLE:
+        "Droito-religioso-Intoléro-Xénophobadges",
+
+    DESINTEGRITE:
+        "Désintégrité, Populisme et Écarts de langage"
+
+};
+
+
+/* =========================================================
+   UTILITAIRES
+   ========================================================= */
+
+function normaliserId(valeur) {
+
+    return String(
+        valeur || ""
+    ).trim();
+
+}
+
+
+function trouverMaximum(compteurs) {
+
+    const valeurs =
+        Object.values(
+            compteurs
+        );
+
+
+    if (
+        valeurs.length === 0
+    ) {
+
+        return 0;
+
+    }
+
+
+    return Math.max(
+        ...valeurs
+    );
+
+}
+
+
+/* =========================================================
+   TROUVER LES PERSONNES EN TÊTE
+   ========================================================= */
+
+function personnesEnTete(
+
+    personnes,
+
+    compteurs
+
+) {
+
+    const maximum =
+        trouverMaximum(
+            compteurs
+        );
+
+
+    if (
+        maximum === 0
+    ) {
+
+        return [];
+
+    }
+
+
+    return personnes
+
+        .filter(
+            personne =>
+                compteurs[
+                    normaliserId(
+                        personne.personne_id
+                    )
+                ] === maximum
+        )
+
+        .sort(
+            (a, b) =>
+                a.nom.localeCompare(
+                    b.nom,
+                    "fr"
+                )
+        )
+
+        .map(
+            personne => ({
+
+                personne:
+                    personne,
+
+                score:
+                    maximum
+
+            })
+        );
+
+}
+
+
+/* =========================================================
+   TROUVER LES PARTIS EN TÊTE
+   ========================================================= */
+
+function partisEnTete(
+
+    compteurs
+
+) {
+
+    const maximum =
+        trouverMaximum(
+            compteurs
+        );
+
+
+    if (
+        maximum === 0
+    ) {
+
+        return [];
+
+    }
+
+
+    return Object.keys(
+        compteurs
+    )
+
+        .filter(
+            parti =>
+                compteurs[parti] ===
+                maximum
+        )
+
+        .sort(
+            (a, b) =>
+                a.localeCompare(
+                    b,
+                    "fr"
+                )
+        )
+
+        .map(
+            parti => ({
+
+                parti:
+                    parti,
+
+                score:
+                    maximum
+
+            })
+        );
+
+}
+
+
+/* =========================================================
+   BADGES UNIQUES PAR PERSONNE
+   À PARTIR DES ATTRIBUTIONS
+   ========================================================= */
+
+function compterBadgesUniquesParPersonne(
+
+    attributions
+
+) {
+
+    const badgesParPersonne = {};
+
+
+    attributions.forEach(
+        attribution => {
+
+            const personneId =
+                normaliserId(
+                    attribution.personne_id
+                );
+
+
+            const badgeId =
+                normaliserId(
+                    attribution.badge_id
+                );
+
+
+            if (
+                !personneId ||
+                !badgeId ||
+                badgeId === "0"
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                !badgesParPersonne[
+                    personneId
+                ]
+            ) {
+
+                badgesParPersonne[
+                    personneId
+                ] = new Set();
+
+            }
+
+
+            badgesParPersonne[
+                personneId
+            ].add(
+                badgeId
+            );
+
+        }
+    );
+
+
+    const compteurs = {};
+
+
+    Object.keys(
+        badgesParPersonne
+    ).forEach(
+        personneId => {
+
+            compteurs[
+                personneId
+            ] =
+                badgesParPersonne[
+                    personneId
+                ].size;
+
+        }
+    );
+
+
+    return {
+
+        badgesParPersonne:
+            badgesParPersonne,
+
+        compteurs:
+            compteurs
+
+    };
+
+}
+
+
+/* =========================================================
+   TROPHÉE PAR CATÉGORIE
+   Les attributions déterminent les badges attribués.
+   Un badge ne compte qu'une fois par personne.
+   ========================================================= */
+
+function calculerTropheeCategorie(
+
+    categorie,
+
+    trophee,
+
+    personnes,
+
+    badges,
+
+    attributions
+
+) {
+
+    const badgeIds =
+        new Set(
+
+            badges
+
+                .filter(
+                    badge =>
+                        normaliserId(
+                            badge.categorie
+                        ) ===
+                        categorie
+                )
+
+                .map(
+                    badge =>
+                        normaliserId(
+                            badge.id
+                        )
+                )
+
+        );
+
+
+    const badgesParPersonne = {};
+
+
+    attributions.forEach(
+        attribution => {
+
+            const badgeId =
+                normaliserId(
+                    attribution.badge_id
+                );
+
+
+            if (
+                !badgeIds.has(
+                    badgeId
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            const personneId =
+                normaliserId(
+                    attribution.personne_id
+                );
+
+
+            if (!personneId) {
+
+                return;
+
+            }
+
+
+            if (
+                !badgesParPersonne[
+                    personneId
+                ]
+            ) {
+
+                badgesParPersonne[
+                    personneId
+                ] = new Set();
+
+            }
+
+
+            badgesParPersonne[
+                personneId
+            ].add(
+                badgeId
+            );
+
+        }
+    );
+
+
+    const compteurs = {};
+
+
+    Object.keys(
+        badgesParPersonne
+    ).forEach(
+        personneId => {
+
+            compteurs[
+                personneId
+            ] =
+                badgesParPersonne[
+                    personneId
+                ].size;
+
+        }
+    );
+
+
+    return {
+
+        id:
+            trophee.id,
+
+        nom:
+            trophee.nom,
+
+        critere:
+            trophee.critere,
+
+        unite:
+            "badges",
+
+        gagnants:
+            personnesEnTete(
+                personnes,
+                compteurs
+            )
+
+    };
+
+}
+
+
+/* =========================================================
+   TROPHÉE D'UN BADGE PRÉCIS
+   Les attributions déterminent l'attribution.
+   ========================================================= */
+
+function calculerTropheeBadge(
+
+    badgeId,
+
+    trophee,
+
+    personnes,
+
+    attributions
+
+) {
+
+    const badgeRecherche =
+        normaliserId(
+            badgeId
+        );
+
+
+    const personnesAvecBadge =
+        new Set();
+
+
+    attributions.forEach(
+        attribution => {
+
+            const personneId =
+                normaliserId(
+                    attribution.personne_id
+                );
+
+
+            const badge =
+                normaliserId(
+                    attribution.badge_id
+                );
+
+
+            if (
+                !personneId ||
+                badge !== badgeRecherche ||
+                badge === "0"
+            ) {
+
+                return;
+
+            }
+
+
+            personnesAvecBadge.add(
+                personneId
+            );
+
+        }
+    );
+
+
+    const compteurs = {};
+
+
+    personnesAvecBadge.forEach(
+        personneId => {
+
+            compteurs[
+                personneId
+            ] = 1;
+
+        }
+    );
+
+
+    return {
+
+        id:
+            trophee.id,
+
+        nom:
+            trophee.nom,
+
+        critere:
+            trophee.critere,
+
+        unite:
+            "badges",
+
+        gagnants:
+            personnesEnTete(
+                personnes,
+                compteurs
+            )
+
+    };
+
+}
+
+
+/* =========================================================
+   COMBO ULTIME
+   Les catégories sont déterminées par badges.csv.
+   Les attributions déterminent les badges attribués.
+   ========================================================= */
+
+function calculerComboUltime(
+
+    trophee,
+
+    personnes,
+
+    badges,
+
+    attributions
+
+) {
+
+    const badgeParId =
+        new Map();
+
+
+    badges.forEach(
+        badge => {
+
+            badgeParId.set(
+                normaliserId(
+                    badge.id
+                ),
+                badge
+            );
+
+        }
+    );
+
+
+    const categoriesParPersonne =
+        {};
+
+
+    personnes.forEach(
+        personne => {
+
+            categoriesParPersonne[
+                normaliserId(
+                    personne.personne_id
+                )
+            ] = new Set();
+
+        }
+    );
+
+
+    attributions.forEach(
+        attribution => {
+
+            const personneId =
+                normaliserId(
+                    attribution.personne_id
+                );
+
+
+            const badgeId =
+                normaliserId(
+                    attribution.badge_id
+                );
+
+
+            if (
+                !personneId ||
+                !badgeId ||
+                badgeId === "0"
+            ) {
+
+                return;
+
+            }
+
+
+            const badge =
+                badgeParId.get(
+                    badgeId
+                );
+
+
+            if (!badge) {
+
+                return;
+
+            }
+
+
+            if (
+                categoriesParPersonne[
+                    personneId
+                ]
+            ) {
+
+                categoriesParPersonne[
+                    personneId
+                ].add(
+                    normaliserId(
+                        badge.categorie
+                    )
+                );
+
+            }
+
+        }
+    );
+
+
+    const compteurs = {};
+
+
+    Object.keys(
+        categoriesParPersonne
+    ).forEach(
+        personneId => {
+
+            compteurs[
+                personneId
+            ] =
+                categoriesParPersonne[
+                    personneId
+                ].size;
+
+        }
+    );
+
+
+    return {
+
+        id:
+            trophee.id,
+
+        nom:
+            trophee.nom,
+
+        critere:
+            trophee.critere,
+
+        unite:
+            "catégories",
+
+        gagnants:
+            personnesEnTete(
+                personnes,
+                compteurs
+            )
+
+    };
+
+}
+
+
+/* =========================================================
+   GRAND CHAMPION 2026
+   Chaque badge attribué compte une seule fois.
+   ========================================================= */
+
+function calculerGrandChampion(
+
+    trophee,
+
+    personnes,
+
+    attributions
+
+) {
+
+    const {
+
+        compteurs
+
+    } =
+        compterBadgesUniquesParPersonne(
+            attributions
+        );
+
+
+    return {
+
+        id:
+            trophee.id,
+
+        nom:
+            trophee.nom,
+
+        critere:
+            trophee.critere,
+
+        unite:
+            "badges",
+
+        gagnants:
+            personnesEnTete(
+                personnes,
+                compteurs
+            )
+
+    };
+
+}
+
+
+/* =========================================================
+   GRAND CHAMPION INTERNATIONAL DE COURSE
+   Chaque source B029 compte comme une occurrence.
+   ========================================================= */
+
+function calculerChampionAuto(
+
+    trophee,
+
+    personnes,
+
+    attributionsSources
+
+) {
+
+    const compteurs = {};
+
+
+    attributionsSources.forEach(
+        attribution => {
+
+            const personneId =
+                normaliserId(
+                    attribution.personne_id
+                );
+
+
+            const badgeId =
+                normaliserId(
+                    attribution.badge_id
+                );
+
+
+            if (
+                !personneId ||
+                !badgeId ||
+                badgeId === "0"
+            ) {
+
+                return;
+
+            }
+
+
+            /*
+             * B029 = Guerre à l'auto.
+             *
+             * Ici, chaque source documentant B029
+             * constitue une occurrence distincte.
+             */
+
+            if (
+                badgeId !== "B029"
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                !compteurs[
+                    personneId
+                ]
+            ) {
+
+                compteurs[
+                    personneId
+                ] = 0;
+
+            }
+
+
+            compteurs[
+                personneId
+            ]++;
+
+        }
+    );
+
+
+    return {
+
+        id:
+            trophee.id,
+
+        nom:
+            trophee.nom,
+
+        critere:
+            trophee.critere,
+
+        unite:
+            "occurrences",
+
+        gagnants:
+            personnesEnTete(
+                personnes,
+                compteurs
+            )
+
+    };
+
+}
+
+
+/* =========================================================
+   TROPHÉE PAR PARTI
+   Les badges sont déterminés par les attributions.
+   Un même badge chez un même candidat ne compte qu'une fois.
+   ========================================================= */
+
+function calculerTropheeParti(
+
+    categorie,
+
+    trophee,
+
+    personnes,
+
+    badges,
+
+    attributions
+
+) {
+
+    const badgeIds =
+        new Set(
+
+            badges
+
+                .filter(
+                    badge =>
+                        normaliserId(
+                            badge.categorie
+                        ) ===
+                        categorie
+                )
+
+                .map(
+                    badge =>
+                        normaliserId(
+                            badge.id
+                        )
+                )
+
+        );
+
+
+    const personneParId =
+        new Map();
+
+
+    personnes.forEach(
+        personne => {
+
+            personneParId.set(
+
+                normaliserId(
+                    personne.personne_id
+                ),
+
+                personne
+
+            );
+
+        }
+    );
+
+
+    const badgesParParti = {};
+
+
+    attributions.forEach(
+        attribution => {
+
+            const badgeId =
+                normaliserId(
+                    attribution.badge_id
+                );
+
+
+            if (
+                !badgeIds.has(
+                    badgeId
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            const personne =
+                personneParId.get(
+                    normaliserId(
+                        attribution.personne_id
+                    )
+                );
+
+
+            if (
+                !personne ||
+                !personne.parti
+            ) {
+
+                return;
+
+            }
+
+
+            const parti =
+                personne.parti.trim();
+
+
+            if (
+                !badgesParParti[
+                    parti
+                ]
+            ) {
+
+                badgesParParti[
+                    parti
+                ] = new Set();
+
+            }
+
+
+            /*
+             * Un même badge attribué au même candidat
+             * ne compte qu'une seule fois, même avec
+             * plusieurs sources.
+             */
+
+            badgesParParti[
+                parti
+            ].add(
+
+                normaliserId(
+                    personne.personne_id
+                ) +
+                "|" +
+                badgeId
+
+            );
+
+        }
+    );
+
+
+    const compteurs = {};
+
+
+    Object.keys(
+        badgesParParti
+    ).forEach(
+        parti => {
+
+            compteurs[
+                parti
+            ] =
+                badgesParParti[
+                    parti
+                ].size;
+
+        }
+    );
+
+
+    return {
+
+        id:
+            trophee.id,
+
+        nom:
+            trophee.nom,
+
+        critere:
+            trophee.critere,
+
+        unite:
+            "badges",
+
+        gagnants:
+            partisEnTete(
+                compteurs
+            )
+
+    };
+
+}
+
+
+/* =========================================================
+   PRIX HIVER NUCLÉAIRE
+   ========================================================= */
+
+function calculerPrixRadioactif(
+
+    trophee,
+
+    personnes
+
+) {
+
+    const compteurs = {};
+
+
+    personnes.forEach(
+        personne => {
+
+            const statut =
+                normaliserId(
+                    personne.statut
+                ).toUpperCase();
+
+
+            if (
+                statut !==
+                "RADIOACTIF"
+            ) {
+
+                return;
+
+            }
+
+
+            const parti =
+                normaliserId(
+                    personne.parti
+                );
+
+
+            if (!parti) {
+
+                return;
+
+            }
+
+
+            if (
+                !compteurs[
+                    parti
+                ]
+            ) {
+
+                compteurs[
+                    parti
+                ] = 0;
+
+            }
+
+
+            compteurs[
+                parti
+            ]++;
+
+        }
+    );
+
+
+    return {
+
+        id:
+            trophee.id,
+
+        nom:
+            trophee.nom,
+
+        critere:
+            trophee.critere,
+
+        unite:
+            "candidats RADIOACTIFS",
+
+        gagnants:
+            partisEnTete(
+                compteurs
+            )
+
+    };
+
+}
+
+
+/* =========================================================
+   CELLULE DU TROPHÉE
+   ========================================================= */
+
+function creerCelluleTrophee(
+    trophee
+) {
+
+    const cellule =
+        document.createElement(
+            "td"
+        );
+
+
+    const nom =
+        document.createElement(
+            "div"
+        );
+
+
+    nom.className =
+        "trophy-name";
+
+
+    nom.textContent =
+        trophee.nom;
+
+
+    cellule.appendChild(
+        nom
+    );
+
+
+    const critere =
+        document.createElement(
+            "span"
+        );
+
+
+    critere.className =
+        "trophy-criterion";
+
+
+    critere.textContent =
+        trophee.critere;
+
+
+    cellule.appendChild(
+        critere
+    );
+
+
+    return cellule;
+
+}
+
+
+/* =========================================================
+   CELLULE DES GAGNANTS
+   ========================================================= */
+
+function creerCelluleGagnants(
+    trophee
+) {
+
+    const cellule =
+        document.createElement(
+            "td"
+        );
+
+
+    if (
+        !trophee.gagnants ||
+        trophee.gagnants.length === 0
+    ) {
+
+        const message =
+            document.createElement(
+                "span"
+            );
+
+
+        message.className =
+            "trophy-editorial";
+
+
+        message.textContent =
+            "Aucun gagnant pour le moment.";
+
+
+        cellule.appendChild(
+            message
+        );
+
+
+        return cellule;
+
+    }
+
+
+    trophee.gagnants.forEach(
+        (
+            gagnant,
+            index
+        ) => {
+
+            if (
+                gagnant.personne
+            ) {
+
+                const lien =
+                    document.createElement(
+                        "a"
+                    );
+
+
+                lien.className =
+                    "trophy-winner-person";
+
+
+                const personneId =
+                    normaliserId(
+                        gagnant.personne.personne_id
+                    );
+
+
+                lien.href =
+                    "#";
+
+
+                lien.addEventListener(
+                    "click",
+                    function(event) {
+
+                        event.preventDefault();
+
+                        ouvrirPersonne(
+                            personneId
+                        );
+
+                    }
+                );
+
+
+                const photoWrapper =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                photoWrapper.className =
+                    "trophy-winner-photo-wrapper";
+
+
+                const image =
+                    document.createElement(
+                        "img"
+                    );
+
+
+                image.className =
+                    "trophy-winner-photo";
+
+
+                image.src =
+                    "/images/personnes/" +
+                    encodeURIComponent(
+                        personneId
+                    ) +
+                    ".webp";
+
+
+                image.alt =
+                    gagnant.personne.nom;
+
+
+                image.loading =
+                    "lazy";
+
+
+                image.onerror =
+                    function() {
+
+                        this.style.display =
+                            "none";
+
+                    };
+
+
+                const label =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                label.className =
+                    "trophy-winner-label";
+
+
+                label.textContent =
+                    "En tête";
+
+
+                photoWrapper.appendChild(
+                    image
+                );
+
+
+                photoWrapper.appendChild(
+                    label
+                );
+
+
+                const nom =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                nom.className =
+                    "trophy-winner-name";
+
+
+                nom.textContent =
+                    gagnant.personne.nom;
+
+
+                if (
+                    gagnant.score !==
+                        undefined &&
+                    trophee.unite
+                ) {
+
+                    const score =
+                        document.createElement(
+                            "span"
+                        );
+
+
+                    score.className =
+                        "trophy-score";
+
+
+                    score.textContent =
+                        gagnant.score +
+                        " " +
+                        trophee.unite;
+
+
+                    nom.appendChild(
+                        score
+                    );
+
+                }
+
+
+                lien.appendChild(
+                    photoWrapper
+                );
+
+
+                lien.appendChild(
+                    nom
+                );
+
+
+                cellule.appendChild(
+                    lien
+                );
+
+            }
+            else {
+
+                if (
+                    index > 0
+                ) {
+
+                    cellule.appendChild(
+                        document.createTextNode(
+                            " · "
+                        )
+                    );
+
+                }
+
+
+                const parti =
+                    document.createElement(
+                        "span"
+                    );
+
+
+                parti.className =
+                    "trophy-party";
+
+
+                parti.textContent =
+                    gagnant.parti;
+
+
+                if (
+                    gagnant.score !==
+                    undefined
+                ) {
+
+                    const score =
+                        document.createElement(
+                            "span"
+                        );
+
+
+                    score.className =
+                        "trophy-score";
+
+
+                    score.textContent =
+                        gagnant.score +
+                        " " +
+                        trophee.unite;
+
+
+                    parti.appendChild(
+                        score
+                    );
+
+                }
+
+
+                cellule.appendChild(
+                    parti
+                );
+
+            }
+
+        }
+    );
+
+
+    return cellule;
+
+}
+
+
+/* =========================================================
+   AFFICHER LES TROPHÉES
+   ========================================================= */
+
+function afficherTrophees(
+
+    trophees,
+
+    id
+
+) {
+
+    const conteneur =
+        document.getElementById(
+            id
+        );
+
+
+    conteneur.innerHTML =
+        "";
+
+
+    trophees.forEach(
+        trophee => {
+
+            const ligne =
+                document.createElement(
+                    "tr"
+                );
+
+
+            ligne.appendChild(
+                creerCelluleTrophee(
+                    trophee
+                )
+            );
+
+
+            ligne.appendChild(
+                creerCelluleGagnants(
+                    trophee
+                )
+            );
+
+
+            conteneur.appendChild(
+                ligne
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   FENÊTRE PERSONNE
+   ========================================================= */
+
+function ouvrirPersonne(
+    personneId
+) {
+
+    const modal =
+        document.getElementById(
+            "statut-modal"
+        );
+
+
+    const frame =
+        document.getElementById(
+            "statut-modal-frame"
+        );
+
+
+    frame.src =
+        "/individus.html#" +
+        encodeURIComponent(
+            personneId
+        );
+
+
+    modal.classList.add(
+        "active"
+    );
+
+
+    document.body.style.overflow =
+        "hidden";
+
+}
+
+
+function fermerPersonne() {
+
+    const modal =
+        document.getElementById(
+            "statut-modal"
+        );
+
+
+    const frame =
+        document.getElementById(
+            "statut-modal-frame"
+        );
+
+
+    modal.classList.remove(
+        "active"
+    );
+
+
+    frame.src =
+        "";
+
+
+    document.body.style.overflow =
+        "";
+
+}
+
+
+document
+    .getElementById(
+        "statut-modal-close"
+    )
+    .addEventListener(
+        "click",
+        fermerPersonne
+    );
+
+
+document
+    .getElementById(
+        "statut-modal"
+    )
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target === this
+            ) {
+
+                fermerPersonne();
+
+            }
+
+        }
+    );
+
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            const modal =
+                document.getElementById(
+                    "statut-modal"
+                );
+
+
+            if (
+                modal.classList.contains(
+                    "active"
+                )
+            ) {
+
+                fermerPersonne();
+
+            }
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   CALCUL D'UN TROPHÉE
+   ========================================================= */
+
+function calculerTrophee(
+
+    trophee,
+
+    personnes,
+
+    badges,
+
+    attributions,
+
+    attributionsSources
+
+) {
+
+    switch (
+        normaliserId(
+            trophee.id
+        )
+    ) {
+
+        /*
+         * T001 — Le combo ultime
+         * Plus grand nombre de catégories de badges différentes.
+         */
+
+        case "T001":
+
+            return calculerComboUltime(
+
+                trophee,
+
+                personnes,
+
+                badges,
+
+                attributions
+
+            );
+
+
+        /*
+         * T002 — Maître Conspi
+         */
+
+        case "T002":
+
+            return calculerTropheeCategorie(
+
+                CATEGORIES.CONSPI,
+
+                trophee,
+
+                personnes,
+
+                badges,
+
+                attributions
+
+            );
+
+
+        /*
+         * T003 — Gourou suprême
+         */
+
+        case "T003":
+
+            return calculerTropheeCategorie(
+
+                CATEGORIES.SPIRITUEL,
+
+                trophee,
+
+                personnes,
+
+                badges,
+
+                attributions
+
+            );
+
+
+        /*
+         * T004 — Salle de balle dorée
+         */
+
+        case "T004":
+
+            return calculerTropheeCategorie(
+
+                CATEGORIES.TRUMP,
+
+                trophee,
+
+                personnes,
+
+                badges,
+
+                attributions
+
+            );
+
+
+        /*
+         * T005 — Grand Champion International de Course
+         *
+         * Chaque source B029 compte comme une occurrence.
+         */
+
+        case "T005":
+
+            return calculerChampionAuto(
+
+                trophee,
+
+                personnes,
+
+                attributionsSources
+
+            );
+
+
+        /*
+         * T006 — Prix de la désintégrité
+         */
+
+        case "T006":
+
+            return calculerTropheeCategorie(
+
+                CATEGORIES.DESINTEGRITE,
+
+                trophee,
+
+                personnes,
+
+                badges,
+
+                attributions
+
+            );
+
+
+        /*
+         * T007 — Grand Inquisiteur
+         */
+
+        case "T007":
+
+            return calculerTropheeCategorie(
+
+                CATEGORIES.GUERRE_CULTURELLE,
+
+                trophee,
+
+                personnes,
+
+                badges,
+
+                attributions
+
+            );
+
+
+        /*
+         * T008 — Grand Champion 2026
+         */
+
+        case "T008":
+
+            return calculerGrandChampion(
+
+                trophee,
+
+                personnes,
+
+                attributions
+
+            );
+
+
+        /*
+         * T009 — Parti le plus conspi
+         */
+
+        case "T009":
+
+            return calculerTropheeParti(
+
+                CATEGORIES.CONSPI,
+
+                trophee,
+
+                personnes,
+
+                badges,
+
+                attributions
+
+            );
+
+
+        /*
+         * T010 — Parti le plus Trump
+         */
+
+        case "T010":
+
+            return calculerTropheeParti(
+
+                CATEGORIES.TRUMP,
+
+                trophee,
+
+                personnes,
+
+                badges,
+
+                attributions
+
+            );
+
+
+        /*
+         * T011 — Parti le plus perché
+         */
+
+        case "T011":
+
+            return calculerTropheeParti(
+
+                CATEGORIES.SPIRITUEL,
+
+                trophee,
+
+                personnes,
+
+                badges,
+
+                attributions
+
+            );
+
+
+        /*
+         * T012 — Parti de la désintégrité
+         */
+
+        case "T012":
+
+            return calculerTropheeParti(
+
+                CATEGORIES.DESINTEGRITE,
+
+                trophee,
+
+                personnes,
+
+                badges,
+
+                attributions
+
+            );
+
+
+        /*
+         * T013 — Parti de la guerre culturelle
+         */
+
+        case "T013":
+
+            return calculerTropheeParti(
+
+                CATEGORIES.GUERRE_CULTURELLE,
+
+                trophee,
+
+                personnes,
+
+                badges,
+
+                attributions
+
+            );
+
+
+        /*
+         * T014 — Prix Hiver Nucléaire
+         */
+
+        case "T014":
+
+            return calculerPrixRadioactif(
+
+                trophee,
+
+                personnes
+
+            );
+
+
+        /*
+         * T015 — Tableau d'honneur de la VG
+         *
+         * Attribution du badge B034.
+         */
+
+        case "T015":
+
+            return calculerTropheeBadge(
+
+                "B034",
+
+                trophee,
+
+                personnes,
+
+                attributions
+
+            );
+
+
+        default:
+
+            return {
+
+                id:
+                    trophee.id,
+
+                nom:
+                    trophee.nom,
+
+                critere:
+                    trophee.critere,
+
+                unite:
+                    "badges",
+
+                gagnants:
+                    []
+
+            };
+
+    }
+
+}
+
+
+/* =========================================================
+   INITIALISATION
+   ========================================================= */
+
+async function initialiser() {
+
+    try {
+
+        const [
+
+            personnes,
+
+            badges,
+
+            attributions,
+
+            attributionsTrophees,
+
+            attributionsSources
+
+        ] = await Promise.all([
+
+            chargerCSV(
+                "/data/personnes.csv"
+            ),
+
+            chargerCSV(
+                "/data/badges.csv"
+            ),
+
+            chargerCSV(
+                "/data/attributions.csv"
+            ),
+
+            chargerCSV(
+                "/data/attributions_trophees.csv"
+            ),
+
+            chargerCSV(
+                "/data/attributions_sources.csv"
+            )
+
+        ]);
+
+
+        /*
+         * Les définitions des trophées viennent directement
+         * de attributions_trophees.csv.
+         */
+
+        const trophees =
+            attributionsTrophees
+
+                .filter(
+                    trophee =>
+                        normaliserId(
+                            trophee.id
+                        )
+                )
+
+                .sort(
+                    (a, b) => {
+
+                        const numeroA =
+                            parseInt(
+                                normaliserId(
+                                    a.id
+                                ).replace(
+                                    /^T/i,
+                                    ""
+                                ),
+                                10
+                            );
+
+
+                        const numeroB =
+                            parseInt(
+                                normaliserId(
+                                    b.id
+                                ).replace(
+                                    /^T/i,
+                                    ""
+                                ),
+                                10
+                            );
+
+
+                        return numeroA - numeroB;
+
+                    }
+                );
+
+
+        const resultats =
+            trophees.map(
+                trophee =>
+                    calculerTrophee(
+
+                        trophee,
+
+                        personnes,
+
+                        badges,
+
+                        attributions,
+
+                        attributionsSources
+
+                    )
+            );
+
+
+        /*
+         * T001 à T008 + T015 = trophées individuels.
+         */
+
+        const tropheesIndividuels =
+            resultats.filter(
+                trophee => {
+
+                    const id =
+                        normaliserId(
+                            trophee.id
+                        );
+
+
+                    return (
+
+                        id === "T001" ||
+                        id === "T002" ||
+                        id === "T003" ||
+                        id === "T004" ||
+                        id === "T005" ||
+                        id === "T006" ||
+                        id === "T007" ||
+                        id === "T008" ||
+                        id === "T015"
+
+                    );
+
+                }
+            );
+
+
+        /*
+         * T009 à T013 = trophées partis.
+         * T014 = trophée de campagne.
+         */
+
+        const tropheesPartis =
+            resultats.filter(
+                trophee => {
+
+                    const id =
+                        normaliserId(
+                            trophee.id
+                        );
+
+
+                    return (
+
+                        id === "T009" ||
+                        id === "T010" ||
+                        id === "T011" ||
+                        id === "T012" ||
+                        id === "T013" ||
+                        id === "T014"
+
+                    );
+
+                }
+            );
+
+
+        afficherTrophees(
+
+            tropheesIndividuels,
+
+            "trophees-individuels"
+
+        );
+
+
+        afficherTrophees(
+
+            tropheesPartis,
+
+            "trophees-partis"
+
+        );
+
+    }
+
+
+    catch (erreur) {
+
+        console.error(
+            "Erreur lors du chargement des trophées :",
+            erreur
+        );
+
+
+        document.getElementById(
+            "trophees-individuels"
+        ).innerHTML = `
+
+            <tr>
+
+                <td colspan="2">
+
+                    Impossible de charger les données.
+
+                </td>
+
+            </tr>
+
+        `;
+
+
+        document.getElementById(
+            "trophees-partis"
+        ).innerHTML = `
+
+            <tr>
+
+                <td colspan="2">
+
+                    Impossible de charger les données.
+
+                </td>
+
+            </tr>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   DÉMARRAGE
+   ========================================================= */
+
+initialiser();
+
+</script>
+
+
+</body>
+
+</html>

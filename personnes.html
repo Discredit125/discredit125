@@ -1,0 +1,3098 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Candidats — Discrédit 125</title>
+
+<link rel="stylesheet" href="/styles.css">
+
+<style>
+
+    /* =====================================================
+       TROPHÉES
+       ===================================================== */
+
+    .candidate-trophies {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin-top: 12px;
+    }
+
+    .candidate-trophy {
+        font-size: 13px;
+        font-weight: 700;
+        line-height: 1.4;
+    }
+
+    .candidate-trophy-individual {
+        color: #1976d2;
+    }
+
+    .candidate-trophy-party {
+        color: #111;
+    }
+
+
+    /* =====================================================
+       GAME OVER
+       ===================================================== */
+
+    .candidate-card.game-over .candidate-name {
+        text-decoration: line-through;
+    }
+
+
+    /* =====================================================
+       MODALE CANDIDAT
+       ===================================================== */
+
+    .personne-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+
+        display: none;
+
+        align-items: center;
+        justify-content: center;
+
+        padding: 20px;
+
+        background: rgba(0, 0, 0, 0.75);
+    }
+
+    .personne-modal.active {
+        display: flex;
+    }
+
+    .personne-modal-window {
+        position: relative;
+
+        width: min(1100px, 95vw);
+        height: min(850px, 92vh);
+
+        background: #fff;
+
+        border-radius: 12px;
+
+        overflow: hidden;
+
+        box-shadow:
+            0 20px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    .personne-modal-close {
+        position: absolute;
+
+        top: 10px;
+        right: 10px;
+
+        z-index: 10;
+
+        width: 40px;
+        height: 40px;
+
+        border: none;
+        border-radius: 50%;
+
+        background: #fff;
+
+        color: #111;
+
+        font-size: 28px;
+        line-height: 1;
+
+        cursor: pointer;
+
+        box-shadow:
+            0 2px 8px rgba(0, 0, 0, 0.25);
+    }
+
+    .personne-modal-close:hover {
+        background: #eee;
+    }
+
+    #personne-modal-frame {
+        width: 100%;
+        height: 100%;
+
+        border: none;
+    }
+
+    @media (max-width: 700px) {
+
+        .personne-modal {
+            padding: 10px;
+        }
+
+        .personne-modal-window {
+            width: 100%;
+            height: 95vh;
+
+            border-radius: 8px;
+        }
+
+    }
+
+</style>
+
+</head>
+
+<body>
+
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
+
+<header class="site-header">
+
+<div class="header-inner">
+
+<a href="/" class="logo">
+    DISCRÉDIT <span>125</span>
+</a>
+
+<nav class="main-nav">
+
+<a href="/">Accueil</a>
+
+<a href="/personnes.html" class="active">
+    Candidats
+</a>
+
+<a href="/badges.html">
+    Badges
+</a>
+
+<a href="/statuts.html">
+    Statuts
+</a>
+
+<a href="/trophees.html">
+    Trophées
+</a>
+
+<a href="/soumettre.html">
+    Soumettre
+</a>
+
+<a href="/erreur.html">
+    Signaler
+</a>
+
+<a href="/a-propos.html">
+    À propos
+</a>
+
+</nav>
+
+</div>
+
+</header>
+
+<!-- =====================================================
+     CONTENU
+     ===================================================== -->
+
+<main class="container">
+
+<section class="page-header">
+
+<h1>Les candidats</h1>
+
+<p>
+    Les candidats aux élections générales du Québec,
+    et éventuellement les élus qui leur succéderont.
+</p>
+
+</section>
+
+<section class="candidate-filters">
+
+<div class="form-group">
+
+<label for="search">
+    Rechercher
+</label>
+
+<input
+type="search"
+id="search"
+placeholder="Nom, parti ou circonscription..."
+autocomplete="off"
+>
+
+</div>
+
+<div class="form-group">
+
+<label for="party">
+    Parti
+</label>
+
+<select id="party">
+
+<option value="">
+    Tous les partis
+</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+
+<label for="badge-category">
+    Catégorie de badge
+</label>
+
+<select id="badge-category">
+
+<option value="">
+    Toutes les catégories
+</option>
+
+</select>
+
+</div>
+
+</section>
+
+<div
+    class="badge-count"
+    id="candidate-count"
+>
+    Chargement...
+</div>
+
+<section>
+
+<div
+    class="candidates-grid"
+    id="candidates-container"
+></div>
+
+<div
+    class="message"
+    id="empty-message"
+    style="display: none;"
+>
+    Aucun candidat ne correspond aux critères sélectionnés.
+</div>
+
+<div
+    class="message"
+    id="error-message"
+    style="display: none;"
+></div>
+
+</section>
+
+</main>
+
+<footer class="site-footer">
+
+<div class="container">
+
+<p>
+    Discrédit 125 — Projet satirique et humoristique.
+</p>
+
+</div>
+
+</footer>
+
+<div
+    id="personne-modal"
+    class="personne-modal"
+>
+
+<div class="personne-modal-window">
+
+<button
+id="personne-modal-close"
+class="personne-modal-close"
+aria-label="Fermer"
+>
+
+× </button>
+
+<iframe
+    id="personne-modal-frame"
+    title="Détail du candidat"
+></iframe>
+
+</div>
+
+</div>
+
+<script>
+
+
+/* =========================================================
+   CATÉGORIES
+   ========================================================= */
+
+const CATEGORIES = {
+
+    CONSPI:
+        "Conspibadges",
+
+    SPIRITUEL:
+        "Badges spirituels",
+
+    TRUMP:
+        "Trumpibadges",
+
+    GUERRE_CULTURELLE:
+        "Droito-religioso-Intoléro-Xénophobadges",
+
+    DESINTEGRITE:
+        "Désintégrité, Populisme et Écarts de langage"
+
+};
+
+
+/* =========================================================
+   LECTURE CSV
+   ========================================================= */
+
+function parserCSV(texte) {
+
+    const lignes = texte
+        .replace(/^\uFEFF/, "")
+        .split(/\r?\n/)
+        .filter(
+            ligne =>
+                ligne.trim() !== ""
+        );
+
+    if (lignes.length === 0) {
+        return [];
+    }
+
+    const entetes =
+        lignes[0]
+            .split(";")
+            .map(
+                entete =>
+                    entete.trim()
+            );
+
+    return lignes
+        .slice(1)
+        .map(ligne => {
+
+            const valeurs =
+                ligne.split(";");
+
+            const objet = {};
+
+            entetes.forEach(
+                (entete, index) => {
+
+                    objet[entete] =
+                        (
+                            valeurs[index] ||
+                            ""
+                        ).trim();
+
+                }
+            );
+
+            return objet;
+
+        });
+
+}
+
+
+async function chargerCSV(url) {
+
+    const reponse =
+        await fetch(url);
+
+    if (!reponse.ok) {
+
+        throw new Error(
+            "Impossible de charger " + url
+        );
+
+    }
+
+    return parserCSV(
+        await reponse.text()
+    );
+
+}
+
+
+/* =========================================================
+   ERREUR
+   ========================================================= */
+
+function afficherErreur(message) {
+
+    const element =
+        document.getElementById(
+            "error-message"
+        );
+
+    element.textContent =
+        message;
+
+    element.style.display =
+        "block";
+
+}
+
+
+/* =========================================================
+   INDEX DES BADGES
+   ========================================================= */
+
+function creerIndexBadges(badges) {
+
+    return new Map(
+
+        badges.map(badge => [
+
+            badge.id,
+            badge
+
+        ])
+
+    );
+
+}
+
+
+/* =========================================================
+   NORMALISATION DES ATTRIBUTIONS
+   ========================================================= */
+
+function creerAttributionsUniques(
+    attributions
+) {
+
+    const uniques =
+        new Map();
+
+    attributions.forEach(
+        attribution => {
+
+            const personneId =
+                (
+                    attribution.personne_id ||
+                    ""
+                ).trim();
+
+            const badgeId =
+                (
+                    attribution.badge_id ||
+                    ""
+                ).trim();
+
+            if (
+                !personneId ||
+                !badgeId
+            ) {
+
+                return;
+
+            }
+
+            const cle =
+                personneId +
+                "::" +
+                badgeId;
+
+            if (!uniques.has(cle)) {
+
+                uniques.set(
+
+                    cle,
+
+                    {
+
+                        personne_id:
+                            personneId,
+
+                        badge_id:
+                            badgeId,
+
+                        reaction_id:
+                            (
+                                attribution.reaction_id ||
+                                ""
+                            ).trim()
+
+                    }
+
+                );
+
+            }
+
+        }
+    );
+
+    return [
+        ...uniques.values()
+    ];
+
+}
+
+
+/* =========================================================
+   INDEX DES ATTRIBUTIONS
+   ========================================================= */
+
+function creerIndexAttributions(
+    attributions
+) {
+
+    const index =
+        new Map();
+
+    attributions.forEach(
+        attribution => {
+
+            if (
+                !index.has(
+                    attribution.personne_id
+                )
+            ) {
+
+                index.set(
+
+                    attribution.personne_id,
+
+                    []
+
+                );
+
+            }
+
+            index
+                .get(
+                    attribution.personne_id
+                )
+                .push(
+                    attribution
+                );
+
+        }
+    );
+
+    return index;
+
+}
+
+
+/* =========================================================
+   OBTENIR LES BADGES D'UNE PERSONNE
+   ========================================================= */
+
+function obtenirBadgesPersonne(
+
+    personneId,
+    attributionsParPersonne,
+    badgeMap
+
+) {
+
+    const attributions =
+        attributionsParPersonne.get(
+            personneId
+        ) || [];
+
+    const badges = [];
+
+    const badgesDejaVus =
+        new Set();
+
+    attributions.forEach(
+        attribution => {
+
+            const badgeId =
+                attribution.badge_id;
+
+            if (
+                badgesDejaVus.has(
+                    badgeId
+                )
+            ) {
+
+                return;
+
+            }
+
+            const badge =
+                badgeMap.get(
+                    badgeId
+                );
+
+            if (!badge) {
+
+                return;
+
+            }
+
+            badgesDejaVus.add(
+                badgeId
+            );
+
+            badges.push(
+                badge
+            );
+
+        }
+    );
+
+    return badges;
+
+}
+
+
+/* =========================================================
+   STATISTIQUES DES TROPHÉES
+   ========================================================= */
+
+function compterBadgesParPersonne(
+
+    personnes,
+    attributions
+
+) {
+
+    const compteurs =
+        new Map();
+
+    personnes.forEach(
+        personne => {
+
+            compteurs.set(
+                personne.personne_id,
+                0
+            );
+
+        }
+    );
+
+    attributions.forEach(
+        attribution => {
+
+            const actuel =
+                compteurs.get(
+                    attribution.personne_id
+                );
+
+            if (
+                actuel !== undefined
+            ) {
+
+                compteurs.set(
+
+                    attribution.personne_id,
+
+                    actuel + 1
+
+                );
+
+            }
+
+        }
+    );
+
+    return compteurs;
+
+}
+
+
+function compterCategorieParPersonne(
+
+    personnes,
+    attributions,
+    badgeMap,
+    categorie
+
+) {
+
+    const compteurs =
+        new Map();
+
+    personnes.forEach(
+        personne => {
+
+            compteurs.set(
+                personne.personne_id,
+                0
+            );
+
+        }
+    );
+
+    attributions.forEach(
+        attribution => {
+
+            const badge =
+                badgeMap.get(
+                    attribution.badge_id
+                );
+
+            if (
+                !badge ||
+                badge.categorie !== categorie
+            ) {
+
+                return;
+
+            }
+
+            const actuel =
+                compteurs.get(
+                    attribution.personne_id
+                );
+
+            if (
+                actuel !== undefined
+            ) {
+
+                compteurs.set(
+
+                    attribution.personne_id,
+
+                    actuel + 1
+
+                );
+
+            }
+
+        }
+    );
+
+    return compteurs;
+
+}
+
+
+/* =========================================================
+   COMPTER LES MENTIONS D'UNE CATÉGORIE PAR PERSONNE
+   ========================================================= */
+
+function normaliserCategorie(categorie) {
+
+    return String(
+        categorie || ""
+    )
+        .trim()
+        .replace(/[’‘`]/g, "'")
+        .replace(/\s+/g, " ");
+
+}
+
+
+function compterMentionsBadgeParPersonne(
+
+    personnes,
+    attributionsSources,
+    badgeIdRecherche
+
+) {
+
+    const sourcesParPersonne =
+        new Map();
+
+    personnes.forEach(
+        personne => {
+
+            sourcesParPersonne.set(
+
+                personne.personne_id,
+
+                new Set()
+
+            );
+
+        }
+    );
+
+    attributionsSources.forEach(
+        attributionSource => {
+
+            const personneId =
+                (
+                    attributionSource.personne_id ||
+                    ""
+                ).trim();
+
+            const badgeId =
+                (
+                    attributionSource.badge_id ||
+                    ""
+                ).trim();
+
+            const sourceId =
+                (
+                    attributionSource.source_id ||
+                    ""
+                ).trim();
+
+            if (
+                !personneId ||
+                !badgeId ||
+                !sourceId
+            ) {
+
+                return;
+
+            }
+
+            if (
+                badgeId !==
+                badgeIdRecherche
+            ) {
+
+                return;
+
+            }
+
+            const sources =
+                sourcesParPersonne.get(
+                    personneId
+                );
+
+            if (sources) {
+
+                sources.add(
+                    sourceId
+                );
+
+            }
+
+        }
+    );
+
+    const compteurs =
+        new Map();
+
+    sourcesParPersonne.forEach(
+
+        (
+            sources,
+            personneId
+        ) => {
+
+            compteurs.set(
+
+                personneId,
+
+                sources.size
+
+            );
+
+        }
+
+    );
+
+    return compteurs;
+
+}
+
+
+function compterCategoriesDistinctes(
+
+    personnes,
+    attributions,
+    badgeMap
+
+) {
+
+    const categories =
+        new Map();
+
+    personnes.forEach(
+        personne => {
+
+            categories.set(
+
+                personne.personne_id,
+
+                new Set()
+
+            );
+
+        }
+    );
+
+    attributions.forEach(
+        attribution => {
+
+            const badge =
+                badgeMap.get(
+                    attribution.badge_id
+                );
+
+            if (!badge) {
+                return;
+            }
+
+            const ensemble =
+                categories.get(
+                    attribution.personne_id
+                );
+
+            if (ensemble) {
+
+                ensemble.add(
+                    badge.categorie
+                );
+
+            }
+
+        }
+    );
+
+    const resultats =
+        new Map();
+
+    categories.forEach(
+
+        (
+            ensemble,
+            personneId
+        ) => {
+
+            resultats.set(
+
+                personneId,
+
+                ensemble.size
+
+            );
+
+        }
+
+    );
+
+    return resultats;
+
+}
+
+
+/* =========================================================
+   TROUVER LES GAGNANTS
+   ========================================================= */
+
+function trouverGagnants(
+    compteurs
+) {
+
+    const valeurs =
+        [
+            ...compteurs.values()
+        ];
+
+    if (
+        valeurs.length === 0
+    ) {
+
+        return {
+
+            gagnants: [],
+
+            maximum: 0
+
+        };
+
+    }
+
+    const maximum =
+        Math.max(
+            ...valeurs
+        );
+
+    if (maximum === 0) {
+
+        return {
+
+            gagnants: [],
+
+            maximum: 0
+
+        };
+
+    }
+
+    const gagnants = [];
+
+    compteurs.forEach(
+
+        (
+            valeur,
+            personneId
+        ) => {
+
+            if (
+                valeur === maximum
+            ) {
+
+                gagnants.push(
+                    personneId
+                );
+
+            }
+
+        }
+
+    );
+
+    return {
+
+        gagnants,
+
+        maximum
+
+    };
+
+}
+
+
+/* =========================================================
+   TROPHÉES INDIVIDUELS
+   ========================================================= */
+
+function calculerTropheesIndividuels(
+
+    personnes,
+    attributions,
+    badgeMap,
+    attributionsSources
+
+) {
+
+    const trophees = [];
+
+    const combo =
+        trouverGagnants(
+
+            compterCategoriesDistinctes(
+
+                personnes,
+                attributions,
+                badgeMap
+
+            )
+
+        );
+
+    combo.gagnants.forEach(
+        personneId => {
+
+            trophees.push({
+
+                personneId,
+
+                nom:
+                    "Le combo ultime",
+
+                nombre:
+                    combo.maximum
+
+            });
+
+        }
+    );
+
+    const conspi =
+        trouverGagnants(
+
+            compterCategorieParPersonne(
+
+                personnes,
+                attributions,
+                badgeMap,
+                CATEGORIES.CONSPI
+
+            )
+
+        );
+
+    conspi.gagnants.forEach(
+        personneId => {
+
+            trophees.push({
+
+                personneId,
+
+                nom:
+                    "Maître Conspi",
+
+                nombre:
+                    conspi.maximum
+
+            });
+
+        }
+    );
+
+    const spirituel =
+        trouverGagnants(
+
+            compterCategorieParPersonne(
+
+                personnes,
+                attributions,
+                badgeMap,
+                CATEGORIES.SPIRITUEL
+
+            )
+
+        );
+
+    spirituel.gagnants.forEach(
+        personneId => {
+
+            trophees.push({
+
+                personneId,
+
+                nom:
+                    "Gourou suprême",
+
+                nombre:
+                    spirituel.maximum
+
+            });
+
+        }
+    );
+
+    const trump =
+        trouverGagnants(
+
+            compterCategorieParPersonne(
+
+                personnes,
+                attributions,
+                badgeMap,
+                CATEGORIES.TRUMP
+
+            )
+
+        );
+
+    trump.gagnants.forEach(
+        personneId => {
+
+            trophees.push({
+
+                personneId,
+
+                nom:
+                    "Salle de balle dorée",
+
+                nombre:
+                    trump.maximum
+
+            });
+
+        }
+    );
+
+    const guerreAuto =
+        trouverGagnants(
+
+            compterMentionsBadgeParPersonne(
+
+                personnes,
+                attributionsSources,
+                "B029"
+
+            )
+
+        );
+
+    guerreAuto.gagnants.forEach(
+        personneId => {
+
+            trophees.push({
+
+                personneId,
+
+                nom:
+                    "Grand Champion International de Course",
+
+                nombre:
+                    guerreAuto.maximum
+
+            });
+
+        }
+    );
+
+    const desintegrite =
+        trouverGagnants(
+
+            compterCategorieParPersonne(
+
+                personnes,
+                attributions,
+                badgeMap,
+                CATEGORIES.DESINTEGRITE
+
+            )
+
+        );
+
+    desintegrite.gagnants.forEach(
+        personneId => {
+
+            trophees.push({
+
+                personneId,
+
+                nom:
+                    "Prix de la désintégrité",
+
+                nombre:
+                    desintegrite.maximum
+
+            });
+
+        }
+    );
+
+    const guerreCulturelle =
+        trouverGagnants(
+
+            compterCategorieParPersonne(
+
+                personnes,
+                attributions,
+                badgeMap,
+                CATEGORIES.GUERRE_CULTURELLE
+
+            )
+
+        );
+
+    guerreCulturelle.gagnants.forEach(
+        personneId => {
+
+            trophees.push({
+
+                personneId,
+
+                nom:
+                    "Grand Inquisiteur",
+
+                nombre:
+                    guerreCulturelle.maximum
+
+            });
+
+        }
+    );
+
+    const champion =
+        trouverGagnants(
+
+            compterBadgesParPersonne(
+
+                personnes,
+                attributions
+
+            )
+
+        );
+
+    champion.gagnants.forEach(
+        personneId => {
+
+            trophees.push({
+
+                personneId,
+
+                nom:
+                    "Grand Champion 2026",
+
+                nombre:
+                    champion.maximum
+
+            });
+
+        }
+    );
+
+    return trophees;
+
+}
+
+
+/* =========================================================
+   TROPHÉES DE PARTI
+   ========================================================= */
+
+function compterCategorieParParti(
+
+    personnes,
+    attributions,
+    badgeMap,
+    categorie
+
+) {
+
+    const personneParId =
+        new Map(
+
+            personnes.map(
+                personne => [
+
+                    personne.personne_id,
+
+                    personne
+
+                ]
+            )
+
+        );
+
+    const compteurs =
+        new Map();
+
+    attributions.forEach(
+        attribution => {
+
+            const personne =
+                personneParId.get(
+                    attribution.personne_id
+                );
+
+            const badge =
+                badgeMap.get(
+                    attribution.badge_id
+                );
+
+            if (
+                !personne ||
+                !badge ||
+                badge.categorie !== categorie
+            ) {
+
+                return;
+
+            }
+
+            const actuel =
+                compteurs.get(
+                    personne.parti
+                ) || 0;
+
+            compteurs.set(
+
+                personne.parti,
+
+                actuel + 1
+
+            );
+
+        }
+    );
+
+    return compteurs;
+
+}
+
+
+function compterRadioactifsParParti(
+    personnes
+) {
+
+    const compteurs =
+        new Map();
+
+    personnes.forEach(
+        personne => {
+
+            const statut =
+                (
+                    personne.statut ||
+                    ""
+                )
+                .trim()
+                .toUpperCase();
+
+            if (
+                statut !== "RADIOACTIF"
+            ) {
+
+                return;
+
+            }
+
+            const actuel =
+                compteurs.get(
+                    personne.parti
+                ) || 0;
+
+            compteurs.set(
+
+                personne.parti,
+
+                actuel + 1
+
+            );
+
+        }
+    );
+
+    return compteurs;
+
+}
+
+
+function calculerTropheesPartis(
+
+    personnes,
+    attributions,
+    badgeMap
+
+) {
+
+    const trophees = [];
+
+    const definitions = [
+
+        {
+            categorie:
+                CATEGORIES.CONSPI,
+
+            nom:
+                "Parti le plus conspi"
+        },
+
+        {
+            categorie:
+                CATEGORIES.TRUMP,
+
+            nom:
+                "Parti le plus Trump"
+        },
+
+        {
+            categorie:
+                CATEGORIES.SPIRITUEL,
+
+            nom:
+                "Parti le plus perché"
+        },
+
+        {
+            categorie:
+                CATEGORIES.DESINTEGRITE,
+
+            nom:
+                "Parti de la désintégrité"
+        },
+
+        {
+            categorie:
+                CATEGORIES.GUERRE_CULTURELLE,
+
+            nom:
+                "Parti de la guerre culturelle"
+        }
+
+    ];
+
+    definitions.forEach(
+        definition => {
+
+            const resultat =
+                trouverGagnants(
+
+                    compterCategorieParParti(
+
+                        personnes,
+                        attributions,
+                        badgeMap,
+                        definition.categorie
+
+                    )
+
+                );
+
+            resultat.gagnants.forEach(
+                parti => {
+
+                    trophees.push({
+
+                        parti,
+
+                        nom:
+                            definition.nom
+
+                    });
+
+                }
+            );
+
+        }
+    );
+
+    const radioactifs =
+        trouverGagnants(
+
+            compterRadioactifsParParti(
+                personnes
+            )
+
+        );
+
+    radioactifs.gagnants.forEach(
+        parti => {
+
+            trophees.push({
+
+                parti,
+
+                nom:
+                    "Prix Hiver Nucléaire"
+
+            });
+
+        }
+    );
+
+    return trophees;
+
+}
+
+
+/* =========================================================
+   INDEX DES TROPHÉES
+   ========================================================= */
+
+function indexerTrophees(
+
+    personnes,
+    tropheesIndividuels,
+    tropheesPartis
+
+) {
+
+    const index =
+        new Map();
+
+    personnes.forEach(
+        personne => {
+
+            index.set(
+
+                personne.personne_id,
+
+                {
+
+                    individuels: [],
+
+                    partis: []
+
+                }
+
+            );
+
+        }
+    );
+
+    tropheesIndividuels.forEach(
+        trophee => {
+
+            const personne =
+                index.get(
+                    trophee.personneId
+                );
+
+            if (!personne) {
+                return;
+            }
+
+            personne.individuels.push(
+                trophee
+            );
+
+        }
+    );
+
+    tropheesPartis.forEach(
+        trophee => {
+
+            personnes.forEach(
+                personne => {
+
+                    if (
+                        personne.parti ===
+                        trophee.parti
+                    ) {
+
+                        index
+                            .get(
+                                personne.personne_id
+                            )
+                            .partis
+                            .push(
+                                trophee
+                            );
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+    return index;
+
+}
+
+
+/* =========================================================
+   MODALE CANDIDAT
+   ========================================================= */
+
+function ouvrirPersonne(personneId) {
+
+    const modal =
+        document.getElementById(
+            "personne-modal"
+        );
+
+    const frame =
+        document.getElementById(
+            "personne-modal-frame"
+        );
+
+    frame.src =
+        "/individus.html#" +
+        encodeURIComponent(
+            personneId
+        );
+
+    modal.classList.add(
+        "active"
+    );
+
+    document.body.style.overflow =
+        "hidden";
+
+}
+
+
+function fermerPersonne() {
+
+    const modal =
+        document.getElementById(
+            "personne-modal"
+        );
+
+    const frame =
+        document.getElementById(
+            "personne-modal-frame"
+        );
+
+    modal.classList.remove(
+        "active"
+    );
+
+    frame.src =
+        "";
+
+    document.body.style.overflow =
+        "";
+
+}
+
+
+/* =========================================================
+   CRÉATION DE LA CARTE
+   ========================================================= */
+
+function creerCartePersonne(
+
+    personne,
+    badges,
+    trophees
+
+) {
+
+    const carte =
+        document.createElement("a");
+
+
+    const partiBrut =
+        String(
+            personne.parti ||
+            ""
+        )
+        .trim()
+        .toUpperCase();
+
+
+    let partiClasse =
+        "AUTRE";
+
+
+    if (partiBrut === "CAQ") {
+
+        partiClasse = "CAQ";
+
+    }
+    else if (partiBrut === "PLQ") {
+
+        partiClasse = "PLQ";
+
+    }
+    else if (partiBrut === "PQ") {
+
+        partiClasse = "PQ";
+
+    }
+    else if (partiBrut === "QS") {
+
+        partiClasse = "QS";
+
+    }
+    else if (partiBrut === "PCQ") {
+
+        partiClasse = "PCQ";
+
+    }
+
+
+    const statut =
+        (
+            personne.statut ||
+            ""
+        )
+        .trim()
+        .toUpperCase();
+
+
+    const estGameOver =
+        statut.includes(
+            "GAME OVER"
+        );
+
+
+    carte.className =
+        "candidate-card " +
+        partiClasse +
+        (
+            estGameOver
+                ? " game-over"
+                : ""
+        );
+
+
+    const personneId =
+        String(
+            personne.personne_id ||
+            ""
+        )
+        .trim();
+
+
+    carte.href =
+        "#";
+
+
+    carte.addEventListener(
+        "click",
+        function(event) {
+
+            event.preventDefault();
+
+            ouvrirPersonne(
+                personneId
+            );
+
+        }
+    );
+
+
+    const photoContainer =
+        document.createElement("div");
+
+
+    photoContainer.className =
+        "candidate-photo-container";
+
+
+    const image =
+        document.createElement("img");
+
+
+    image.className =
+        "candidate-photo";
+
+
+    image.src =
+        "/images/personnes/" +
+        encodeURIComponent(
+            personneId
+        ) +
+        ".webp";
+
+
+    image.alt =
+        personne.nom;
+
+
+    image.loading =
+        "lazy";
+
+
+    image.onerror =
+        function() {
+
+            const placeholder =
+                document.createElement("div");
+
+
+            placeholder.className =
+                "candidate-photo-placeholder";
+
+
+            placeholder.textContent =
+                "?";
+
+
+            this.replaceWith(
+                placeholder
+            );
+
+        };
+
+
+    photoContainer.appendChild(
+        image
+    );
+
+
+    if (
+        statut === "RADIOACTIF" ||
+        estGameOver
+    ) {
+
+        const statutImage =
+            document.createElement("img");
+
+
+        statutImage.className =
+            "candidate-status";
+
+
+        statutImage.alt =
+            statut;
+
+
+        statutImage.title =
+            statut;
+
+
+        statutImage.src =
+
+            statut === "RADIOACTIF"
+
+                ? "/images/statuts/RADIOACTIF.webp"
+
+                : "/images/statuts/GAME_OVER.webp";
+
+
+        photoContainer.appendChild(
+            statutImage
+        );
+
+    }
+
+
+    carte.appendChild(
+        photoContainer
+    );
+
+
+    const contenu =
+        document.createElement("div");
+
+
+    contenu.className =
+        "candidate-info";
+
+
+    const nom =
+        document.createElement("h2");
+
+
+    nom.className =
+        "candidate-name";
+
+
+    nom.textContent =
+        personne.nom;
+
+
+    const parti =
+        document.createElement("div");
+
+
+    parti.className =
+        "candidate-party";
+
+
+    parti.textContent =
+        personne.parti;
+
+
+    const circonscription =
+        document.createElement("div");
+
+
+    circonscription.className =
+        "candidate-riding";
+
+
+    circonscription.textContent =
+        personne.circonscription;
+
+
+    contenu.appendChild(
+        nom
+    );
+
+
+    contenu.appendChild(
+        parti
+    );
+
+
+    contenu.appendChild(
+        circonscription
+    );
+
+
+    /* =====================================================
+       BADGES
+       ===================================================== */
+
+    if (
+        badges.length > 0
+    ) {
+
+        const badgesContainer =
+            document.createElement("div");
+
+
+        badgesContainer.className =
+            "candidate-badges";
+
+
+        badges.forEach(
+            badge => {
+
+                const badgeImage =
+                    document.createElement("img");
+
+
+                badgeImage.src =
+                    "/images/badges/" +
+                    encodeURIComponent(
+                        badge.image
+                    );
+
+
+                badgeImage.alt =
+                    badge.nom;
+
+
+                badgeImage.title =
+                    badge.nom;
+
+
+                badgeImage.loading =
+                    "lazy";
+
+
+                badgesContainer.appendChild(
+                    badgeImage
+                );
+
+            }
+        );
+
+
+        contenu.appendChild(
+            badgesContainer
+        );
+
+    }
+
+
+    /* =====================================================
+       TROPHÉES
+       ===================================================== */
+
+    if (
+
+        trophees &&
+
+        (
+
+            trophees.individuels.length > 0 ||
+
+            trophees.partis.length > 0
+
+        )
+
+    ) {
+
+        const tropheesContainer =
+            document.createElement("div");
+
+
+        tropheesContainer.className =
+            "candidate-trophies";
+
+
+        if (
+            trophees.individuels.length > 0
+        ) {
+
+            const labelIndividuels =
+                document.createElement("div");
+
+
+            labelIndividuels.className =
+                "candidate-trophy candidate-trophy-individual";
+
+
+            labelIndividuels.textContent =
+                "🏆 En tête dans :";
+
+
+            tropheesContainer.appendChild(
+                labelIndividuels
+            );
+
+
+            trophees.individuels.forEach(
+                trophee => {
+
+                    const element =
+                        document.createElement("div");
+
+
+                    element.className =
+                        "candidate-trophy candidate-trophy-individual";
+
+
+                    element.textContent =
+                        `« ${trophee.nom} »`;
+
+
+                    tropheesContainer.appendChild(
+                        element
+                    );
+
+                }
+            );
+
+        }
+
+
+        if (
+            trophees.partis.length > 0
+        ) {
+
+            const labelPartis =
+                document.createElement("div");
+
+
+            labelPartis.className =
+                "candidate-trophy candidate-trophy-party";
+
+
+            labelPartis.textContent =
+                "🏅 Parti en tête dans :";
+
+
+            tropheesContainer.appendChild(
+                labelPartis
+            );
+
+
+            trophees.partis.forEach(
+                trophee => {
+
+                    const element =
+                        document.createElement("div");
+
+
+                    element.className =
+                        "candidate-trophy candidate-trophy-party";
+
+
+                    element.textContent =
+                        `« ${trophee.nom} »`;
+
+
+                    tropheesContainer.appendChild(
+                        element
+                    );
+
+                }
+            );
+
+        }
+
+
+        contenu.appendChild(
+            tropheesContainer
+        );
+
+    }
+
+
+    carte.appendChild(
+        contenu
+    );
+
+
+    return carte;
+
+}
+
+
+/* =========================================================
+   FILTRES
+   ========================================================= */
+
+function remplirFiltres(
+
+    personnes,
+    badges
+
+) {
+
+    const partiSelect =
+        document.getElementById(
+            "party"
+        );
+
+
+    const categorieSelect =
+        document.getElementById(
+            "badge-category"
+        );
+
+
+    const partis = [
+
+        ...new Set(
+
+            personnes
+
+                .map(
+                    personne =>
+                        personne.parti
+                )
+
+                .filter(
+                    parti =>
+                        parti
+                )
+
+        )
+
+    ].sort(
+        (a, b) =>
+            a.localeCompare(
+                b,
+                "fr"
+            )
+    );
+
+
+    partis.forEach(
+        parti => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                parti;
+
+
+            option.textContent =
+                parti;
+
+
+            partiSelect.appendChild(
+                option
+            );
+
+        }
+    );
+
+
+    const categories = [
+
+        ...new Set(
+
+            badges
+
+                .map(
+                    badge =>
+                        badge.categorie
+                )
+
+                .filter(
+                    categorie =>
+                        categorie
+                )
+
+        )
+
+    ].sort(
+        (a, b) =>
+            a.localeCompare(
+                b,
+                "fr"
+            )
+    );
+
+
+    categories.forEach(
+        categorie => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                categorie;
+
+
+            option.textContent =
+                categorie;
+
+
+            categorieSelect.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   FILTRAGE
+   ========================================================= */
+
+function filtrerPersonnes(
+
+    personnes,
+    badgeMap,
+    attributionsParPersonne,
+    tropheesIndex
+
+) {
+
+    const recherche =
+        document
+            .getElementById(
+                "search"
+            )
+            .value
+            .trim()
+            .toLowerCase();
+
+
+    const parti =
+        document
+            .getElementById(
+                "party"
+            )
+            .value;
+
+
+    const categorie =
+        document
+            .getElementById(
+                "badge-category"
+            )
+            .value;
+
+
+    const resultats =
+        personnes.filter(
+            personne => {
+
+                const texteRecherche = [
+
+                    personne.nom,
+
+                    personne.parti,
+
+                    personne.circonscription
+
+                ]
+
+                    .join(" ")
+
+                    .toLowerCase();
+
+
+                const correspondRecherche =
+
+                    !recherche ||
+
+                    texteRecherche.includes(
+                        recherche
+                    );
+
+
+                const correspondParti =
+
+                    !parti ||
+
+                    personne.parti ===
+                    parti;
+
+
+                const badgesPersonne =
+                    obtenirBadgesPersonne(
+
+                        personne.personne_id,
+
+                        attributionsParPersonne,
+
+                        badgeMap
+
+                    );
+
+
+                const correspondCategorie =
+
+                    !categorie ||
+
+                    badgesPersonne.some(
+                        badge =>
+                            badge.categorie ===
+                            categorie
+                    );
+
+
+                const aDesBadges =
+                    badgesPersonne.length > 0;
+
+
+                return (
+
+                    correspondRecherche &&
+
+                    correspondParti &&
+
+                    correspondCategorie &&
+
+                    aDesBadges
+
+                );
+
+            }
+        );
+
+
+    afficherPersonnes(
+
+        resultats,
+
+        badgeMap,
+
+        attributionsParPersonne,
+
+        tropheesIndex
+
+    );
+
+}
+
+
+/* =========================================================
+   AFFICHER LES PERSONNES
+   ========================================================= */
+
+function afficherPersonnes(
+
+    personnes,
+    badgeMap,
+    attributionsParPersonne,
+    tropheesIndex
+
+) {
+
+    const conteneur =
+        document.getElementById(
+            "candidates-container"
+        );
+
+
+    const messageVide =
+        document.getElementById(
+            "empty-message"
+        );
+
+
+    const compteur =
+        document.getElementById(
+            "candidate-count"
+        );
+
+
+    conteneur.innerHTML =
+        "";
+
+
+    compteur.textContent =
+
+        personnes.length +
+
+        (
+
+            personnes.length === 1
+
+                ? " candidat"
+
+                : " candidats"
+
+        );
+
+
+    if (
+        personnes.length === 0
+    ) {
+
+        messageVide.style.display =
+            "block";
+
+
+        return;
+
+    }
+
+
+    messageVide.style.display =
+        "none";
+
+
+    personnes.forEach(
+        personne => {
+
+            const badgesPersonne =
+                obtenirBadgesPersonne(
+
+                    personne.personne_id,
+
+                    attributionsParPersonne,
+
+                    badgeMap
+
+                );
+
+
+            const trophees =
+                tropheesIndex.get(
+
+                    personne.personne_id
+
+                ) || {
+
+                    individuels: [],
+
+                    partis: []
+
+                };
+
+
+            const carte =
+                creerCartePersonne(
+
+                    personne,
+
+                    badgesPersonne,
+
+                    trophees
+
+                );
+
+
+            conteneur.appendChild(
+                carte
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   TRI DES PERSONNES
+   ========================================================= */
+
+function trierPersonnes(
+
+    personnes,
+    attributionsParPersonne,
+    badgeMap
+
+) {
+
+    return [
+        ...personnes
+    ].sort(
+        (a, b) => {
+
+            const statutA =
+                String(
+                    a.statut || ""
+                )
+                .trim()
+                .toUpperCase();
+
+
+            const statutB =
+                String(
+                    b.statut || ""
+                )
+                .trim()
+                .toUpperCase();
+
+
+            const gameOverA =
+                statutA.includes(
+                    "GAME OVER"
+                );
+
+
+            const gameOverB =
+                statutB.includes(
+                    "GAME OVER"
+                );
+
+
+            /* GAME OVER toujours à la fin */
+
+            if (
+                gameOverA &&
+                !gameOverB
+            ) {
+
+                return 1;
+
+            }
+
+
+            if (
+                !gameOverA &&
+                gameOverB
+            ) {
+
+                return -1;
+
+            }
+
+
+            const badgesA =
+                obtenirBadgesPersonne(
+
+                    a.personne_id,
+
+                    attributionsParPersonne,
+
+                    badgeMap
+
+                ).length;
+
+
+            const badgesB =
+                obtenirBadgesPersonne(
+
+                    b.personne_id,
+
+                    attributionsParPersonne,
+
+                    badgeMap
+
+                ).length;
+
+
+            /* Plus de badges = plus haut */
+
+            return (
+                badgesB -
+                badgesA
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   INITIALISATION
+   ========================================================= */
+
+async function initialiser() {
+
+    try {
+
+        const [
+
+            personnes,
+
+            badges,
+
+            attributionsBrutes,
+
+            attributionsSources
+
+        ] = await Promise.all([
+
+            chargerCSV(
+                "/data/personnes.csv"
+            ),
+
+            chargerCSV(
+                "/data/badges.csv"
+            ),
+
+            chargerCSV(
+                "/data/attributions.csv"
+            ),
+
+            chargerCSV(
+                "/data/attributions_sources.csv"
+            )
+
+        ]);
+
+
+        const attributions =
+            creerAttributionsUniques(
+
+                attributionsBrutes
+
+            );
+
+
+        const badgeMap =
+            creerIndexBadges(
+                badges
+            );
+
+
+        const attributionsParPersonne =
+            creerIndexAttributions(
+
+                attributions
+
+            );
+
+
+        const tropheesIndividuels =
+            calculerTropheesIndividuels(
+
+                personnes,
+
+                attributions,
+
+                badgeMap,
+
+                attributionsSources
+
+            );
+
+
+        const tropheesPartis =
+            calculerTropheesPartis(
+
+                personnes,
+
+                attributions,
+
+                badgeMap
+
+            );
+
+
+        const tropheesIndex =
+            indexerTrophees(
+
+                personnes,
+
+                tropheesIndividuels,
+
+                tropheesPartis
+
+            );
+
+
+        remplirFiltres(
+
+            personnes,
+
+            badges
+
+        );
+
+
+        const personnesAvecBadges =
+            personnes.filter(
+                personne => {
+
+                    return (
+
+                        obtenirBadgesPersonne(
+
+                            personne.personne_id,
+
+                            attributionsParPersonne,
+
+                            badgeMap
+
+                        ).length > 0
+
+                    );
+
+                }
+            );
+
+
+        const personnesTriees =
+            trierPersonnes(
+
+                personnesAvecBadges,
+
+                attributionsParPersonne,
+
+                badgeMap
+
+            );
+
+
+        afficherPersonnes(
+
+            personnesTriees,
+
+            badgeMap,
+
+            attributionsParPersonne,
+
+            tropheesIndex
+
+        );
+
+
+        const rafraichir =
+            () => {
+
+                const recherche =
+                    document
+                        .getElementById(
+                            "search"
+                        )
+                        .value
+                        .trim()
+                        .toLowerCase();
+
+
+                const parti =
+                    document
+                        .getElementById(
+                            "party"
+                        )
+                        .value;
+
+
+                const categorie =
+                    document
+                        .getElementById(
+                            "badge-category"
+                        )
+                        .value;
+
+
+                const resultats =
+                    personnes.filter(
+                        personne => {
+
+                            const texteRecherche = [
+
+                                personne.nom,
+
+                                personne.parti,
+
+                                personne.circonscription
+
+                            ]
+
+                                .join(" ")
+
+                                .toLowerCase();
+
+
+                            const correspondRecherche =
+
+                                !recherche ||
+
+                                texteRecherche.includes(
+                                    recherche
+                                );
+
+
+                            const correspondParti =
+
+                                !parti ||
+
+                                personne.parti ===
+                                parti;
+
+
+                            const badgesPersonne =
+                                obtenirBadgesPersonne(
+
+                                    personne.personne_id,
+
+                                    attributionsParPersonne,
+
+                                    badgeMap
+
+                                );
+
+
+                            const correspondCategorie =
+
+                                !categorie ||
+
+                                badgesPersonne.some(
+                                    badge =>
+                                        badge.categorie ===
+                                        categorie
+                                );
+
+
+                            const aDesBadges =
+                                badgesPersonne.length > 0;
+
+
+                            return (
+
+                                correspondRecherche &&
+
+                                correspondParti &&
+
+                                correspondCategorie &&
+
+                                aDesBadges
+
+                            );
+
+                        }
+                    );
+
+
+                const resultatsTries =
+                    trierPersonnes(
+
+                        resultats,
+
+                        attributionsParPersonne,
+
+                        badgeMap
+
+                    );
+
+
+                afficherPersonnes(
+
+                    resultatsTries,
+
+                    badgeMap,
+
+                    attributionsParPersonne,
+
+                    tropheesIndex
+
+                );
+
+            };
+
+
+        document
+            .getElementById(
+                "search"
+            )
+            .addEventListener(
+                "input",
+                rafraichir
+            );
+
+
+        document
+            .getElementById(
+                "party"
+            )
+            .addEventListener(
+                "change",
+                rafraichir
+            );
+
+
+        document
+            .getElementById(
+                "badge-category"
+            )
+            .addEventListener(
+                "change",
+                rafraichir
+            );
+
+    }
+    catch (erreur) {
+
+        console.error(
+
+            "Erreur lors du chargement :",
+
+            erreur
+
+        );
+
+
+        document
+            .getElementById(
+                "candidates-container"
+            )
+            .innerHTML =
+            "";
+
+
+        document
+            .getElementById(
+                "candidate-count"
+            )
+            .textContent =
+            "";
+
+
+        afficherErreur(
+
+            "Impossible de charger les candidats. Vérifiez que les fichiers CSV sont accessibles."
+
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   FERMETURE DE LA MODALE
+   ========================================================= */
+
+document
+    .getElementById(
+        "personne-modal-close"
+    )
+    .addEventListener(
+        "click",
+        fermerPersonne
+    );
+
+
+document
+    .getElementById(
+        "personne-modal"
+    )
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target === this
+            ) {
+
+                fermerPersonne();
+
+            }
+
+        }
+    );
+
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            const modal =
+                document.getElementById(
+                    "personne-modal"
+                );
+
+
+            if (
+                modal.classList.contains(
+                    "active"
+                )
+            ) {
+
+                fermerPersonne();
+
+            }
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   DÉMARRAGE
+   ========================================================= */
+
+initialiser();
+
+</script>
+
+</body>
+
+</html>

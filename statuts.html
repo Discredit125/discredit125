@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Statuts — Discrédit 125</title>
+
+<link rel="stylesheet" href="/styles.css">
+
+<style>
+
+.reaction-list {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.statut-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.75);
+}
+
+.statut-modal.active {
+    display: flex;
+}
+
+.statut-modal-window {
+    position: relative;
+    width: min(1100px, 95vw);
+    height: min(850px, 92vh);
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.statut-modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: #fff;
+    color: #111;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.statut-modal-close:hover {
+    background: #eee;
+}
+
+#statut-modal-frame {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+@media (max-width: 700px) {
+
+    .statut-modal {
+        padding: 10px;
+    }
+
+    .statut-modal-window {
+        width: 100%;
+        height: 95vh;
+        border-radius: 8px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header class="site-header">
+
+<div class="header-inner">
+
+<a href="/" class="logo">
+DISCRÉDIT <span>125</span>
+</a>
+
+<nav class="main-nav">
+
+<a href="/">Accueil</a> <a href="/personnes.html">Candidats</a> <a href="/badges.html">Badges</a> <a href="/statuts.html" class="active">Statuts</a> <a href="/trophees.html">Trophées</a> <a href="/soumettre.html">Soumettre</a> <a href="/erreur.html">Signaler</a> <a href="/a-propos.html">À propos</a>
+
+</nav>
+
+</div>
+
+</header>
+
+<main class="container">
+
+<section class="page-header">
+
+<h1>Les statuts et les réactions</h1>
+
+<p>
+Deux indicateurs distincts permettent de comprendre la situation
+d'un candidat et sa réaction aux éléments qui lui sont attribués.
+</p>
+
+</section>
+
+<section class="content-card">
+
+<h2>🏷️ Les statuts</h2>
+
+<div class="reaction-list">
+
+<div class="reaction">
+
+<strong>☢️ RADIOACTIF</strong>
+
+<p>
+Statut attribué lorsqu'un candidat attire une attention
+médiatique importante en raison d'éléments documentés.
+</p>
+
+</div>
+
+<div class="reaction">
+
+<strong>🎮 GAME OVER</strong>
+
+<p>
+Statut attribué lorsqu'un candidat n'est plus dans la course.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="content-card">
+
+<h2>🎭 Les réactions</h2>
+
+<div class="reaction-list" id="reactions">
+
+<div class="message">
+Chargement des réactions...
+</div>
+
+</div>
+
+</section>
+
+<section class="content-card">
+
+<h2>☢️ Candidats RADIOACTIFS</h2>
+
+<div class="candidates-grid" id="radioactifs"></div>
+
+<div class="message" id="radioactifs-vide" style="display:none;">
+Aucun candidat ne possède actuellement ce statut.
+</div>
+
+</section>
+
+<section class="content-card">
+
+<h2>🎮 Candidats GAME OVER</h2>
+
+<div class="candidates-grid" id="game-over"></div>
+
+<div class="message" id="game-over-vide" style="display:none;">
+Aucun candidat ne possède actuellement ce statut.
+</div>
+
+</section>
+
+</main>
+
+<footer class="site-footer">
+
+<div class="container">
+
+<p>
+Discrédit 125 — Projet satirique et humoristique.
+</p>
+
+</div>
+
+</footer>
+
+<!-- MODALE CANDIDAT -->
+
+<div
+    id="statut-modal"
+    class="statut-modal"
+>
+
+<div class="statut-modal-window">
+
+<button
+id="statut-modal-close"
+class="statut-modal-close"
+aria-label="Fermer"
+>
+
+×
+
+</button>
+
+<iframe
+    id="statut-modal-frame"
+    title="Détail du candidat"
+></iframe>
+
+</div>
+
+</div>
+
+<script>
+
+function parserCSV(texte){
+
+    texte =
+        texte.replace(/^\uFEFF/,"");
+
+    const lignes =
+        texte.split(/\r?\n/)
+        .filter(
+            ligne => ligne.trim() !== ""
+        );
+
+    if(lignes.length === 0){
+        return [];
+    }
+
+    function parserLigne(ligne){
+
+        const valeurs = [];
+
+        let valeur = "";
+
+        let entreGuillemets = false;
+
+        for(
+            let i = 0;
+            i < ligne.length;
+            i++
+        ){
+
+            const caractere =
+                ligne[i];
+
+            if(caractere === '"'){
+
+                if(
+                    entreGuillemets &&
+                    ligne[i + 1] === '"'
+                ){
+
+                    valeur += '"';
+
+                    i++;
+
+                }else{
+
+                    entreGuillemets =
+                        !entreGuillemets;
+
+                }
+
+            }
+
+            else if(
+                caractere === ";" &&
+                !entreGuillemets
+            ){
+
+                valeurs.push(valeur);
+
+                valeur = "";
+
+            }
+
+            else{
+
+                valeur += caractere;
+
+            }
+
+        }
+
+        valeurs.push(valeur);
+
+        return valeurs;
+
+    }
+
+    const entetes =
+        parserLigne(lignes[0])
+        .map(
+            x => x.trim()
+        );
+
+    return lignes.slice(1).map(ligne => {
+
+        const valeurs =
+            parserLigne(ligne);
+
+        const objet = {};
+
+        entetes.forEach(
+            (entete,index) => {
+
+                objet[entete] =
+                    (valeurs[index] || "").trim();
+
+            }
+        );
+
+        return objet;
+
+    });
+
+}
+
+async function chargerCSV(url){
+
+    const reponse =
+        await fetch(url);
+
+    if(!reponse.ok){
+
+        throw new Error(
+            "Impossible de charger " + url
+        );
+
+    }
+
+    return parserCSV(
+        await reponse.text()
+    );
+
+}
+
+function normaliserStatut(statut){
+
+    return (statut || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim()
+        .toUpperCase();
+
+}
+
+function creerStatut(statut){
+
+    const valeur =
+        normaliserStatut(statut);
+
+    if(
+        valeur !== "RADIOACTIF" &&
+        !valeur.includes("GAME OVER")
+    ){
+
+        return null;
+
+    }
+
+    const image =
+        document.createElement("img");
+
+    image.className =
+        "candidate-status";
+
+    image.alt =
+        valeur;
+
+    image.title =
+        valeur;
+
+    image.src =
+
+        valeur === "RADIOACTIF"
+
+        ? "/images/statuts/RADIOACTIF.webp"
+
+        : "/images/statuts/GAME_OVER.webp";
+
+    return image;
+
+}
+
+function ouvrirPersonne(personneId){
+
+    const modal =
+        document.getElementById(
+            "statut-modal"
+        );
+
+    const frame =
+        document.getElementById(
+            "statut-modal-frame"
+        );
+
+    frame.src =
+        "/individus.html#" +
+        encodeURIComponent(
+            personneId
+        );
+
+    modal.classList.add(
+        "active"
+    );
+
+    document.body.style.overflow =
+        "hidden";
+
+}
+
+function fermerPersonne(){
+
+    const modal =
+        document.getElementById(
+            "statut-modal"
+        );
+
+    const frame =
+        document.getElementById(
+            "statut-modal-frame"
+        );
+
+    modal.classList.remove(
+        "active"
+    );
+
+    frame.src =
+        "";
+
+    document.body.style.overflow =
+        "";
+
+}
+
+function afficherReactions(reactions){
+
+    const conteneur =
+        document.getElementById(
+            "reactions"
+        );
+
+    conteneur.innerHTML = "";
+
+    if(reactions.length === 0){
+
+        conteneur.innerHTML =
+            '<div class="message">Aucune réaction disponible.</div>';
+
+        return;
+
+    }
+
+    reactions.forEach(
+        reaction => {
+
+            const bloc =
+                document.createElement("div");
+
+            bloc.className =
+                "reaction";
+
+            const nom =
+                document.createElement("strong");
+
+            nom.textContent =
+                reaction.nom;
+
+            const description =
+                document.createElement("p");
+
+            description.textContent =
+                reaction.description;
+
+            bloc.appendChild(nom);
+
+            bloc.appendChild(description);
+
+            conteneur.appendChild(bloc);
+
+        }
+    );
+
+}
+
+function creerCarteCandidat(personne){
+
+    const carte =
+        document.createElement("a");
+
+    carte.className =
+        "candidate-card";
+
+    const personneId =
+        String(
+            personne.personne_id || ""
+        ).trim();
+
+    carte.href =
+        "#";
+
+    carte.addEventListener(
+        "click",
+        function(event){
+
+            event.preventDefault();
+
+            ouvrirPersonne(
+                personneId
+            );
+
+        }
+    );
+
+    const photoContainer =
+        document.createElement("div");
+
+    photoContainer.className =
+        "candidate-photo-container";
+
+    if(personneId){
+
+        const image =
+            document.createElement("img");
+
+        image.className =
+            "candidate-photo";
+
+        image.src =
+            "/images/personnes/" +
+            encodeURIComponent(
+                personneId
+            ) +
+            ".webp";
+
+        image.alt =
+            personne.nom;
+
+        image.loading =
+            "lazy";
+
+        image.onerror =
+            function(){
+
+                const placeholder =
+                    document.createElement("div");
+
+                placeholder.className =
+                    "candidate-photo-placeholder";
+
+                placeholder.textContent =
+                    "?";
+
+                this.replaceWith(
+                    placeholder
+                );
+
+            };
+
+        photoContainer.appendChild(
+            image
+        );
+
+    }else{
+
+        const placeholder =
+            document.createElement("div");
+
+        placeholder.className =
+            "candidate-photo-placeholder";
+
+        placeholder.textContent =
+            "?";
+
+        photoContainer.appendChild(
+            placeholder
+        );
+
+    }
+
+    const statut =
+        creerStatut(
+            personne.statut
+        );
+
+    if(statut){
+
+        photoContainer.appendChild(
+            statut
+        );
+
+    }
+
+    carte.appendChild(
+        photoContainer
+    );
+
+    const contenu =
+        document.createElement("div");
+
+    contenu.className =
+        "candidate-info";
+
+    const nom =
+        document.createElement("h2");
+
+    nom.className =
+        "candidate-name";
+
+    nom.textContent =
+        personne.nom;
+
+    const parti =
+        document.createElement("div");
+
+    parti.className =
+        "candidate-party";
+
+    parti.textContent =
+        personne.parti;
+
+    const circo =
+        document.createElement("div");
+
+    circo.className =
+        "candidate-riding";
+
+    circo.textContent =
+        personne.circonscription;
+
+    contenu.appendChild(nom);
+
+    contenu.appendChild(parti);
+
+    contenu.appendChild(circo);
+
+    carte.appendChild(
+        contenu
+    );
+
+    return carte;
+
+}
+
+function afficherCandidats(
+    candidats,
+    conteneurId,
+    messageId
+){
+
+    const conteneur =
+        document.getElementById(
+            conteneurId
+        );
+
+    const message =
+        document.getElementById(
+            messageId
+        );
+
+    conteneur.innerHTML =
+        "";
+
+    if(candidats.length === 0){
+
+        message.style.display =
+            "block";
+
+        return;
+
+    }
+
+    message.style.display =
+        "none";
+
+    candidats.forEach(
+        personne => {
+
+            conteneur.appendChild(
+                creerCarteCandidat(
+                    personne
+                )
+            );
+
+        }
+    );
+
+}
+
+async function initialiser(){
+
+    try{
+
+        const personnes =
+            await chargerCSV(
+                "/data/personnes.csv"
+            );
+
+        console.log(
+            "Personnes chargées :",
+            personnes.length
+        );
+
+        const reactions =
+            await chargerCSV(
+                "/data/reactions.csv"
+            );
+
+        console.log(
+            "Réactions chargées :",
+            reactions.length
+        );
+
+        afficherReactions(
+            reactions
+        );
+
+        const radioactifs =
+            personnes.filter(
+                personne =>
+                    normaliserStatut(
+                        personne.statut
+                    ) === "RADIOACTIF"
+            );
+
+        const gameOver =
+            personnes.filter(
+                personne => {
+
+                    const statut =
+                        normaliserStatut(
+                            personne.statut
+                        );
+
+                    return statut.includes(
+                        "GAME OVER"
+                    );
+
+                }
+            );
+
+        console.log(
+            "Radioactifs :",
+            radioactifs.length
+        );
+
+        console.log(
+            "Game Over :",
+            gameOver.length
+        );
+
+        afficherCandidats(
+
+            radioactifs,
+
+            "radioactifs",
+
+            "radioactifs-vide"
+
+        );
+
+        afficherCandidats(
+
+            gameOver,
+
+            "game-over",
+
+            "game-over-vide"
+
+        );
+
+    }
+
+    catch(erreur){
+
+        console.error(
+            "Erreur chargement statuts :",
+            erreur
+        );
+
+        document.getElementById(
+            "radioactifs"
+        ).innerHTML =
+
+            '<div class="message">Impossible de charger les candidats radioactifs.</div>';
+
+        document.getElementById(
+            "game-over"
+        ).innerHTML =
+
+            '<div class="message">Impossible de charger les candidats GAME OVER.</div>';
+
+        document.getElementById(
+            "reactions"
+        ).innerHTML =
+
+            '<div class="message">Impossible de charger les réactions.</div>';
+
+    }
+
+}
+
+document
+    .getElementById(
+        "statut-modal-close"
+    )
+    .addEventListener(
+        "click",
+        fermerPersonne
+    );
+
+document
+    .getElementById(
+        "statut-modal"
+    )
+    .addEventListener(
+        "click",
+        function(event){
+
+            if(
+                event.target === this
+            ){
+
+                fermerPersonne();
+
+            }
+
+        }
+    );
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key === "Escape"
+        ){
+
+            const modal =
+                document.getElementById(
+                    "statut-modal"
+                );
+
+            if(
+                modal.classList.contains(
+                    "active"
+                )
+            ){
+
+                fermerPersonne();
+
+            }
+
+        }
+
+    }
+);
+
+initialiser();
+
+</script>
+
+</body>
+
+</html>

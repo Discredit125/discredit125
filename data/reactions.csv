@@ -1,0 +1,6 @@
+﻿id;nom;description;image
+R001;Contrition;Reconnaît les faits, regrette ses propos ou présente ses excuses.;CONTRITION.webp
+R002;Rétractation;Retire ou désavoue explicitement ses propos ou sa position.;RETRACTATION.webp
+R003;Dénégation;Nie les faits, conteste les propos ou affirme que l'interprétation est fausse.;DENEGATION.webp
+R004;Ça m'fait pas un pli;Assume pleinement ses propos ou minimise la controverse.;PASUNPLI.webp
+R005;Silence;Ne fournit aucune réaction publique connue à la controverse.;SILENCE.webp
