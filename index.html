@@ -257,6 +257,22 @@
 
         </div>
 
+
+        <div class="stat-card">
+
+            <div
+                class="stat-number"
+                id="top-party-count"
+            >
+                —
+            </div>
+
+            <div class="stat-label">
+                Parti avec le plus de candidats décorés
+            </div>
+
+        </div>
+
     </div>
 
 </section>
@@ -269,29 +285,6 @@
     </h2>
 
     <div class="chart-container">
-
-        <div
-            style="
-                display:flex;
-                justify-content:center;
-                gap:25px;
-                margin-bottom:20px;
-                font-size:0.9rem;
-                font-weight:bold;
-            "
-        >
-
-            <span>
-                <span style="display:inline-block;width:14px;height:14px;background:#555;margin-right:6px;vertical-align:-2px;border-radius:2px;"></span>
-                Badges attribués
-            </span>
-
-            <span>
-                <span style="display:inline-block;width:14px;height:14px;background:#555;opacity:0.4;margin-right:6px;vertical-align:-2px;border-radius:2px;"></span>
-                Candidats identifiés
-            </span>
-
-        </div>
 
         <div id="party-chart">
             Chargement des données…
@@ -857,6 +850,138 @@ async function chargerAccueil() {
             badgesAttribuesUniques.size;
 
 
+        /*
+            PARTI AVEC LE PLUS DE
+            CANDIDATS DÉCORÉS
+        */
+
+        const candidatsParParti =
+            {};
+
+
+        personnes.forEach(
+            personne => {
+
+                const personneId =
+                    (
+                        personne.personne_id || ""
+                    ).trim();
+
+
+                const parti =
+                    (
+                        personne.parti ||
+                        "Autre"
+                    ).trim() ||
+                    "Autre";
+
+
+                if (
+                    !personneId
+                ) {
+
+                    return;
+
+                }
+
+
+                const aUnBadge =
+                    attributions.some(
+                        attribution => {
+
+                            return (
+                                (
+                                    attribution.personne_id ||
+                                    ""
+                                ).trim() ===
+                                personneId
+                                &&
+                                (
+                                    attribution.badge_id ||
+                                    ""
+                                ).trim() !== ""
+                            );
+
+                        }
+                    );
+
+
+                if (
+                    !aUnBadge
+                ) {
+
+                    return;
+
+                }
+
+
+                if (
+                    !candidatsParParti[parti]
+                ) {
+
+                    candidatsParParti[parti] =
+                        0;
+
+                }
+
+
+                candidatsParParti[parti]++;
+
+            }
+        );
+
+
+        let partiGagnant =
+            "—";
+
+
+        let nombreCandidatsGagnant =
+            0;
+
+
+        Object.entries(
+            candidatsParParti
+        ).forEach(
+            ([parti, nombre]) => {
+
+                if (
+                    nombre >
+                    nombreCandidatsGagnant
+                ) {
+
+                    partiGagnant =
+                        parti;
+
+                    nombreCandidatsGagnant =
+                        nombre;
+
+                }
+
+            }
+        );
+
+
+        const topPartyElement =
+            document.getElementById(
+                "top-party-count"
+            );
+
+
+        topPartyElement.innerHTML =
+            partiGagnant === "—"
+
+                ? "—"
+
+                : `
+                    <span style="font-size:0.9em;">
+                        ${partiGagnant}
+                    </span>
+                    <span style="font-size:0.55em;display:block;margin-top:4px;">
+                        ${nombreCandidatsGagnant} candidat${nombreCandidatsGagnant > 1 ? "s" : ""}
+                    </span>
+                `;
+
+
         afficherGraphiquePartis(
             personnesActives,
             attributions
@@ -886,6 +1011,12 @@ async function chargerAccueil() {
 
         document.getElementById(
             "badge-count"
+        ).textContent =
+            "—";
+
+
+        document.getElementById(
+            "top-party-count"
         ).textContent =
             "—";
 
@@ -1117,26 +1248,8 @@ function afficherGraphiquePartis(
                     parti;
 
 
-                const valeursTexte =
-                    document.createElement(
-                        "span"
-                    );
-
-
-                valeursTexte.textContent =
-                    valeurs.badges +
-                    " badges · " +
-                    valeurs.candidats +
-                    " candidats";
-
-
                 etiquette.appendChild(
                     nomParti
-                );
-
-
-                etiquette.appendChild(
-                    valeursTexte
                 );
 
 
@@ -1155,7 +1268,7 @@ function afficherGraphiquePartis(
 
 
                 barreBadges.style.height =
-                    "24px";
+                    "28px";
 
 
                 barreBadges.style.background =
@@ -1197,6 +1310,44 @@ function afficherGraphiquePartis(
                     "4px";
 
 
+                barreBadgesInterne.style.display =
+                    "flex";
+
+
+                barreBadgesInterne.style.alignItems =
+                    "center";
+
+
+                barreBadgesInterne.style.paddingLeft =
+                    "10px";
+
+
+                barreBadgesInterne.style.boxSizing =
+                    "border-box";
+
+
+                barreBadgesInterne.style.color =
+                    "#fff";
+
+
+                barreBadgesInterne.style.fontWeight =
+                    "bold";
+
+
+                barreBadgesInterne.style.fontSize =
+                    "0.85rem";
+
+
+                barreBadgesInterne.textContent =
+                    valeurs.badges +
+                    " badge" +
+                    (
+                        valeurs.badges !== 1
+                            ? "s"
+                            : ""
+                    );
+
+
                 barreBadges.appendChild(
                     barreBadgesInterne
                 );
@@ -1217,7 +1368,7 @@ function afficherGraphiquePartis(
 
 
                 barreCandidats.style.height =
-                    "24px";
+                    "28px";
 
 
                 barreCandidats.style.background =
@@ -1230,6 +1381,10 @@ function afficherGraphiquePartis(
 
                 barreCandidats.style.overflow =
                     "hidden";
+
+
+                barreCandidats.style.marginTop =
+                    "4px";
 
 
                 const barreCandidatsInterne =
@@ -1261,6 +1416,44 @@ function afficherGraphiquePartis(
 
                 barreCandidatsInterne.style.borderRadius =
                     "4px";
+
+
+                barreCandidatsInterne.style.display =
+                    "flex";
+
+
+                barreCandidatsInterne.style.alignItems =
+                    "center";
+
+
+                barreCandidatsInterne.style.paddingLeft =
+                    "10px";
+
+
+                barreCandidatsInterne.style.boxSizing =
+                    "border-box";
+
+
+                barreCandidatsInterne.style.color =
+                    "#111";
+
+
+                barreCandidatsInterne.style.fontWeight =
+                    "bold";
+
+
+                barreCandidatsInterne.style.fontSize =
+                    "0.85rem";
+
+
+                barreCandidatsInterne.textContent =
+                    valeurs.candidats +
+                    " candidat" +
+                    (
+                        valeurs.candidats !== 1
+                            ? "s"
+                            : ""
+                    );
 
 
                 barreCandidats.appendChild(
