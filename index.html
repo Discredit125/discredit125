@@ -270,6 +270,29 @@
 
     <div class="chart-container">
 
+        <div
+            style="
+                display:flex;
+                justify-content:center;
+                gap:25px;
+                margin-bottom:20px;
+                font-size:0.9rem;
+                font-weight:bold;
+            "
+        >
+
+            <span>
+                <span style="display:inline-block;width:14px;height:14px;background:#555;margin-right:6px;vertical-align:-2px;border-radius:2px;"></span>
+                Badges attribués
+            </span>
+
+            <span>
+                <span style="display:inline-block;width:14px;height:14px;background:#555;opacity:0.4;margin-right:6px;vertical-align:-2px;border-radius:2px;"></span>
+                Candidats identifiés
+            </span>
+
+        </div>
+
         <div id="party-chart">
             Chargement des données…
         </div>
@@ -774,14 +797,11 @@ async function chargerAccueil() {
             );
 
 
-        const personnesRetirees =
-            personnes.filter(
-                personne =>
-                    estGameOver(personne)
-            );
-
-
         const personnesIdentifieesIds =
+            new Set();
+
+
+        const badgesAttribuesUniques =
             new Set();
 
 
@@ -801,15 +821,25 @@ async function chargerAccueil() {
 
 
                 if (
-                    personneId &&
-                    badgeId
+                    !personneId ||
+                    !badgeId
                 ) {
 
-                    personnesIdentifieesIds.add(
-                        personneId
-                    );
+                    return;
 
                 }
+
+
+                personnesIdentifieesIds.add(
+                    personneId
+                );
+
+
+                badgesAttribuesUniques.add(
+                    personneId +
+                    "|" +
+                    badgeId
+                );
 
             }
         );
@@ -824,79 +854,12 @@ async function chargerAccueil() {
         document.getElementById(
             "badge-count"
         ).textContent =
-            new Set(
-                attributions
-                    .map(
-                        attribution => {
-
-                            const personneId =
-                                (
-                                    attribution.personne_id || ""
-                                ).trim();
-
-
-                            const badgeId =
-                                (
-                                    attribution.badge_id || ""
-                                ).trim();
-
-
-                            if (
-                                !personneId ||
-                                !badgeId
-                            ) {
-
-                                return null;
-
-                            }
-
-
-                            return (
-                                personneId +
-                                "|" +
-                                badgeId
-                            );
-
-                        }
-                    )
-                    .filter(
-                        valeur =>
-                            valeur !== null
-                    )
-            ).size;
+            badgesAttribuesUniques.size;
 
 
         afficherGraphiquePartis(
             personnesActives,
-            attributions.filter(
-                attribution => {
-
-                    const personneId =
-                        (
-                            attribution.personne_id || ""
-                        ).trim();
-
-
-                    const badgeId =
-                        (
-                            attribution.badge_id || ""
-                        ).trim();
-
-
-                    return (
-                        personneId &&
-                        badgeId &&
-                        personnesActives.some(
-                            personne =>
-                                (
-                                    personne.personne_id || ""
-                                ).trim() ===
-                                personneId
-                        )
-                    );
-
-                }
-            )
+            attributions
         );
 
 
@@ -952,30 +915,6 @@ function afficherGraphiquePartis(
     personnes,
     attributions
 ) {
-
-    const compteurs =
-        {};
-
-
-    personnes.forEach(
-        personne => {
-
-            const personneId =
-                (
-                    personne.personne_id || ""
-                ).trim();
-
-
-            if (personneId) {
-
-                compteurs[personneId] =
-                    0;
-
-            }
-
-        }
-    );
-
 
     const badgesUniquesParPersonne =
         {};
@@ -1038,20 +977,6 @@ function afficherGraphiquePartis(
     );
 
 
-    Object.keys(
-        badgesUniquesParPersonne
-    ).forEach(
-        personneId => {
-
-            compteurs[personneId] =
-                badgesUniquesParPersonne[
-                    personneId
-                ].size;
-
-        }
-    );
-
-
     const parParti =
         {};
 
@@ -1076,14 +1001,36 @@ function afficherGraphiquePartis(
             if (!parParti[parti]) {
 
                 parParti[parti] =
-                    0;
+                    {
+                        badges: 0,
+                        candidats: 0
+                    };
 
             }
 
 
-            parParti[parti] +=
-                compteurs[personneId] ||
-                0;
+            const nombreBadges =
+                badgesUniquesParPersonne[
+                    personneId
+                ]
+                    ? badgesUniquesParPersonne[
+                        personneId
+                    ].size
+                    : 0;
+
+
+            if (
+                nombreBadges > 0
+            ) {
+
+                parParti[parti].candidats +=
+                    1;
+
+            }
+
+
+            parParti[parti].badges +=
+                nombreBadges;
 
         }
     );
@@ -1101,7 +1048,14 @@ function afficherGraphiquePartis(
 
     const maximum =
         Math.max(
-            ...Object.values(parParti),
+            ...Object.values(parParti)
+                .map(
+                    valeurs =>
+                        Math.max(
+                            valeurs.badges,
+                            valeurs.candidats
+                        )
+                ),
             1
         );
 
@@ -1110,11 +1064,12 @@ function afficherGraphiquePartis(
 
         .sort(
             (a, b) =>
-                b[1] - a[1]
+                b[1].badges -
+                a[1].badges
         )
 
         .forEach(
-            ([parti, total]) => {
+            ([parti, valeurs]) => {
 
                 const ligne =
                     document.createElement(
@@ -1123,7 +1078,7 @@ function afficherGraphiquePartis(
 
 
                 ligne.style.marginBottom =
-                    "15px";
+                    "20px";
 
 
                 const etiquette =
@@ -1140,8 +1095,12 @@ function afficherGraphiquePartis(
                     "space-between";
 
 
+                etiquette.style.alignItems =
+                    "center";
+
+
                 etiquette.style.marginBottom =
-                    "5px";
+                    "6px";
 
 
                 etiquette.style.fontWeight =
@@ -1158,14 +1117,17 @@ function afficherGraphiquePartis(
                     parti;
 
 
-                const valeur =
+                const valeursTexte =
                     document.createElement(
                         "span"
                     );
 
 
-                valeur.textContent =
-                    total;
+                valeursTexte.textContent =
+                    valeurs.badges +
+                    " badges · " +
+                    valeurs.candidats +
+                    " candidats";
 
 
                 etiquette.appendChild(
@@ -1174,65 +1136,135 @@ function afficherGraphiquePartis(
 
 
                 etiquette.appendChild(
-                    valeur
+                    valeursTexte
                 );
 
 
-                const barreFond =
+                /*
+                    BARRE BADGES
+                */
+
+                const barreBadges =
                     document.createElement(
                         "div"
                     );
 
 
-                barreFond.style.width =
+                barreBadges.style.width =
                     "100%";
 
 
-                barreFond.style.height =
+                barreBadges.style.height =
                     "24px";
 
 
-                barreFond.style.background =
+                barreBadges.style.background =
                     "#eeeeee";
 
 
-                barreFond.style.borderRadius =
+                barreBadges.style.borderRadius =
                     "4px";
 
 
-                barreFond.style.overflow =
+                barreBadges.style.overflow =
                     "hidden";
 
 
-                const barre =
+                const barreBadgesInterne =
                     document.createElement(
                         "div"
                     );
 
 
-                barre.style.width =
+                barreBadgesInterne.style.width =
                     (
-                        (total / maximum) *
+                        (valeurs.badges / maximum) *
                         100
                     ) + "%";
 
 
-                barre.style.height =
+                barreBadgesInterne.style.height =
                     "100%";
 
 
-                barre.style.background =
+                barreBadgesInterne.style.background =
                     getCouleurParti(
                         parti
                     );
 
 
-                barre.style.borderRadius =
+                barreBadgesInterne.style.borderRadius =
                     "4px";
 
 
-                barreFond.appendChild(
-                    barre
+                barreBadges.appendChild(
+                    barreBadgesInterne
+                );
+
+
+                /*
+                    BARRE CANDIDATS
+                */
+
+                const barreCandidats =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                barreCandidats.style.width =
+                    "100%";
+
+
+                barreCandidats.style.height =
+                    "24px";
+
+
+                barreCandidats.style.background =
+                    "#eeeeee";
+
+
+                barreCandidats.style.borderRadius =
+                    "4px";
+
+
+                barreCandidats.style.overflow =
+                    "hidden";
+
+
+                const barreCandidatsInterne =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                barreCandidatsInterne.style.width =
+                    (
+                        (valeurs.candidats / maximum) *
+                        100
+                    ) + "%";
+
+
+                barreCandidatsInterne.style.height =
+                    "100%";
+
+
+                barreCandidatsInterne.style.background =
+                    getCouleurParti(
+                        parti
+                    );
+
+
+                barreCandidatsInterne.style.opacity =
+                    "0.4";
+
+
+                barreCandidatsInterne.style.borderRadius =
+                    "4px";
+
+
+                barreCandidats.appendChild(
+                    barreCandidatsInterne
                 );
 
 
@@ -1242,7 +1274,12 @@ function afficherGraphiquePartis(
 
 
                 ligne.appendChild(
-                    barreFond
+                    barreBadges
+                );
+
+
+                ligne.appendChild(
+                    barreCandidats
                 );
 
 
