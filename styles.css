@@ -484,18 +484,6 @@ CARTE CANDIDAT
 COULEUR DU PARTI
 ========================================================= */
 
-/*
-   La classe du parti est ajoutée directement à la carte :
-
-   candidate-card CAQ
-   candidate-card PLQ
-   candidate-card PQ
-   candidate-card QS
-   candidate-card PCQ
-
-   La barre supérieure reprend alors la couleur du parti.
-*/
-
 .candidate-card::before {
     content: "";
 
@@ -1615,18 +1603,24 @@ RESPONSIVE — TABLETTE
 }
 
 
+/* =========================================================
+RESPONSIVE — PETIT ÉCRAN
+========================================================= */
+
 @media (max-width: 800px) {
 
     .site-header {
-        padding: 20px 25px;
+        padding: 18px 20px;
     }
 
     .header-inner {
         flex-direction: column;
-
-        align-items: flex-start;
-
+        align-items: stretch;
         gap: 18px;
+    }
+
+    .logo {
+        font-size: 27px;
     }
 
     .main-nav {
@@ -1634,35 +1628,41 @@ RESPONSIVE — TABLETTE
 
         margin-left: 0;
 
-        justify-content: flex-start;
+        display: grid;
 
-        gap: 12px 16px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        gap: 10px;
 
         white-space: normal;
     }
 
     .main-nav a {
-        white-space: nowrap;
+        white-space: normal;
+
+        font-size: 14px;
+
+        padding: 4px 0;
     }
 
     .container {
-        padding: 35px 25px;
+        padding: 30px 20px;
     }
 
     .page-header h1 {
-        font-size: 35px;
+        font-size: 34px;
     }
 
     .hero {
-        padding: 50px 25px;
+        padding: 45px 20px;
     }
 
     .hero h1 {
-        font-size: 40px;
+        font-size: 38px;
     }
 
     .hero p {
-        font-size: 18px;
+        font-size: 17px;
     }
 
     .badge-controls {
@@ -1676,40 +1676,70 @@ RESPONSIVE — TABLETTE
     }
 
     .candidates-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        gap: 15px;
     }
 
     .badges {
         grid-template-columns:
             repeat(3, minmax(0, 1fr));
+
+        gap: 12px;
     }
 
     .badge-candidates {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        gap: 15px;
     }
 
     .candidate-photo,
     .candidate-photo-placeholder,
     .candidate-no-photo {
-        width: 160px;
-        height: 160px;
+        width: 150px;
+        height: 150px;
     }
 
     .candidate-photo-container {
-        width: 160px;
-        height: 160px;
+        width: 150px;
+        height: 150px;
     }
 
     .candidate-photo-container .candidate-photo,
     .candidate-photo-container .candidate-photo-placeholder {
-        width: 160px;
-        height: 160px;
+        width: 150px;
+        height: 150px;
+    }
+
+    .candidates-grid .candidate-photo-container .candidate-status {
+        width: 42px;
+        height: 42px;
+
+        top: 6px;
+        right: 6px;
+    }
+
+    .candidate-info {
+        padding: 13px;
+    }
+
+    .candidate-name {
+        font-size: 17px;
+    }
+
+    .candidate-party {
+        font-size: 13px;
+    }
+
+    .candidate-riding {
+        font-size: 12px;
     }
 
     .candidate-profile {
         grid-template-columns: 1fr;
 
-        gap: 20px;
+        gap: 18px;
     }
 
     .candidate-profile-photo {
@@ -1748,7 +1778,7 @@ RESPONSIVE — TABLETTE
     }
 
     .badge-detail-image {
-        max-width: 300px;
+        max-width: 280px;
 
         margin: 0 auto;
     }
@@ -1758,109 +1788,189 @@ RESPONSIVE — TABLETTE
     }
 
     .form-card {
-        padding: 25px;
+        padding: 22px;
     }
 
     .trophy-champions {
         grid-template-columns:
             repeat(2, minmax(0, 1fr));
+
+        gap: 15px;
     }
 }
 
 
+/* =========================================================
+RESPONSIVE — TÉLÉPHONE
+========================================================= */
+
 @media (max-width: 500px) {
 
     .site-header {
-        padding: 18px 20px;
+        padding: 16px;
     }
 
     .logo {
-        font-size: 25px;
+        font-size: 24px;
     }
 
     .main-nav {
-        gap: 10px 13px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        gap: 7px 14px;
     }
 
     .main-nav a {
-        font-size: 14px;
+        font-size: 13px;
     }
 
     .container {
-        padding: 30px 20px;
+        padding: 24px 16px;
+    }
+
+    .page-header {
+        margin-bottom: 25px;
     }
 
     .page-header h1 {
-        font-size: 30px;
+        font-size: 29px;
     }
 
     .page-header p {
-        font-size: 16px;
+        font-size: 15px;
     }
 
     .hero {
-        padding: 45px 20px;
+        padding: 38px 16px;
     }
 
     .hero h1 {
-        font-size: 34px;
+        font-size: 32px;
+    }
+
+    .hero p {
+        font-size: 16px;
     }
 
     .stats {
         grid-template-columns: 1fr;
+
+        gap: 12px;
+    }
+
+    .stat-card {
+        padding: 20px;
+    }
+
+    .stat-number {
+        font-size: 34px;
     }
 
     .candidates-grid {
-        grid-template-columns: 1fr;
-    }
+        grid-template-columns: repeat(2, minmax(0, 1fr));
 
-    .badges {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-    }
-
-    .badge-candidates {
-        grid-template-columns: 1fr;
+        gap: 12px;
     }
 
     .candidate-photo,
     .candidate-photo-placeholder,
     .candidate-no-photo {
-        width: 180px;
-        height: 180px;
+        width: 130px;
+        height: 130px;
     }
 
     .candidate-photo-container {
-        width: 180px;
-        height: 180px;
+        width: 130px;
+        height: 130px;
     }
 
     .candidate-photo-container .candidate-photo,
     .candidate-photo-container .candidate-photo-placeholder {
-        width: 180px;
-        height: 180px;
+        width: 130px;
+        height: 130px;
     }
 
-    .candidate-profile + .candidate-section .candidate-badge-card {
-        width: 95px;
+    .candidates-grid .candidate-photo-container .candidate-status {
+        width: 38px;
+        height: 38px;
+
+        top: 5px;
+        right: 5px;
     }
 
-    .candidate-profile + .candidate-section .candidate-badge-card img {
-        width: 87px;
-        height: 87px;
+    .candidate-info {
+        padding: 11px;
+    }
+
+    .candidate-name {
+        font-size: 16px;
+        line-height: 1.15;
+    }
+
+    .candidate-party {
+        font-size: 12px;
+    }
+
+    .candidate-riding {
+        font-size: 11px;
+        line-height: 1.25;
+    }
+
+    .badges {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 12px;
+    }
+
+    .badge-content {
+        padding: 11px;
+    }
+
+    .badge-content h3 {
+        font-size: 15px;
+    }
+
+    .badge-category {
+        font-size: 11px;
+    }
+
+    .badge-candidates {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        gap: 12px;
     }
 
     .candidate-profile-info h2 {
-        font-size: 28px;
+        font-size: 26px;
+    }
+
+    .candidate-profile + .candidate-section .candidate-badge-card {
+        width: 90px;
+    }
+
+    .candidate-profile + .candidate-section .candidate-badge-card img {
+        width: 82px;
+        height: 82px;
     }
 
     .content-box,
     .content-card {
-        padding: 22px;
+        padding: 18px;
+    }
+
+    .content-box h2,
+    .content-card h2 {
+        font-size: 21px;
+    }
+
+    .content-box h3,
+    .content-card h3 {
+        font-size: 18px;
     }
 
     .form-card {
-        padding: 20px;
+        padding: 18px;
     }
 
     .about-actions {
@@ -1877,10 +1987,60 @@ RESPONSIVE — TABLETTE
     }
 
     footer {
-        padding: 30px 20px;
+        padding: 25px 16px;
     }
 
     .trophy-champions {
         grid-template-columns: 1fr;
+
+        gap: 15px;
+    }
+}
+
+
+/* =========================================================
+RESPONSIVE — TRÈS PETIT TÉLÉPHONE
+========================================================= */
+
+@media (max-width: 360px) {
+
+    .container {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .candidates-grid {
+        gap: 8px;
+    }
+
+    .candidate-photo,
+    .candidate-photo-placeholder,
+    .candidate-no-photo {
+        width: 115px;
+        height: 115px;
+    }
+
+    .candidate-photo-container {
+        width: 115px;
+        height: 115px;
+    }
+
+    .candidate-photo-container .candidate-photo,
+    .candidate-photo-container .candidate-photo-placeholder {
+        width: 115px;
+        height: 115px;
+    }
+
+    .candidate-name {
+        font-size: 15px;
+    }
+
+    .candidate-info {
+        padding: 9px;
+    }
+
+    .candidates-grid .candidate-photo-container .candidate-status {
+        width: 34px;
+        height: 34px;
     }
 }
