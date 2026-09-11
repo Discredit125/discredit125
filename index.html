@@ -65,7 +65,8 @@
         }
 
         .hero-tagline {
-            white-space: nowrap;
+            white-space: normal;
+            overflow-wrap: anywhere;
         }
 
         /* DERNIERS BADGES */
@@ -128,6 +129,11 @@
                 width: 100%;
                 height: 95vh;
                 border-radius: 8px;
+            }
+
+            .hero-tagline {
+                white-space: normal;
+                overflow-wrap: anywhere;
             }
 
             .recent-badge {
@@ -210,7 +216,7 @@
         <div class="stat-card">
 
             <div class="stat-number">
-                125
+                127
             </div>
 
             <div class="stat-label">
@@ -230,7 +236,7 @@
             </div>
 
             <div class="stat-label">
-                Candidats
+                Candidats identifiés
             </div>
 
         </div>
@@ -247,22 +253,6 @@
 
             <div class="stat-label">
                 Badges attribués
-            </div>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <div
-                class="stat-number"
-                id="retired-count"
-            >
-                —
-            </div>
-
-            <div class="stat-label">
-                Candidats retirés
             </div>
 
         </div>
@@ -791,55 +781,122 @@ async function chargerAccueil() {
             );
 
 
+        const personnesIdentifieesIds =
+            new Set();
+
+
+        attributions.forEach(
+            attribution => {
+
+                const personneId =
+                    (
+                        attribution.personne_id || ""
+                    ).trim();
+
+
+                const badgeId =
+                    (
+                        attribution.badge_id || ""
+                    ).trim();
+
+
+                if (
+                    personneId &&
+                    badgeId
+                ) {
+
+                    personnesIdentifieesIds.add(
+                        personneId
+                    );
+
+                }
+
+            }
+        );
+
+
         document.getElementById(
             "candidate-count"
         ).textContent =
-            personnesActives.length;
-
-
-        document.getElementById(
-            "retired-count"
-        ).textContent =
-            personnesRetirees.length;
-
-
-        const personnesActivesIds =
-            new Set(
-                personnesActives.map(
-                    personne =>
-                        (
-                            personne.personne_id || ""
-                        ).trim()
-                )
-            );
-
-
-        const attributionsValides =
-            attributions.filter(
-                attribution =>
-                    (
-                        attribution.personne_id || ""
-                    ).trim() !== "" &&
-                    (
-                        attribution.badge_id || ""
-                    ).trim() !== "" &&
-                    personnesActivesIds.has(
-                        (
-                            attribution.personne_id || ""
-                        ).trim()
-                    )
-            );
+            personnesIdentifieesIds.size;
 
 
         document.getElementById(
             "badge-count"
         ).textContent =
-            attributionsValides.length;
+            new Set(
+                attributions
+                    .map(
+                        attribution => {
+
+                            const personneId =
+                                (
+                                    attribution.personne_id || ""
+                                ).trim();
+
+
+                            const badgeId =
+                                (
+                                    attribution.badge_id || ""
+                                ).trim();
+
+
+                            if (
+                                !personneId ||
+                                !badgeId
+                            ) {
+
+                                return null;
+
+                            }
+
+
+                            return (
+                                personneId +
+                                "|" +
+                                badgeId
+                            );
+
+                        }
+                    )
+                    .filter(
+                        valeur =>
+                            valeur !== null
+                    )
+            ).size;
 
 
         afficherGraphiquePartis(
             personnesActives,
-            attributionsValides
+            attributions.filter(
+                attribution => {
+
+                    const personneId =
+                        (
+                            attribution.personne_id || ""
+                        ).trim();
+
+
+                    const badgeId =
+                        (
+                            attribution.badge_id || ""
+                        ).trim();
+
+
+                    return (
+                        personneId &&
+                        badgeId &&
+                        personnesActives.some(
+                            personne =>
+                                (
+                                    personne.personne_id || ""
+                                ).trim() ===
+                                personneId
+                        )
+                    );
+
+                }
+            )
         );
 
 
@@ -866,12 +923,6 @@ async function chargerAccueil() {
 
         document.getElementById(
             "badge-count"
-        ).textContent =
-            "—";
-
-
-        document.getElementById(
-            "retired-count"
         ).textContent =
             "—";
 
