@@ -1585,7 +1585,7 @@ RESPONSIVE — TABLETTE
     }
 
     .candidates-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .badges {
@@ -1594,7 +1594,7 @@ RESPONSIVE — TABLETTE
     }
 
     .badge-candidates {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .badge-detail {
@@ -1671,8 +1671,13 @@ RESPONSIVE — PETIT ÉCRAN
         align-items: stretch;
     }
 
+    .badge-controls input,
     .badge-controls select {
         width: 100%;
+    }
+
+    .badge-controls select {
+        min-width: 0;
     }
 
     .candidates-grid {
@@ -1875,19 +1880,21 @@ RESPONSIVE — TÉLÉPHONE
     .candidate-photo,
     .candidate-photo-placeholder,
     .candidate-no-photo {
-        width: 130px;
-        height: 130px;
+        width: min(150px, 100%);
+        height: auto;
+        aspect-ratio: 1 / 1;
     }
 
     .candidate-photo-container {
-        width: 130px;
-        height: 130px;
+        width: min(150px, 100%);
+        height: auto;
+        aspect-ratio: 1 / 1;
     }
 
     .candidate-photo-container .candidate-photo,
     .candidate-photo-container .candidate-photo-placeholder {
-        width: 130px;
-        height: 130px;
+        width: 100%;
+        height: 100%;
     }
 
     .candidates-grid .candidate-photo-container .candidate-status {
@@ -2016,19 +2023,21 @@ RESPONSIVE — TRÈS PETIT TÉLÉPHONE
     .candidate-photo,
     .candidate-photo-placeholder,
     .candidate-no-photo {
-        width: 115px;
-        height: 115px;
+        width: min(115px, 100%);
+        height: auto;
+        aspect-ratio: 1 / 1;
     }
 
     .candidate-photo-container {
-        width: 115px;
-        height: 115px;
+        width: min(115px, 100%);
+        height: auto;
+        aspect-ratio: 1 / 1;
     }
 
     .candidate-photo-container .candidate-photo,
     .candidate-photo-container .candidate-photo-placeholder {
-        width: 115px;
-        height: 115px;
+        width: 100%;
+        height: 100%;
     }
 
     .candidate-name {
