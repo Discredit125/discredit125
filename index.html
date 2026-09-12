@@ -1265,6 +1265,32 @@ function afficherGraphiquePartis(
 
 
                 /*
+                    LIBELLÉ BADGES
+                */
+
+                const labelBadges =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                labelBadges.textContent =
+                    "Badges";
+
+
+                labelBadges.style.fontWeight =
+                    "bold";
+
+
+                labelBadges.style.color =
+                    "#111";
+
+
+                labelBadges.style.marginBottom =
+                    "3px";
+
+
+                /*
                     BARRE BADGES
                 */
 
@@ -1350,18 +1376,42 @@ function afficherGraphiquePartis(
 
 
                 barreBadgesInterne.textContent =
-                    valeurs.badges +
-                    " badge" +
-                    (
-                        valeurs.badges !== 1
-                            ? "s"
-                            : ""
-                    );
+                    valeurs.badges;
 
 
                 barreBadges.appendChild(
                     barreBadgesInterne
                 );
+
+
+                /*
+                    LIBELLÉ CANDIDATS
+                */
+
+                const labelCandidats =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                labelCandidats.textContent =
+                    "Candidats";
+
+
+                labelCandidats.style.fontWeight =
+                    "bold";
+
+
+                labelCandidats.style.color =
+                    "#111";
+
+
+                labelCandidats.style.marginTop =
+                    "5px";
+
+
+                labelCandidats.style.marginBottom =
+                    "3px";
 
 
                 /*
@@ -1394,10 +1444,6 @@ function afficherGraphiquePartis(
                     "hidden";
 
 
-                barreCandidats.style.marginTop =
-                    "4px";
-
-
                 const barreCandidatsInterne =
                     document.createElement(
                         "div"
@@ -1415,14 +1461,15 @@ function afficherGraphiquePartis(
                     "100%";
 
 
-                barreCandidatsInterne.style.background =
+                const couleurParti =
                     getCouleurParti(
                         parti
                     );
 
 
-                barreCandidatsInterne.style.opacity =
-                    "0.4";
+                barreCandidatsInterne.style.background =
+                    "linear-gradient(rgba(255,255,255,0.6), rgba(255,255,255,0.6)), " +
+                    couleurParti;
 
 
                 barreCandidatsInterne.style.borderRadius =
@@ -1446,7 +1493,7 @@ function afficherGraphiquePartis(
 
 
                 barreCandidatsInterne.style.color =
-                    "#111";
+                    "#fff";
 
 
                 barreCandidatsInterne.style.fontWeight =
@@ -1458,13 +1505,7 @@ function afficherGraphiquePartis(
 
 
                 barreCandidatsInterne.textContent =
-                    valeurs.candidats +
-                    " candidat" +
-                    (
-                        valeurs.candidats !== 1
-                            ? "s"
-                            : ""
-                    );
+                    valeurs.candidats;
 
 
                 barreCandidats.appendChild(
@@ -1478,7 +1519,17 @@ function afficherGraphiquePartis(
 
 
                 ligne.appendChild(
+                    labelBadges
+                );
+
+
+                ligne.appendChild(
                     barreBadges
+                );
+
+
+                ligne.appendChild(
+                    labelCandidats
                 );
 
 
