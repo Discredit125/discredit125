@@ -145,92 +145,94 @@
 
 <nav class="main-nav">
 
-    <!-- DESKTOP -->
-    <div class="nav-desktop">
+```
+<!-- DESKTOP -->
+<div class="nav-desktop">
 
-        <a href="/">
-            Accueil
-        </a>
+    <a href="/">
+        Accueil
+    </a>
 
-        <a href="/personnes.html">
-            Candidats
-        </a>
+    <a href="/personnes.html">
+        Candidats
+    </a>
 
-        <a href="/badges.html">
-            Badges
-        </a>
+    <a href="/badges.html">
+        Badges
+    </a>
 
-        <a href="/statuts.html">
-            Statuts
-        </a>
+    <a href="/statuts.html">
+        Statuts
+    </a>
 
-        <a href="/trophees.html">
-            Trophées
-        </a>
+    <a href="/trophees.html">
+        Trophées
+    </a>
 
-        <a href="/soumettre.html" class="active">
-            Soumettre
-        </a>
+    <a href="/soumettre.html" class="active">
+        Soumettre
+    </a>
 
-        <a href="/erreur.html">
-            Signaler
-        </a>
+    <a href="/erreur.html">
+        Signaler
+    </a>
 
-        <a href="/a-propos.html">
-            À propos
-        </a>
+    <a href="/a-propos.html">
+        À propos
+    </a>
 
-    </div>
+</div>
 
 
-    <!-- MOBILE -->
-    <div class="nav-mobile">
+<!-- MOBILE -->
+<div class="nav-mobile">
 
-        <a href="/">
-            Accueil
-        </a>
+    <a href="/">
+        Accueil
+    </a>
 
-        <a href="/personnes.html">
-            Candidats
-        </a>
+    <a href="/personnes.html">
+        Candidats
+    </a>
 
-        <a href="/badges.html">
-            Badges
-        </a>
+    <a href="/badges.html">
+        Badges
+    </a>
 
-        <details class="nav-more">
+    <details class="nav-more">
 
-            <summary>
-                Plus
-            </summary>
+        <summary>
+            Plus
+        </summary>
 
-            <div class="nav-more-menu">
+        <div class="nav-more-menu">
 
-                <a href="/statuts.html">
-                    Statuts
-                </a>
+            <a href="/statuts.html">
+                Statuts
+            </a>
 
-                <a href="/trophees.html">
-                    Trophées
-                </a>
+            <a href="/trophees.html">
+                Trophées
+            </a>
 
-                <a href="/soumettre.html" class="active">
-                    Soumettre
-                </a>
+            <a href="/soumettre.html" class="active">
+                Soumettre
+            </a>
 
-                <a href="/erreur.html">
-                    Signaler
-                </a>
+            <a href="/erreur.html">
+                Signaler
+            </a>
 
-                <a href="/a-propos.html">
-                    À propos
-                </a>
+            <a href="/a-propos.html">
+                À propos
+            </a>
 
-            </div>
+        </div>
 
-        </details>
+    </details>
 
-    </div>
+</div>
+```
 
 </nav>
 
@@ -255,189 +257,190 @@
 
 <form id="submission-form" novalidate>
 
-    <div class="form-group">
-        <label for="candidate">
-            Candidat
-        </label>
+```
+<div class="form-group">
+    <label for="candidate">
+        Candidat
+    </label>
 
+    <input
+        type="text"
+        id="candidate"
+        name="candidate"
+        placeholder="Nom du candidat"
+        autocomplete="off"
+        maxlength="150"
+        required
+    >
+</div>
+
+
+<div class="form-group">
+    <label for="party">
+        Parti
+    </label>
+
+    <input
+        type="text"
+        id="party"
+        name="party"
+        placeholder="Parti politique"
+        autocomplete="off"
+        maxlength="150"
+        required
+    >
+</div>
+
+
+<div class="form-group">
+    <label for="riding">
+        Circonscription
+    </label>
+
+    <input
+        type="text"
+        id="riding"
+        name="riding"
+        placeholder="Circonscription"
+        autocomplete="off"
+        maxlength="150"
+        required
+    >
+</div>
+
+
+<div class="form-group">
+    <label for="badge">
+        Badge proposé
+    </label>
+
+    <input
+        type="text"
+        id="badge"
+        name="badge"
+        placeholder="Nom du badge"
+        autocomplete="off"
+        maxlength="150"
+        required
+    >
+</div>
+
+
+<div class="form-group">
+    <label for="description">
+        Pourquoi ce badge?
+    </label>
+
+    <textarea
+        id="description"
+        name="description"
+        rows="6"
+        maxlength="5000"
+        placeholder="Décrivez les propos, gestes ou positions qui justifient votre proposition."
+        required
+    ></textarea>
+</div>
+
+
+<div class="form-group">
+    <label for="source">
+        Source
+    </label>
+
+    <input
+        type="url"
+        id="source"
+        name="source"
+        placeholder="https://..."
+        maxlength="2000"
+        required
+    >
+</div>
+
+
+<div class="form-group">
+    <label for="date">
+        Date de la source
+    </label>
+
+    <input
+        type="date"
+        id="date"
+        name="date"
+    >
+</div>
+
+
+<div class="form-group">
+    <label for="comment">
+        Commentaire supplémentaire
+    </label>
+
+    <textarea
+        id="comment"
+        name="comment"
+        rows="4"
+        maxlength="3000"
+        placeholder="Information supplémentaire, contexte, autres sources, etc."
+    ></textarea>
+</div>
+
+
+<div class="form-group checkbox-group">
+
+    <label>
         <input
-            type="text"
-            id="candidate"
-            name="candidate"
-            placeholder="Nom du candidat"
-            autocomplete="off"
-            maxlength="150"
+            type="checkbox"
+            id="publication"
+            name="publication"
             required
         >
-    </div>
+
+        J'accepte que la rédaction se réserve le droit de publier,
+        en tout ou en partie, les commentaires et informations
+        que je transmets dans le cadre de cette soumission.
+    </label>
+
+</div>
 
 
-    <div class="form-group">
-        <label for="party">
-            Parti
-        </label>
+<div
+    style="
+        position: absolute;
+        left: -10000px;
+        top: auto;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+    "
+    aria-hidden="true"
+>
 
-        <input
-            type="text"
-            id="party"
-            name="party"
-            placeholder="Parti politique"
-            autocomplete="off"
-            maxlength="150"
-            required
-        >
-    </div>
+    <label for="website">
+        Ne pas remplir ce champ
+    </label>
 
-
-    <div class="form-group">
-        <label for="riding">
-            Circonscription
-        </label>
-
-        <input
-            type="text"
-            id="riding"
-            name="riding"
-            placeholder="Circonscription"
-            autocomplete="off"
-            maxlength="150"
-            required
-        >
-    </div>
-
-
-    <div class="form-group">
-        <label for="badge">
-            Badge proposé
-        </label>
-
-        <input
-            type="text"
-            id="badge"
-            name="badge"
-            placeholder="Nom du badge"
-            autocomplete="off"
-            maxlength="150"
-            required
-        >
-    </div>
-
-
-    <div class="form-group">
-        <label for="description">
-            Pourquoi ce badge?
-        </label>
-
-        <textarea
-            id="description"
-            name="description"
-            rows="6"
-            maxlength="5000"
-            placeholder="Décrivez les propos, gestes ou positions qui justifient votre proposition."
-            required
-        ></textarea>
-    </div>
-
-
-    <div class="form-group">
-        <label for="source">
-            Source
-        </label>
-
-        <input
-            type="url"
-            id="source"
-            name="source"
-            placeholder="https://..."
-            maxlength="2000"
-            required
-        >
-    </div>
-
-
-    <div class="form-group">
-        <label for="date">
-            Date de la source
-        </label>
-
-        <input
-            type="date"
-            id="date"
-            name="date"
-        >
-    </div>
-
-
-    <div class="form-group">
-        <label for="comment">
-            Commentaire supplémentaire
-        </label>
-
-        <textarea
-            id="comment"
-            name="comment"
-            rows="4"
-            maxlength="3000"
-            placeholder="Information supplémentaire, contexte, autres sources, etc."
-        ></textarea>
-    </div>
-
-
-    <div class="form-group checkbox-group">
-
-        <label>
-            <input
-                type="checkbox"
-                id="publication"
-                name="publication"
-                required
-            >
-
-            J'accepte que la rédaction se réserve le droit de publier,
-            en tout ou en partie, les commentaires et informations
-            que je transmets dans le cadre de cette soumission.
-        </label>
-
-    </div>
-
-
-    <div
-        style="
-            position: absolute;
-            left: -10000px;
-            top: auto;
-            width: 1px;
-            height: 1px;
-            overflow: hidden;
-        "
-        aria-hidden="true"
+    <input
+        type="text"
+        id="website"
+        name="website"
+        tabindex="-1"
+        autocomplete="off"
     >
 
-        <label for="website">
-            Ne pas remplir ce champ
-        </label>
-
-        <input
-            type="text"
-            id="website"
-            name="website"
-            tabindex="-1"
-            autocomplete="off"
-        >
-
-    </div>
+</div>
 
 
-    <button
-        type="submit"
-        class="button submit-button"
-        id="submit-button"
-    >
-        Préparer la soumission
-    </button>
+<button
+    type="submit"
+    class="button submit-button"
+    id="submit-button"
+>
+    Envoyer la soumission
+</button>
+```
 
 </form>
-
 
 <div
     id="confirmation"
@@ -445,19 +448,16 @@
     style="display: none;"
 >
 
-    <h2>Soumission préparée</h2>
+```
+<h2>Soumission préparée</h2>
 
-    <p>
-        Votre soumission a été préparée.
-    </p>
-
-    <p>
-        Dans cette version prototype du site, aucune donnée
-        n'est transmise ni enregistrée automatiquement.
-    </p>
+<p>
+    Votre courriel de soumission a été préparé.
+    Il ne reste qu'à l'envoyer dans votre logiciel de messagerie.
+</p>
+```
 
 </div>
-
 
 <div
     id="form-error"
@@ -465,7 +465,9 @@
     style="display: none;"
 >
 
-    <p id="form-error-text"></p>
+```
+<p id="form-error-text"></p>
+```
 
 </div>
 
@@ -754,10 +756,64 @@ formulaire.addEventListener(
             true;
 
 
-        console.log(
-            "Soumission préparée :",
-            donnees
-        );
+        const sujet =
+            "Soumission de badge — " +
+            donnees.candidate;
+
+
+        const corps =
+            "CANDIDAT\n" +
+            donnees.candidate +
+            "\n\n" +
+
+            "PARTI\n" +
+            donnees.party +
+            "\n\n" +
+
+            "CIRCONSCRIPTION\n" +
+            donnees.riding +
+            "\n\n" +
+
+            "BADGE PROPOSÉ\n" +
+            donnees.badge +
+            "\n\n" +
+
+            "POURQUOI CE BADGE?\n" +
+            donnees.description +
+            "\n\n" +
+
+            "SOURCE\n" +
+            donnees.source +
+            "\n\n" +
+
+            "DATE DE LA SOURCE\n" +
+            (
+                donnees.date ||
+                "Non précisée"
+            ) +
+            "\n\n" +
+
+            "COMMENTAIRE SUPPLÉMENTAIRE\n" +
+            (
+                donnees.comment ||
+                "Aucun"
+            ) +
+            "\n\n" +
+
+            "AUTORISATION DE PUBLICATION\n" +
+            "Oui";
+
+
+        const lienCourriel =
+            "mailto:contact@discredit125.com" +
+            "?subject=" +
+            encodeURIComponent(
+                sujet
+            ) +
+            "&body=" +
+            encodeURIComponent(
+                corps
+            );
 
 
         formulaire.style.display =
@@ -766,6 +822,10 @@ formulaire.addEventListener(
 
         confirmation.style.display =
             "block";
+
+
+        window.location.href =
+            lienCourriel;
 
     }
 );

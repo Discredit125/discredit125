@@ -139,100 +139,102 @@
 <header class="site-header">
     <div class="header-inner">
 
-    <a href="/" class="logo">
-        DISCRÉDIT <span>125</span>
-    </a>
+```
+<a href="/" class="logo">
+    DISCRÉDIT <span>125</span>
+</a>
 
-    <nav class="main-nav">
+<nav class="main-nav">
 
-        <!-- DESKTOP -->
-        <div class="nav-desktop">
+    <!-- DESKTOP -->
+    <div class="nav-desktop">
 
-            <a href="/">
-                Accueil
-            </a>
+        <a href="/">
+            Accueil
+        </a>
 
-            <a href="/personnes.html">
-                Candidats
-            </a>
+        <a href="/personnes.html">
+            Candidats
+        </a>
 
-            <a href="/badges.html">
-                Badges
-            </a>
+        <a href="/badges.html">
+            Badges
+        </a>
 
-            <a href="/statuts.html">
-                Statuts
-            </a>
+        <a href="/statuts.html">
+            Statuts
+        </a>
 
-            <a href="/trophees.html">
-                Trophées
-            </a>
+        <a href="/trophees.html">
+            Trophées
+        </a>
 
-            <a href="/soumettre.html">
-                Soumettre
-            </a>
+        <a href="/soumettre.html">
+            Soumettre
+        </a>
 
-            <a href="/erreur.html" class="active">
-                Signaler
-            </a>
+        <a href="/erreur.html" class="active">
+            Signaler
+        </a>
 
-            <a href="/a-propos.html">
-                À propos
-            </a>
+        <a href="/a-propos.html">
+            À propos
+        </a>
 
-        </div>
+    </div>
 
 
-        <!-- MOBILE -->
-        <div class="nav-mobile">
+    <!-- MOBILE -->
+    <div class="nav-mobile">
 
-            <a href="/">
-                Accueil
-            </a>
+        <a href="/">
+            Accueil
+        </a>
 
-            <a href="/personnes.html">
-                Candidats
-            </a>
+        <a href="/personnes.html">
+            Candidats
+        </a>
 
-            <a href="/badges.html">
-                Badges
-            </a>
+        <a href="/badges.html">
+            Badges
+        </a>
 
-            <details class="nav-more">
+        <details class="nav-more">
 
-                <summary>
-                    Plus
-                </summary>
+            <summary>
+                Plus
+            </summary>
 
-                <div class="nav-more-menu">
+            <div class="nav-more-menu">
 
-                    <a href="/statuts.html">
-                        Statuts
-                    </a>
+                <a href="/statuts.html">
+                    Statuts
+                </a>
 
-                    <a href="/trophees.html">
-                        Trophées
-                    </a>
+                <a href="/trophees.html">
+                    Trophées
+                </a>
 
-                    <a href="/soumettre.html">
-                        Soumettre
-                    </a>
+                <a href="/soumettre.html">
+                    Soumettre
+                </a>
 
-                    <a href="/erreur.html" class="active">
-                        Signaler
-                    </a>
+                <a href="/erreur.html" class="active">
+                    Signaler
+                </a>
 
-                    <a href="/a-propos.html">
-                        À propos
-                    </a>
+                <a href="/a-propos.html">
+                    À propos
+                </a>
 
-                </div>
+            </div>
 
-            </details>
+        </details>
 
-        </div>
+    </div>
 
-    </nav>
+</nav>
+```
 
 </div>
 
@@ -242,229 +244,229 @@
 
 <section class="page-header">
 
-    <h1>Signaler une erreur</h1>
+```
+<h1>Signaler une erreur</h1>
 
-    <p>
-        Vous avez repéré une erreur, une information inexacte,
-        une attribution discutable ou une source problématique?
-        Faites-nous-le savoir.
-    </p>
+<p>
+    Vous avez repéré une erreur, une information inexacte,
+    une attribution discutable ou une source problématique?
+    Faites-nous-le savoir.
+</p>
+```
 
 </section>
 
-
 <section class="content-card">
 
-    <form id="error-form" novalidate>
+```
+<form id="error-form" novalidate>
 
-        <div class="form-group">
-            <label for="candidate">
-                Candidat concerné
-            </label>
+    <div class="form-group">
+        <label for="candidate">
+            Candidat concerné
+        </label>
 
+        <input
+            type="text"
+            id="candidate"
+            name="candidate"
+            placeholder="Nom du candidat"
+            autocomplete="off"
+            maxlength="150"
+            required
+        >
+    </div>
+
+
+    <div class="form-group">
+        <label for="party">
+            Parti
+        </label>
+
+        <input
+            type="text"
+            id="party"
+            name="party"
+            placeholder="Parti politique"
+            autocomplete="off"
+            maxlength="150"
+        >
+    </div>
+
+
+    <div class="form-group">
+        <label for="riding">
+            Circonscription
+        </label>
+
+        <input
+            type="text"
+            id="riding"
+            name="riding"
+            placeholder="Circonscription"
+            autocomplete="off"
+            maxlength="150"
+        >
+    </div>
+
+
+    <div class="form-group">
+        <label for="badge">
+            Badge concerné
+        </label>
+
+        <input
+            type="text"
+            id="badge"
+            name="badge"
+            placeholder="Nom du badge, si applicable"
+            autocomplete="off"
+            maxlength="150"
+        >
+    </div>
+
+
+    <div class="form-group">
+        <label for="problem">
+            Description du problème
+        </label>
+
+        <textarea
+            id="problem"
+            name="problem"
+            rows="6"
+            maxlength="5000"
+            placeholder="Expliquez précisément ce qui vous semble incorrect : fait erroné, mauvaise attribution, source inadéquate, information retirée, etc."
+            required
+        ></textarea>
+    </div>
+
+
+    <div class="form-group">
+        <label for="source">
+            Source ou preuve
+        </label>
+
+        <input
+            type="url"
+            id="source"
+            name="source"
+            placeholder="https://..."
+            maxlength="2000"
+        >
+    </div>
+
+
+    <div class="form-group">
+        <label for="date">
+            Date de la source
+        </label>
+
+        <input
+            type="date"
+            id="date"
+            name="date"
+        >
+    </div>
+
+
+    <div class="form-group">
+        <label for="comment">
+            Commentaire supplémentaire
+        </label>
+
+        <textarea
+            id="comment"
+            name="comment"
+            rows="4"
+            maxlength="3000"
+            placeholder="Toute information supplémentaire pouvant aider à vérifier le signalement."
+        ></textarea>
+    </div>
+
+
+    <div class="form-group checkbox-group">
+
+        <label>
             <input
-                type="text"
-                id="candidate"
-                name="candidate"
-                placeholder="Nom du candidat"
-                autocomplete="off"
-                maxlength="150"
+                type="checkbox"
+                id="publication"
+                name="publication"
                 required
             >
-        </div>
 
-
-        <div class="form-group">
-            <label for="party">
-                Parti
-            </label>
-
-            <input
-                type="text"
-                id="party"
-                name="party"
-                placeholder="Parti politique"
-                autocomplete="off"
-                maxlength="150"
-            >
-        </div>
-
-
-        <div class="form-group">
-            <label for="riding">
-                Circonscription
-            </label>
-
-            <input
-                type="text"
-                id="riding"
-                name="riding"
-                placeholder="Circonscription"
-                autocomplete="off"
-                maxlength="150"
-            >
-        </div>
-
-
-        <div class="form-group">
-            <label for="badge">
-                Badge concerné
-            </label>
-
-            <input
-                type="text"
-                id="badge"
-                name="badge"
-                placeholder="Nom du badge, si applicable"
-                autocomplete="off"
-                maxlength="150"
-            >
-        </div>
-
-
-        <div class="form-group">
-            <label for="problem">
-                Description du problème
-            </label>
-
-            <textarea
-                id="problem"
-                name="problem"
-                rows="6"
-                maxlength="5000"
-                placeholder="Expliquez précisément ce qui vous semble incorrect : fait erroné, mauvaise attribution, source inadéquate, information retirée, etc."
-                required
-            ></textarea>
-        </div>
-
-
-        <div class="form-group">
-            <label for="source">
-                Source ou preuve
-            </label>
-
-            <input
-                type="url"
-                id="source"
-                name="source"
-                placeholder="https://..."
-                maxlength="2000"
-            >
-        </div>
-
-
-        <div class="form-group">
-            <label for="date">
-                Date de la source
-            </label>
-
-            <input
-                type="date"
-                id="date"
-                name="date"
-            >
-        </div>
-
-
-        <div class="form-group">
-            <label for="comment">
-                Commentaire supplémentaire
-            </label>
-
-            <textarea
-                id="comment"
-                name="comment"
-                rows="4"
-                maxlength="3000"
-                placeholder="Toute information supplémentaire pouvant aider à vérifier le signalement."
-            ></textarea>
-        </div>
-
-
-        <div class="form-group checkbox-group">
-
-            <label>
-                <input
-                    type="checkbox"
-                    id="verification"
-                    name="verification"
-                    required
-                >
-
-                Je confirme que les informations fournies sont exactes
-                au meilleur de ma connaissance.
-            </label>
-
-        </div>
-
-
-        <div
-            style="
-                position: absolute;
-                left: -10000px;
-                top: auto;
-                width: 1px;
-                height: 1px;
-                overflow: hidden;
-            "
-            aria-hidden="true"
-        >
-
-            <label for="website">
-                Ne pas remplir ce champ
-            </label>
-
-            <input
-                type="text"
-                id="website"
-                name="website"
-                tabindex="-1"
-                autocomplete="off"
-            >
-
-        </div>
-
-
-        <button
-            type="submit"
-            class="button submit-button"
-            id="submit-button"
-        >
-            Préparer le signalement
-        </button>
-
-    </form>
-
-
-    <div
-        id="confirmation"
-        class="message"
-        style="display: none;"
-    >
-
-        <h2>Signalement préparé</h2>
-
-        <p>
-            Votre signalement a été préparé.
-        </p>
-
-        <p>
-            Dans cette version prototype du site, aucune donnée
-            n'est transmise ni enregistrée automatiquement.
-        </p>
+            J'accepte que la rédaction se réserve le droit de publier,
+            en tout ou en partie, les commentaires et informations
+            que je transmets dans le cadre de ce signalement.
+        </label>
 
     </div>
 
 
     <div
-        id="form-error"
-        class="message"
-        style="display: none;"
+        style="
+            position: absolute;
+            left: -10000px;
+            top: auto;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        "
+        aria-hidden="true"
     >
 
-        <p id="form-error-text"></p>
+        <label for="website">
+            Ne pas remplir ce champ
+        </label>
+
+        <input
+            type="text"
+            id="website"
+            name="website"
+            tabindex="-1"
+            autocomplete="off"
+        >
 
     </div>
+
+
+    <button
+        type="submit"
+        class="button submit-button"
+        id="submit-button"
+    >
+        Envoyer le signalement
+    </button>
+
+</form>
+
+
+<div
+    id="confirmation"
+    class="message"
+    style="display: none;"
+>
+
+    <h2>Signalement préparé</h2>
+
+    <p>
+        Votre courriel de signalement a été préparé.
+        Il ne reste qu'à l'envoyer dans votre logiciel de messagerie.
+    </p>
+
+</div>
+
+
+<div
+    id="form-error"
+    class="message"
+    style="display: none;"
+>
+
+    <p id="form-error-text"></p>
+
+</div>
+```
 
 </section>
 
@@ -474,9 +476,11 @@
 
 <div class="container">
 
-    <p>
-        Discrédit 125 — Projet satirique et humoristique.
-    </p>
+```
+<p>
+    Discrédit 125 — Projet satirique et humoristique.
+</p>
+```
 
 </div>
 
@@ -598,8 +602,6 @@ formulaire.addEventListener(
 
         /*
          * 1. HONEYPOT
-         *
-         * Un humain ne doit jamais remplir ce champ.
          */
 
         if (
@@ -668,10 +670,7 @@ formulaire.addEventListener(
 
 
         /*
-         * 5. VALIDATION SUPPLÉMENTAIRE DE LA SOURCE
-         *
-         * La source est facultative.
-         * Si elle est fournie, elle doit être une URL valide.
+         * 5. VALIDATION DE LA SOURCE
          */
 
         const source =
@@ -764,10 +763,10 @@ formulaire.addEventListener(
                     .value
                     .trim(),
 
-            verification:
+            publication:
                 document
                     .getElementById(
-                        "verification"
+                        "publication"
                     )
                     .checked
 
@@ -787,17 +786,79 @@ formulaire.addEventListener(
 
 
         /*
-         * Pour le moment, les données restent
-         * uniquement dans le navigateur.
-         *
-         * Plus tard, cet endroit sera remplacé
-         * par l'envoi sécurisé vers le serveur.
+         * 8. PRÉPARER LE COURRIEL
          */
 
-        console.log(
-            "Signalement préparé :",
-            donnees
-        );
+        const sujet =
+            "Signalement d'une erreur — " +
+            donnees.candidate;
+
+
+        const corps =
+            "CANDIDAT CONCERNÉ\n" +
+            donnees.candidate +
+            "\n\n" +
+
+            "PARTI\n" +
+            (
+                donnees.party ||
+                "Non précisé"
+            ) +
+            "\n\n" +
+
+            "CIRCONSCRIPTION\n" +
+            (
+                donnees.riding ||
+                "Non précisée"
+            ) +
+            "\n\n" +
+
+            "BADGE CONCERNÉ\n" +
+            (
+                donnees.badge ||
+                "Non précisé"
+            ) +
+            "\n\n" +
+
+            "DESCRIPTION DU PROBLÈME\n" +
+            donnees.problem +
+            "\n\n" +
+
+            "SOURCE OU PREUVE\n" +
+            (
+                donnees.source ||
+                "Aucune"
+            ) +
+            "\n\n" +
+
+            "DATE DE LA SOURCE\n" +
+            (
+                donnees.date ||
+                "Non précisée"
+            ) +
+            "\n\n" +
+
+            "COMMENTAIRE SUPPLÉMENTAIRE\n" +
+            (
+                donnees.comment ||
+                "Aucun"
+            ) +
+            "\n\n" +
+
+            "AUTORISATION DE PUBLICATION\n" +
+            "Oui";
+
+
+        const lienCourriel =
+            "mailto:contact@discredit125.com" +
+            "?subject=" +
+            encodeURIComponent(
+                sujet
+            ) +
+            "&body=" +
+            encodeURIComponent(
+                corps
+            );
 
 
         formulaire.style.display =
@@ -806,6 +867,10 @@ formulaire.addEventListener(
 
         confirmation.style.display =
             "block";
+
+
+        window.location.href =
+            lienCourriel;
 
     }
 );
