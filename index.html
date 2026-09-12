@@ -12,6 +12,29 @@
 
     <style>
 
+        /* =========================================================
+           NAVIGATION
+        ========================================================= */
+
+        .nav-desktop {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .nav-mobile {
+            display: none;
+        }
+
+        .nav-mobile summary {
+            display: none;
+        }
+
+
+        /* =========================================================
+           MODALE
+        ========================================================= */
+
         .statut-modal {
             position: fixed;
             inset: 0;
@@ -69,7 +92,10 @@
             overflow-wrap: anywhere;
         }
 
-        /* DERNIERS BADGES */
+
+        /* =========================================================
+           DERNIERS BADGES
+        ========================================================= */
 
         .recent-badge {
             display: flex;
@@ -118,6 +144,109 @@
             color: #666;
             font-size: 0.85rem;
         }
+
+
+        /* =========================================================
+           MOBILE
+        ========================================================= */
+
+        @media (max-width: 800px) {
+
+            .nav-desktop {
+                display: none;
+            }
+
+            .nav-mobile {
+                display: block;
+                position: relative;
+            }
+
+            .nav-mobile summary {
+                display: block;
+                list-style: none;
+                cursor: pointer;
+
+                color: #fff;
+
+                font-size: 15px;
+                font-weight: bold;
+
+                white-space: nowrap;
+            }
+
+            .nav-mobile summary::-webkit-details-marker {
+                display: none;
+            }
+
+            .nav-mobile summary::after {
+                content: "⌄";
+
+                display: inline-block;
+
+                margin-left: 5px;
+
+                font-size: 13px;
+                line-height: 1;
+
+                transform: translateY(-1px);
+            }
+
+            .nav-mobile[open] summary::after {
+                transform: translateY(1px);
+            }
+
+            .nav-mobile summary:hover {
+                color: var(--bleu-discredit);
+            }
+
+            .nav-mobile .nav-more-menu {
+                position: absolute;
+
+                top: calc(100% + 10px);
+                right: 0;
+
+                z-index: 200;
+
+                display: flex;
+                flex-direction: column;
+
+                gap: 0;
+
+                min-width: 170px;
+
+                padding: 8px 0;
+
+                background: var(--noir);
+
+                border: 1px solid #333;
+                border-radius: 8px;
+
+                box-shadow:
+                    0 8px 25px rgba(0, 0, 0, 0.35);
+            }
+
+            .nav-mobile .nav-more-menu a {
+                display: block;
+
+                padding: 10px 14px;
+
+                color: #fff;
+
+                text-decoration: none;
+
+                font-size: 14px;
+                font-weight: bold;
+
+                white-space: nowrap;
+            }
+
+            .nav-mobile .nav-more-menu a:hover {
+                background: #222;
+                color: var(--bleu-discredit);
+            }
+
+        }
+
 
         @media (max-width: 700px) {
 
@@ -168,21 +297,74 @@
 
         <nav class="main-nav">
 
-            <a href="/">Accueil</a>
-            <a href="/personnes.html">Candidats</a>
-            <a href="/badges.html">Badges</a>
+            <!-- DESKTOP -->
 
-            <details class="nav-more">
+            <div class="nav-desktop">
 
-                <summary>Plus ▾</summary>
+                <a href="/">
+                    Accueil
+                </a>
+
+                <a href="/personnes.html">
+                    Candidats
+                </a>
+
+                <a href="/badges.html">
+                    Badges
+                </a>
+
+                <a href="/statuts.html">
+                    Statuts
+                </a>
+
+                <a href="/trophees.html">
+                    Trophées
+                </a>
+
+                <a href="/soumettre.html">
+                    Soumettre
+                </a>
+
+                <a href="/erreur.html">
+                    Signaler
+                </a>
+
+                <a href="/a-propos.html">
+                    À propos
+                </a>
+
+            </div>
+
+
+            <!-- MOBILE -->
+
+            <details class="nav-more nav-mobile">
+
+                <summary>
+                    Plus
+                </summary>
 
                 <div class="nav-more-menu">
 
-                    <a href="/statuts.html">Statuts</a>
-                    <a href="/trophees.html">Trophées</a>
-                    <a href="/soumettre.html">Soumettre</a>
-                    <a href="/erreur.html">Signaler</a>
-                    <a href="/a-propos.html">À propos</a>
+                    <a href="/statuts.html">
+                        Statuts
+                    </a>
+
+                    <a href="/trophees.html">
+                        Trophées
+                    </a>
+
+                    <a href="/soumettre.html">
+                        Soumettre
+                    </a>
+
+                    <a href="/erreur.html">
+                        Signaler
+                    </a>
+
+                    <a href="/a-propos.html">
+                        À propos
+                    </a>
 
                 </div>
 
