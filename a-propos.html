@@ -6,11 +6,131 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-```
 <title>À propos — Discrédit 125</title>
 
 <link rel="stylesheet" href="/styles.css">
-```
+
+<style>
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.main-nav .nav-desktop {
+    display: flex !important;
+    align-items: center;
+    gap: 22px;
+}
+
+.main-nav .nav-mobile {
+    display: none !important;
+}
+
+.main-nav .nav-mobile summary {
+    display: none !important;
+}
+
+@media (max-width: 800px) {
+
+    .main-nav .nav-desktop {
+        display: none !important;
+    }
+
+    .main-nav .nav-mobile {
+        display: flex !important;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+        position: relative;
+        white-space: nowrap;
+    }
+
+    .main-nav .nav-mobile > a {
+        display: block !important;
+        padding: 8px 4px;
+        color: #fff;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    .main-nav .nav-mobile > a:hover,
+    .main-nav .nav-mobile > a.active {
+        color: var(--bleu-discredit);
+    }
+
+    .main-nav .nav-mobile .nav-more {
+        position: relative;
+    }
+
+    .main-nav .nav-mobile summary {
+        display: block !important;
+        list-style: none;
+        cursor: pointer;
+        color: #fff;
+        padding: 8px 4px;
+        font-size: 14px;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    .main-nav .nav-mobile summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .main-nav .nav-mobile summary::after {
+        content: "⌄";
+        display: inline-block;
+        margin-left: 5px;
+        font-size: 13px;
+        line-height: 1;
+        transform: translateY(-1px);
+    }
+
+    .main-nav .nav-mobile .nav-more[open] summary::after {
+        transform: translateY(1px);
+    }
+
+    .main-nav .nav-mobile summary:hover {
+        color: var(--bleu-discredit);
+    }
+
+    .main-nav .nav-mobile .nav-more-menu {
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        z-index: 200;
+        display: flex !important;
+        flex-direction: column;
+        gap: 0;
+        min-width: 170px;
+        padding: 8px 0;
+        background: var(--noir);
+        border: 1px solid #333;
+        border-radius: 8px;
+        box-shadow:
+            0 8px 25px rgba(0, 0, 0, 0.35);
+    }
+
+    .main-nav .nav-mobile .nav-more-menu a {
+        display: block !important;
+        padding: 10px 14px;
+        color: #fff;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    .main-nav .nav-mobile .nav-more-menu a:hover {
+        background: #222;
+        color: var(--bleu-discredit);
+    }
+
+}
+
+</style>
 
 </head>
 
@@ -18,7 +138,6 @@
 
 <header class="site-header">
 
-```
 <div class="header-inner">
 
     <a href="/" class="logo">
@@ -27,30 +146,96 @@
 
     <nav class="main-nav">
 
-        <a href="/">Accueil</a>
-        <a href="/personnes.html">Candidats</a>
-        <a href="/badges.html">Badges</a>
+        <!-- DESKTOP -->
+        <div class="nav-desktop">
 
-        <details class="nav-more">
+            <a href="/">
+                Accueil
+            </a>
 
-            <summary>Plus ▾</summary>
+            <a href="/personnes.html">
+                Candidats
+            </a>
 
-            <div class="nav-more-menu">
+            <a href="/badges.html">
+                Badges
+            </a>
 
-                <a href="/statuts.html">Statuts</a>
-                <a href="/trophees.html">Trophées</a>
-                <a href="/soumettre.html">Soumettre</a>
-                <a href="/erreur.html">Signaler</a>
-                <a href="/a-propos.html">À propos</a>
+            <a href="/statuts.html">
+                Statuts
+            </a>
 
-            </div>
+            <a href="/trophees.html">
+                Trophées
+            </a>
 
-        </details>
+            <a href="/soumettre.html">
+                Soumettre
+            </a>
+
+            <a href="/erreur.html">
+                Signaler
+            </a>
+
+            <a href="/a-propos.html" class="active">
+                À propos
+            </a>
+
+        </div>
+
+
+        <!-- MOBILE -->
+        <div class="nav-mobile">
+
+            <a href="/">
+                Accueil
+            </a>
+
+            <a href="/personnes.html">
+                Candidats
+            </a>
+
+            <a href="/badges.html">
+                Badges
+            </a>
+
+            <details class="nav-more">
+
+                <summary>
+                    Plus
+                </summary>
+
+                <div class="nav-more-menu">
+
+                    <a href="/statuts.html">
+                        Statuts
+                    </a>
+
+                    <a href="/trophees.html">
+                        Trophées
+                    </a>
+
+                    <a href="/soumettre.html">
+                        Soumettre
+                    </a>
+
+                    <a href="/erreur.html">
+                        Signaler
+                    </a>
+
+                    <a href="/a-propos.html" class="active">
+                        À propos
+                    </a>
+
+                </div>
+
+            </details>
+
+        </div>
 
     </nav>
 
 </div>
-```
 
 </header>
 
@@ -58,19 +243,16 @@
 
 <section class="page-header">
 
-```
 <h1>À propos de Discrédit 125</h1>
 
 <p>
     Un répertoire satirique des candidats aux élections québécoises.
 </p>
-```
 
 </section>
 
 <section class="content-card">
 
-```
 <h2>Le projet</h2>
 
 <p>
@@ -201,8 +383,34 @@
 </p>
 
 
-<h2>Vous avez trouvé quelque chose?</h2>
+ <h2>Vous avez trouvé quelque chose?</h2>
 
-<p>
-    Vous p
-```
+    <p>
+        Vous pouvez également proposer une nouvelle attribution,
+        accompagnée de sa source et du contexte pertinent.
+    </p>
+
+    <p>
+        <a href="/soumettre.html" class="button">
+            Soumettre une proposition
+        </a>
+    </p>
+
+</section>
+
+</main>
+
+<footer class="site-footer">
+
+<div class="container">
+
+    <p>
+        Discrédit 125 — Projet satirique et humoristique.
+    </p>
+
+</div>
+
+</footer>
+
+</body>
+</html>

@@ -21,6 +21,125 @@ content="width=device-width, initial-scale=1.0"
 <style>
 
     /* =====================================================
+       NAVIGATION
+       ===================================================== */
+
+    .main-nav .nav-desktop {
+        display: flex !important;
+        align-items: center;
+        gap: 22px;
+    }
+
+    .main-nav .nav-mobile {
+        display: none !important;
+    }
+
+    .main-nav .nav-mobile summary {
+        display: none !important;
+    }
+
+    @media (max-width: 800px) {
+
+        .main-nav .nav-desktop {
+            display: none !important;
+        }
+
+        .main-nav .nav-mobile {
+            display: flex !important;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .main-nav .nav-mobile > a {
+            display: block !important;
+            padding: 8px 4px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .main-nav .nav-mobile > a:hover,
+        .main-nav .nav-mobile > a.active {
+            color: var(--bleu-discredit);
+        }
+
+        .main-nav .nav-mobile .nav-more {
+            position: relative;
+        }
+
+        .main-nav .nav-mobile summary {
+            display: block !important;
+            list-style: none;
+            cursor: pointer;
+            color: #fff;
+            padding: 8px 4px;
+            font-size: 14px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .main-nav .nav-mobile summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .main-nav .nav-mobile summary::after {
+            content: "⌄";
+            display: inline-block;
+            margin-left: 5px;
+            font-size: 13px;
+            line-height: 1;
+            transform: translateY(-1px);
+        }
+
+        .main-nav .nav-mobile[open] summary::after {
+            transform: translateY(1px);
+        }
+
+        .main-nav .nav-mobile summary:hover {
+            color: var(--bleu-discredit);
+        }
+
+        .main-nav .nav-mobile .nav-more-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            z-index: 200;
+            display: flex !important;
+            flex-direction: column;
+            gap: 0;
+            min-width: 170px;
+            padding: 8px 0;
+            background: var(--noir);
+            border: 1px solid #333;
+            border-radius: 8px;
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.35);
+        }
+
+        .main-nav .nav-mobile .nav-more-menu a {
+            display: block !important;
+            padding: 10px 14px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .main-nav .nav-mobile .nav-more-menu a:hover {
+            background: #222;
+            color: var(--bleu-discredit);
+        }
+
+    }
+
+
+    /* =====================================================
        CATÉGORIES
        ===================================================== */
 
@@ -245,20 +364,65 @@ DISCRÉDIT <span>125</span>
 
 <nav class="main-nav">
 
-<a href="/">Accueil</a>
+<!-- DESKTOP -->
+
+<div class="nav-desktop">
+
+<a href="/">
+    Accueil
+</a>
 
 <a href="/personnes.html">
     Candidats
 </a>
 
-<a href="/badges.html">
+<a href="/badges.html" class="active">
+    Badges
+</a>
+
+<a href="/statuts.html">
+    Statuts
+</a>
+
+<a href="/trophees.html">
+    Trophées
+</a>
+
+<a href="/soumettre.html">
+    Soumettre
+</a>
+
+<a href="/erreur.html">
+    Signaler
+</a>
+
+<a href="/a-propos.html">
+    À propos
+</a>
+
+</div>
+
+
+<!-- MOBILE -->
+
+<div class="nav-mobile">
+
+<a href="/">
+    Accueil
+</a>
+
+<a href="/personnes.html">
+    Candidats
+</a>
+
+<a href="/badges.html" class="active">
     Badges
 </a>
 
 <details class="nav-more">
 
 <summary>
-    Plus ▾
+    Plus
 </summary>
 
 <div class="nav-more-menu">
@@ -286,6 +450,8 @@ DISCRÉDIT <span>125</span>
 </div>
 
 </details>
+
+</div>
 
 </nav>
 
