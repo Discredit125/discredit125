@@ -169,6 +169,23 @@ MENU PLUS — STRUCTURE
     display: none;
 }
 
+.nav-more summary::after {
+    content: "⌄";
+
+    display: inline-block;
+
+    margin-left: 5px;
+
+    font-size: 13px;
+    line-height: 1;
+
+    transform: translateY(-1px);
+}
+
+.nav-more[open] summary::after {
+    transform: translateY(1px);
+}
+
 .nav-more summary:hover {
     color: var(--bleu-discredit);
 }
@@ -1987,6 +2004,11 @@ RESPONSIVE — TÉLÉPHONE
         font-size: 12px;
 
         padding: 7px 2px;
+    }
+
+    .nav-more summary::after {
+        font-size: 11px;
+        margin-left: 3px;
     }
 
     .nav-more-menu {
