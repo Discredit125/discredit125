@@ -143,6 +143,76 @@ HEADER / NAVIGATION
 
 
 /* =========================================================
+MENU PLUS — STRUCTURE
+========================================================= */
+
+.nav-more {
+    position: relative;
+    flex: 0 0 auto;
+}
+
+.nav-more summary {
+    display: none;
+
+    list-style: none;
+    cursor: pointer;
+
+    color: var(--blanc);
+
+    font-size: 15px;
+    font-weight: bold;
+
+    white-space: nowrap;
+}
+
+.nav-more summary::-webkit-details-marker {
+    display: none;
+}
+
+.nav-more summary:hover {
+    color: var(--bleu-discredit);
+}
+
+.nav-more-menu {
+    display: flex;
+    align-items: center;
+
+    gap: 22px;
+
+    padding: 0;
+    margin: 0;
+
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.nav-more-menu a {
+    display: block;
+
+    padding: 0;
+
+    color: var(--blanc);
+
+    text-decoration: none;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    white-space: nowrap;
+
+    border-radius: 0;
+}
+
+.nav-more-menu a:hover,
+.nav-more-menu a.active {
+    background: transparent;
+    color: var(--bleu-discredit);
+}
+
+
+/* =========================================================
 STRUCTURE GÉNÉRALE
 ========================================================= */
 
@@ -1549,6 +1619,14 @@ RESPONSIVE — TABLETTE
     .main-nav a {
         font-size: 14px;
     }
+
+    .nav-more-menu {
+        gap: 16px;
+    }
+
+    .nav-more-menu a {
+        font-size: 14px;
+    }
 }
 
 
@@ -1565,6 +1643,10 @@ RESPONSIVE — TABLETTE
     .main-nav {
         justify-content: flex-end;
 
+        gap: 14px;
+    }
+
+    .nav-more-menu {
         gap: 14px;
     }
 
@@ -1628,21 +1710,98 @@ RESPONSIVE — PETIT ÉCRAN
 
         margin-left: 0;
 
-        display: grid;
+        display: flex;
 
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: center;
+        justify-content: space-between;
 
-        gap: 10px;
+        gap: 8px;
 
-        white-space: normal;
+        white-space: nowrap;
     }
 
-    .main-nav a {
-        white-space: normal;
+    .main-nav > a,
+    .nav-more {
+        flex: 1 1 0;
+        min-width: 0;
+    }
+
+    .main-nav > a {
+        white-space: nowrap;
+
+        text-align: center;
 
         font-size: 14px;
 
-        padding: 4px 0;
+        padding: 8px 4px;
+
+        border-radius: 7px;
+    }
+
+    .nav-more {
+        position: relative;
+    }
+
+    .nav-more summary {
+        display: block;
+
+        text-align: center;
+
+        padding: 8px 4px;
+
+        border-radius: 7px;
+
+        font-size: 14px;
+    }
+
+    .nav-more-menu {
+        position: absolute;
+
+        top: calc(100% + 6px);
+        right: 0;
+
+        display: block;
+
+        min-width: 180px;
+
+        padding: 8px;
+
+        margin: 0;
+
+        background: var(--noir-nav);
+
+        border: 1px solid #333;
+        border-radius: 8px;
+
+        box-shadow:
+            0 8px 20px rgba(0, 0, 0, 0.25);
+
+        z-index: 100;
+    }
+
+    .nav-more-menu a {
+        display: block;
+
+        padding: 9px 12px;
+
+        font-size: 14px;
+
+        white-space: nowrap;
+
+        border-radius: 5px;
+    }
+
+    .nav-more-menu a:hover,
+    .nav-more-menu a.active {
+        background: #292929;
+
+        color: var(--bleu-discredit);
+    }
+
+    .main-nav > a:hover,
+    .main-nav > a.active,
+    .nav-more summary:hover {
+        background: rgba(255, 255, 255, 0.08);
     }
 
     .container {
@@ -1820,12 +1979,21 @@ RESPONSIVE — TÉLÉPHONE
     }
 
     .main-nav {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-
-        gap: 7px 14px;
+        gap: 4px;
     }
 
-    .main-nav a {
+    .main-nav > a,
+    .nav-more summary {
+        font-size: 12px;
+
+        padding: 7px 2px;
+    }
+
+    .nav-more-menu {
+        min-width: 175px;
+    }
+
+    .nav-more-menu a {
         font-size: 13px;
     }
 
