@@ -108,6 +108,31 @@
 </header>
 
 
+<script>
+
+/* ============================================================
+   MASQUER LA NAVIGATION DANS UNE FENÊTRE / IFRAME
+   ============================================================ */
+
+if (window.self !== window.top) {
+
+    const header =
+        document.querySelector(
+            ".site-header"
+        );
+
+    if (header) {
+
+        header.style.display =
+            "none";
+
+    }
+
+}
+
+</script>
+
+
 <main class="container">
 
     <div id="badge-container"></div>
@@ -901,6 +926,7 @@ async function chargerBadge() {
             );
 
 
+
             let maximumSources = 0;
 
 
@@ -959,7 +985,6 @@ async function chargerBadge() {
                 "";
 
 
-
             candidatsAssocies.forEach(
                 personne => {
 
@@ -969,7 +994,6 @@ async function chargerBadge() {
                                 attribution.personne_id ===
                                 personne.personne_id
                         ).length;
-
 
 
                     candidatsContainer.appendChild(

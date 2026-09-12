@@ -429,6 +429,27 @@ alt="Capture d'écran de la source"
 
 
 /* =========================================================
+   CACHER LA NAVIGATION DANS UNE FENÊTRE MODALE
+   ========================================================= */
+
+if (window.self !== window.top) {
+
+    const header =
+        document.querySelector(
+            ".site-header"
+        );
+
+    if (header) {
+
+        header.style.display =
+            "none";
+
+    }
+
+}
+
+
+/* =========================================================
    MODALE — PREUVE IMAGE
    ========================================================= */
 
