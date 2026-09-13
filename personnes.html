@@ -652,6 +652,39 @@ function creerIndexBadges(badges) {
 
 
 /* =========================================================
+   INDEX DES TROPHÉES
+   ========================================================= */
+
+function creerIndexTrophees(
+
+    attributionsTrophees
+
+) {
+
+    return new Map(
+
+        attributionsTrophees.map(
+            trophee => [
+
+                (
+                    trophee.id ||
+                    ""
+                ).trim(),
+
+                (
+                    trophee.nom ||
+                    ""
+                ).trim()
+
+            ]
+        )
+
+    );
+
+}
+
+
+/* =========================================================
    NORMALISATION DES ATTRIBUTIONS
    ========================================================= */
 
@@ -1251,7 +1284,8 @@ function calculerTropheesIndividuels(
     personnes,
     attributions,
     badgeMap,
-    attributionsSources
+    attributionsSources,
+    tropheeMap
 
 ) {
 
@@ -1278,6 +1312,7 @@ function calculerTropheesIndividuels(
                 personneId,
 
                 nom:
+                    tropheeMap.get("T001") ||
                     "Le combo ultime",
 
                 nombre:
@@ -1310,6 +1345,7 @@ function calculerTropheesIndividuels(
                 personneId,
 
                 nom:
+                    tropheeMap.get("T002") ||
                     "Maître Conspi",
 
                 nombre:
@@ -1342,6 +1378,7 @@ function calculerTropheesIndividuels(
                 personneId,
 
                 nom:
+                    tropheeMap.get("T003") ||
                     "Gourou suprême",
 
                 nombre:
@@ -1374,6 +1411,7 @@ function calculerTropheesIndividuels(
                 personneId,
 
                 nom:
+                    tropheeMap.get("T004") ||
                     "Salle de balle dorée",
 
                 nombre:
@@ -1405,6 +1443,7 @@ function calculerTropheesIndividuels(
                 personneId,
 
                 nom:
+                    tropheeMap.get("T005") ||
                     "Grand Champion International de Course",
 
                 nombre:
@@ -1437,6 +1476,7 @@ function calculerTropheesIndividuels(
                 personneId,
 
                 nom:
+                    tropheeMap.get("T006") ||
                     "Prix de la désintégrité",
 
                 nombre:
@@ -1469,6 +1509,7 @@ function calculerTropheesIndividuels(
                 personneId,
 
                 nom:
+                    tropheeMap.get("T007") ||
                     "Grand Inquisiteur",
 
                 nombre:
@@ -1499,6 +1540,7 @@ function calculerTropheesIndividuels(
                 personneId,
 
                 nom:
+                    tropheeMap.get("T008") ||
                     "Grand Champion 2026",
 
                 nombre:
@@ -1640,7 +1682,8 @@ function calculerTropheesPartis(
 
     personnes,
     attributions,
-    badgeMap
+    badgeMap,
+    tropheeMap
 
 ) {
 
@@ -1652,40 +1695,40 @@ function calculerTropheesPartis(
             categorie:
                 CATEGORIES.CONSPI,
 
-            nom:
-                "Parti le plus conspi"
+            id:
+                "T009"
         },
 
         {
             categorie:
                 CATEGORIES.TRUMP,
 
-            nom:
-                "Parti le plus Trump"
+            id:
+                "T010"
         },
 
         {
             categorie:
                 CATEGORIES.SPIRITUEL,
 
-            nom:
-                "Parti le plus perché"
+            id:
+                "T011"
         },
 
         {
             categorie:
                 CATEGORIES.DESINTEGRITE,
 
-            nom:
-                "Parti de la désintégrité"
+            id:
+                "T012"
         },
 
         {
             categorie:
                 CATEGORIES.GUERRE_CULTURELLE,
 
-            nom:
-                "Parti de la guerre culturelle"
+            id:
+                "T013"
         }
 
     ];
@@ -1715,7 +1758,10 @@ function calculerTropheesPartis(
                         parti,
 
                         nom:
-                            definition.nom
+                            tropheeMap.get(
+                                definition.id
+                            ) ||
+                            definition.id
 
                     });
 
@@ -1742,6 +1788,7 @@ function calculerTropheesPartis(
                 parti,
 
                 nom:
+                    tropheeMap.get("T014") ||
                     "Prix Hiver Nucléaire"
 
             });
@@ -2857,7 +2904,9 @@ async function initialiser() {
 
             attributionsBrutes,
 
-            attributionsSources
+            attributionsSources,
+
+            attributionsTrophees
 
         ] = await Promise.all([
 
@@ -2875,6 +2924,10 @@ async function initialiser() {
 
             chargerCSV(
                 "/data/attributions_sources.csv"
+            ),
+
+            chargerCSV(
+                "/data/attributions_trophees.csv"
             )
 
         ]);
@@ -2891,6 +2944,12 @@ async function initialiser() {
         const badgeMap =
             creerIndexBadges(
                 badges
+            );
+
+
+        const tropheeMap =
+            creerIndexTrophees(
+                attributionsTrophees
             );
 
 
@@ -2911,7 +2970,9 @@ async function initialiser() {
 
                 badgeMap,
 
-                attributionsSources
+                attributionsSources,
+
+                tropheeMap
 
             );
 
@@ -2923,7 +2984,9 @@ async function initialiser() {
 
                 attributions,
 
-                badgeMap
+                badgeMap,
+
+                tropheeMap
 
             );
 

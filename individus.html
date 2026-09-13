@@ -346,7 +346,7 @@
 
             <details class="nav-more">
 
-                <summary>Plus ▾</summary>
+                <summary>Plus</summary>
 
                 <div class="nav-more-menu">
 
@@ -1361,6 +1361,33 @@ function trouverGagnants(compteurs) {
 
 
 /* =========================================================
+   INDEX DES TROPHÉES
+   ========================================================= */
+
+function creerIndexTrophees(
+    attributionsTrophees
+) {
+
+    return new Map(
+        attributionsTrophees.map(
+            trophee => [
+                (
+                    trophee.id ||
+                    ""
+                ).trim(),
+
+                (
+                    trophee.nom ||
+                    ""
+                ).trim()
+            ]
+        )
+    );
+
+}
+
+
+/* =========================================================
    TROPHÉES — COMPTER LES BADGES
    ========================================================= */
 
@@ -1672,7 +1699,8 @@ function calculerTropheesIndividuels(
     personnes,
     badges,
     attributions,
-    attributionSources
+    attributionSources,
+    tropheeMap
 ) {
 
     const resultats = [];
@@ -1683,6 +1711,7 @@ function calculerTropheesIndividuels(
     resultats.push({
 
         nom:
+            tropheeMap.get("T001") ||
             "Le combo ultime",
 
         gagnants:
@@ -1702,6 +1731,7 @@ function calculerTropheesIndividuels(
     resultats.push({
 
         nom:
+            tropheeMap.get("T002") ||
             "Maître Conspi",
 
         gagnants:
@@ -1722,6 +1752,7 @@ function calculerTropheesIndividuels(
     resultats.push({
 
         nom:
+            tropheeMap.get("T003") ||
             "Gourou suprême",
 
         gagnants:
@@ -1742,6 +1773,7 @@ function calculerTropheesIndividuels(
     resultats.push({
 
         nom:
+            tropheeMap.get("T004") ||
             "Salle de balle dorée",
 
         gagnants:
@@ -1873,6 +1905,7 @@ function calculerTropheesIndividuels(
     resultats.push({
 
         nom:
+            tropheeMap.get("T005") ||
             "Grand Champion International de Course",
 
         gagnants:
@@ -1894,6 +1927,7 @@ function calculerTropheesIndividuels(
     resultats.push({
 
         nom:
+            tropheeMap.get("T006") ||
             "Prix de la désintégrité",
 
         gagnants:
@@ -1914,6 +1948,7 @@ function calculerTropheesIndividuels(
     resultats.push({
 
         nom:
+            tropheeMap.get("T007") ||
             "Grand Inquisiteur",
 
         gagnants:
@@ -1934,6 +1969,7 @@ function calculerTropheesIndividuels(
     resultats.push({
 
         nom:
+            tropheeMap.get("T008") ||
             "Grand Champion 2026",
 
         gagnants:
@@ -1960,7 +1996,8 @@ function calculerTropheesIndividuels(
 function calculerTropheesPartis(
     personnes,
     badges,
-    attributions
+    attributions,
+    tropheeMap
 ) {
 
     const resultats = [];
@@ -2111,30 +2148,35 @@ function calculerTropheesPartis(
 
 
     ajouterTrophee(
+        tropheeMap.get("T009") ||
         "Parti le plus conspi",
         CATEGORIES.CONSPI
     );
 
 
     ajouterTrophee(
+        tropheeMap.get("T010") ||
         "Parti le plus Trump",
         CATEGORIES.TRUMP
     );
 
 
     ajouterTrophee(
+        tropheeMap.get("T011") ||
         "Parti le plus perché",
         CATEGORIES.SPIRITUEL
     );
 
 
     ajouterTrophee(
+        tropheeMap.get("T012") ||
         "Parti de la désintégrité",
         CATEGORIES.DESINTEGRITE
     );
 
 
     ajouterTrophee(
+        tropheeMap.get("T013") ||
         "Parti de la guerre culturelle",
         CATEGORIES.GUERRE_CULTURELLE
     );
@@ -2199,6 +2241,7 @@ function calculerTropheesPartis(
         resultats.push({
 
             nom:
+                tropheeMap.get("T014") ||
                 "Prix Hiver Nucléaire",
 
             partis:
@@ -2637,7 +2680,8 @@ async function chargerCandidat() {
             attributions,
             attributionSources,
             sources,
-            reactions
+            reactions,
+            attributionsTrophees
 
         ] = await Promise.all([
 
@@ -2663,9 +2707,19 @@ async function chargerCandidat() {
 
             chargerCSV(
                 "/data/reactions.csv"
+            ),
+
+            chargerCSV(
+                "/data/attributions_trophees.csv"
             )
 
         ]);
+
+
+        const tropheeMap =
+            creerIndexTrophees(
+                attributionsTrophees
+            );
 
 
         const reactionsParId = {};
@@ -3067,7 +3121,8 @@ async function chargerCandidat() {
                 personnes,
                 badges,
                 attributions,
-                attributionSources
+                attributionSources,
+                tropheeMap
             );
 
 
@@ -3075,7 +3130,8 @@ async function chargerCandidat() {
             calculerTropheesPartis(
                 personnes,
                 badges,
-                attributions
+                attributions,
+                tropheeMap
             );
 
 
