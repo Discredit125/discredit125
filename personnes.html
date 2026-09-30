@@ -279,94 +279,96 @@
 
 <nav class="main-nav">
 
-    <!-- DESKTOP -->
+```
+<!-- DESKTOP -->
 
-    <div class="nav-desktop">
+<div class="nav-desktop">
 
-        <a href="/">
-            Accueil
-        </a>
+    <a href="/">
+        Accueil
+    </a>
 
-        <a href="/personnes.html" class="active">
-            Candidats
-        </a>
+    <a href="/personnes.html" class="active">
+        Candidats
+    </a>
 
-        <a href="/badges.html">
-            Badges
-        </a>
+    <a href="/badges.html">
+        Badges
+    </a>
 
-        <a href="/statuts.html">
-            Statuts
-        </a>
+    <a href="/statuts.html">
+        Statuts
+    </a>
 
-        <a href="/trophees.html">
-            Trophées
-        </a>
+    <a href="/trophees.html">
+        Trophées
+    </a>
 
-        <a href="/soumettre.html">
-            Soumettre
-        </a>
+    <a href="/soumettre.html">
+        Soumettre
+    </a>
 
-        <a href="/erreur.html">
-            Signaler
-        </a>
+    <a href="/erreur.html">
+        Signaler
+    </a>
 
-        <a href="/a-propos.html">
-            À propos
-        </a>
+    <a href="/a-propos.html">
+        À propos
+    </a>
 
-    </div>
+</div>
 
 
-    <!-- MOBILE -->
+<!-- MOBILE -->
 
-    <div class="nav-mobile">
+<div class="nav-mobile">
 
-        <a href="/">
-            Accueil
-        </a>
+    <a href="/">
+        Accueil
+    </a>
 
-        <a href="/personnes.html" class="active">
-            Candidats
-        </a>
+    <a href="/personnes.html" class="active">
+        Candidats
+    </a>
 
-        <a href="/badges.html">
-            Badges
-        </a>
+    <a href="/badges.html">
+        Badges
+    </a>
 
-        <details class="nav-more">
+    <details class="nav-more">
 
-            <summary>
-                Plus
-            </summary>
+        <summary>
+            Plus
+        </summary>
 
-            <div class="nav-more-menu">
+        <div class="nav-more-menu">
 
-                <a href="/statuts.html">
-                    Statuts
-                </a>
+            <a href="/statuts.html">
+                Statuts
+            </a>
 
-                <a href="/trophees.html">
-                    Trophées
-                </a>
+            <a href="/trophees.html">
+                Trophées
+            </a>
 
-                <a href="/soumettre.html">
-                    Soumettre
-                </a>
+            <a href="/soumettre.html">
+                Soumettre
+            </a>
 
-                <a href="/erreur.html">
-                    Signaler
-                </a>
+            <a href="/erreur.html">
+                Signaler
+            </a>
 
-                <a href="/a-propos.html">
-                    À propos
-                </a>
+            <a href="/a-propos.html">
+                À propos
+            </a>
 
-            </div>
+        </div>
 
-        </details>
+    </details>
 
-    </div>
+</div>
+```
 
 </nav>
 
@@ -404,6 +406,7 @@ type="search"
 id="search"
 placeholder="Nom, parti ou circonscription..."
 autocomplete="off"
+
 >
 
 </div>
@@ -497,6 +500,7 @@ autocomplete="off"
 id="personne-modal-close"
 class="personne-modal-close"
 aria-label="Fermer"
+
 >
 
 × </button>
@@ -2030,8 +2034,7 @@ function creerCartePersonne(
         String(
             personne.personne_id ||
             ""
-        )
-        .trim();
+        ).trim();
 
 
     carte.href =
@@ -3012,6 +3015,55 @@ async function initialiser() {
         );
 
 
+        /*
+         * =====================================================
+         * PRÉSÉLECTION DU PARTI DEPUIS L'URL
+         * =====================================================
+         *
+         * Exemple :
+         *
+         * /personnes.html?parti=QS
+         *
+         * Le paramètre est lu après la création des options
+         * du sélecteur afin de pouvoir sélectionner le parti.
+         */
+
+        const parametres =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        const partiURL =
+            (
+                parametres.get("parti") ||
+                ""
+            ).trim();
+
+
+        const partiSelect =
+            document.getElementById(
+                "party"
+            );
+
+
+        if (
+            partiURL &&
+            [
+                ...partiSelect.options
+            ].some(
+                option =>
+                    option.value ===
+                    partiURL
+            )
+        ) {
+
+            partiSelect.value =
+                partiURL;
+
+        }
+
+
         const personnesAvecBadges =
             personnes.filter(
                 personne => {
@@ -3046,17 +3098,47 @@ async function initialiser() {
             );
 
 
-        afficherPersonnes(
+        /*
+         * Affichage initial.
+         *
+         * Si un parti a été fourni dans l'URL,
+         * on applique immédiatement ce filtre.
+         */
 
-            personnesTriees,
+        if (
+            partiURL &&
+            partiSelect.value ===
+            partiURL
+        ) {
 
-            badgeMap,
+            filtrerPersonnes(
 
-            attributionsParPersonne,
+                personnes,
 
-            tropheesIndex
+                badgeMap,
 
-        );
+                attributionsParPersonne,
+
+                tropheesIndex
+
+            );
+
+        }
+        else {
+
+            afficherPersonnes(
+
+                personnesTriees,
+
+                badgeMap,
+
+                attributionsParPersonne,
+
+                tropheesIndex
+
+            );
+
+        }
 
 
         const rafraichir =
