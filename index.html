@@ -6,213 +6,289 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Discrédit 125</title>
 
-    <link rel="stylesheet" href="/styles.css">
+<title>Discrédit 125</title>
 
-    <style>
+<link rel="stylesheet" href="/styles.css">
 
-        /* =========================================================
-           NAVIGATION
-        ========================================================= */
+<style>
+
+    /* =========================================================
+       NAVIGATION
+    ========================================================= */
+
+    .main-nav .nav-desktop {
+        display: flex !important;
+        align-items: center;
+        gap: 22px;
+    }
+
+    .main-nav .nav-mobile {
+        display: none !important;
+    }
+
+    .main-nav .nav-mobile summary {
+        display: none !important;
+    }
+
+
+    @media (max-width: 800px) {
 
         .main-nav .nav-desktop {
-            display: flex !important;
-            align-items: center;
-            gap: 22px;
+            display: none !important;
         }
 
         .main-nav .nav-mobile {
-            display: none !important;
+            display: flex !important;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .main-nav .nav-mobile > a {
+            display: block !important;
+
+            padding: 8px 4px;
+
+            color: #fff;
+
+            text-decoration: none;
+
+            font-size: 14px;
+            font-weight: bold;
+
+            white-space: nowrap;
+        }
+
+        .main-nav .nav-mobile > a:hover {
+            color: var(--bleu-discredit);
+        }
+
+        .main-nav .nav-mobile .nav-more {
+            position: relative;
         }
 
         .main-nav .nav-mobile summary {
-            display: none !important;
+            display: block !important;
+
+            list-style: none;
+            cursor: pointer;
+
+            color: #fff;
+
+            padding: 8px 4px;
+
+            font-size: 14px;
+            font-weight: bold;
+
+            white-space: nowrap;
         }
 
-
-        @media (max-width: 800px) {
-
-            .main-nav .nav-desktop {
-                display: none !important;
-            }
-
-            .main-nav .nav-mobile {
-                display: flex !important;
-                align-items: center;
-                justify-content: flex-end;
-                gap: 8px;
-                position: relative;
-                white-space: nowrap;
-            }
-
-            .main-nav .nav-mobile > a {
-                display: block !important;
-
-                padding: 8px 4px;
-
-                color: #fff;
-
-                text-decoration: none;
-
-                font-size: 14px;
-                font-weight: bold;
-
-                white-space: nowrap;
-            }
-
-            .main-nav .nav-mobile > a:hover {
-                color: var(--bleu-discredit);
-            }
-
-            .main-nav .nav-mobile .nav-more {
-                position: relative;
-            }
-
-            .main-nav .nav-mobile summary {
-                display: block !important;
-
-                list-style: none;
-                cursor: pointer;
-
-                color: #fff;
-
-                padding: 8px 4px;
-
-                font-size: 14px;
-                font-weight: bold;
-
-                white-space: nowrap;
-            }
-
-            .main-nav .nav-mobile summary::-webkit-details-marker {
-                display: none;
-            }
-
-            .main-nav .nav-mobile summary::after {
-                content: "⌄";
-
-                display: inline-block;
-
-                margin-left: 5px;
-
-                font-size: 13px;
-                line-height: 1;
-
-                transform: translateY(-1px);
-            }
-
-            .main-nav .nav-mobile[open] summary::after {
-                transform: translateY(1px);
-            }
-
-            .main-nav .nav-mobile summary:hover {
-                color: var(--bleu-discredit);
-            }
-
-            .main-nav .nav-mobile .nav-more-menu {
-                position: absolute;
-
-                top: calc(100% + 10px);
-                right: 0;
-
-                z-index: 200;
-
-                display: flex !important;
-                flex-direction: column;
-
-                gap: 0;
-
-                min-width: 170px;
-
-                padding: 8px 0;
-
-                background: var(--noir);
-
-                border: 1px solid #333;
-                border-radius: 8px;
-
-                box-shadow:
-                    0 8px 25px rgba(0, 0, 0, 0.35);
-            }
-
-            .main-nav .nav-mobile .nav-more-menu a {
-                display: block !important;
-
-                padding: 10px 14px;
-
-                color: #fff;
-
-                text-decoration: none;
-
-                font-size: 14px;
-                font-weight: bold;
-
-                white-space: nowrap;
-            }
-
-            .main-nav .nav-mobile .nav-more-menu a:hover {
-                background: #222;
-                color: var(--bleu-discredit);
-            }
-
+        .main-nav .nav-mobile summary::-webkit-details-marker {
+            display: none;
         }
 
+        .main-nav .nav-mobile summary::after {
+            content: "⌄";
 
-        /* =========================================================
-           MODALE
-        ========================================================= */
+            display: inline-block;
+
+            margin-left: 5px;
+
+            font-size: 13px;
+            line-height: 1;
+
+            transform: translateY(-1px);
+        }
+
+        .main-nav .nav-mobile[open] summary::after {
+            transform: translateY(1px);
+        }
+
+        .main-nav .nav-mobile summary:hover {
+            color: var(--bleu-discredit);
+        }
+
+        .main-nav .nav-mobile .nav-more-menu {
+            position: absolute;
+
+            top: calc(100% + 10px);
+            right: 0;
+
+            z-index: 200;
+
+            display: flex !important;
+            flex-direction: column;
+
+            gap: 0;
+
+            min-width: 170px;
+
+            padding: 8px 0;
+
+            background: var(--noir);
+
+            border: 1px solid #333;
+            border-radius: 8px;
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.35);
+        }
+
+        .main-nav .nav-mobile .nav-more-menu a {
+            display: block !important;
+
+            padding: 10px 14px;
+
+            color: #fff;
+
+            text-decoration: none;
+
+            font-size: 14px;
+            font-weight: bold;
+
+            white-space: nowrap;
+        }
+
+        .main-nav .nav-mobile .nav-more-menu a:hover {
+            background: #222;
+            color: var(--bleu-discredit);
+        }
+
+    }
+
+
+    /* =========================================================
+       MODALE
+    ========================================================= */
+
+    .statut-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.75);
+    }
+
+    .statut-modal.active {
+        display: flex;
+    }
+
+    .statut-modal-window {
+        position: relative;
+        width: min(1100px, 95vw);
+        height: min(850px, 92vh);
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    .statut-modal-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 10;
+        width: 40px;
+        height: 40px;
+        border: none;
+        border-radius: 50%;
+        background: #fff;
+        color: #111;
+        font-size: 28px;
+        line-height: 1;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    }
+
+    .statut-modal-close:hover {
+        background: #eee;
+    }
+
+    #statut-modal-frame {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    .hero-tagline {
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+
+
+    /* =========================================================
+       DERNIERS BADGES
+    ========================================================= */
+
+    .recent-badge {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 0;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .recent-badge:last-child {
+        border-bottom: none;
+    }
+
+    .recent-badge-image {
+        width: 45px;
+        height: 45px;
+        object-fit: contain;
+        flex-shrink: 0;
+        cursor: pointer;
+    }
+
+    .recent-badge-info {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .recent-badge-name {
+        font-weight: bold;
+        font-size: 0.95rem;
+        margin: 0;
+        cursor: pointer;
+    }
+
+    .recent-badge-person {
+        margin: 0;
+    }
+
+    .recent-badge-person a {
+        cursor: pointer;
+    }
+
+    .recent-badge-party {
+        color: #666;
+        font-size: 0.85rem;
+    }
+
+
+    /* =========================================================
+       MOBILE
+    ========================================================= */
+
+    @media (max-width: 700px) {
 
         .statut-modal {
-            position: fixed;
-            inset: 0;
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.75);
-        }
-
-        .statut-modal.active {
-            display: flex;
+            padding: 10px;
         }
 
         .statut-modal-window {
-            position: relative;
-            width: min(1100px, 95vw);
-            height: min(850px, 92vh);
-            background: #fff;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-        }
-
-        .statut-modal-close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 10;
-            width: 40px;
-            height: 40px;
-            border: none;
-            border-radius: 50%;
-            background: #fff;
-            color: #111;
-            font-size: 28px;
-            line-height: 1;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-        }
-
-        .statut-modal-close:hover {
-            background: #eee;
-        }
-
-        #statut-modal-frame {
             width: 100%;
-            height: 100%;
-            border: none;
+            height: 95vh;
+            border-radius: 8px;
         }
 
         .hero-tagline {
@@ -220,98 +296,23 @@
             overflow-wrap: anywhere;
         }
 
-
-        /* =========================================================
-           DERNIERS BADGES
-        ========================================================= */
-
         .recent-badge {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 8px 0;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .recent-badge:last-child {
-            border-bottom: none;
-        }
-
-        .recent-badge-image {
-            width: 45px;
-            height: 45px;
-            object-fit: contain;
-            flex-shrink: 0;
-            cursor: pointer;
-        }
-
-        .recent-badge-info {
-            flex: 1;
-            min-width: 0;
-            display: flex;
-            align-items: center;
             gap: 10px;
         }
 
-        .recent-badge-name {
-            font-weight: bold;
-            font-size: 0.95rem;
-            margin: 0;
-            cursor: pointer;
+        .recent-badge-image {
+            width: 40px;
+            height: 40px;
         }
 
-        .recent-badge-person {
-            margin: 0;
+        .recent-badge-info {
+            flex-wrap: wrap;
+            gap: 3px 8px;
         }
 
-        .recent-badge-person a {
-            cursor: pointer;
-        }
+    }
 
-        .recent-badge-party {
-            color: #666;
-            font-size: 0.85rem;
-        }
-
-
-        /* =========================================================
-           MOBILE
-        ========================================================= */
-
-        @media (max-width: 700px) {
-
-            .statut-modal {
-                padding: 10px;
-            }
-
-            .statut-modal-window {
-                width: 100%;
-                height: 95vh;
-                border-radius: 8px;
-            }
-
-            .hero-tagline {
-                white-space: normal;
-                overflow-wrap: anywhere;
-            }
-
-            .recent-badge {
-                gap: 10px;
-            }
-
-            .recent-badge-image {
-                width: 40px;
-                height: 40px;
-            }
-
-            .recent-badge-info {
-                flex-wrap: wrap;
-                gap: 3px 8px;
-            }
-
-        }
-
-    </style>
+</style>
 
 </head>
 
@@ -319,336 +320,330 @@
 
 <header class="site-header">
 
-    <div class="header-inner">
+<div class="header-inner">
 
-        <a href="/" class="logo">
-            DISCRÉDIT <span>125</span>
-        </a>
+    <a href="/" class="logo">
+        DISCRÉDIT <span>125</span>
+    </a>
 
-        <nav class="main-nav">
+    <nav class="main-nav">
 
-            <!-- DESKTOP -->
+        <!-- DESKTOP -->
 
-            <div class="nav-desktop">
+        <div class="nav-desktop">
 
-                <a href="/">
-                    Accueil
-                </a>
+            <a href="/">
+                Accueil
+            </a>
 
-                <a href="/personnes.html">
-                    Candidats
-                </a>
+            <a href="/personnes.html">
+                Candidats
+            </a>
 
-                <a href="/badges.html">
-                    Badges
-                </a>
+            <a href="/badges.html">
+                Badges
+            </a>
 
-                <a href="/statuts.html">
-                    Statuts
-                </a>
+            <a href="/statuts.html">
+                Statuts
+            </a>
 
-                <a href="/trophees.html">
-                    Trophées
-                </a>
+            <a href="/trophees.html">
+                Trophées
+            </a>
 
-                <a href="/soumettre.html">
-                    Soumettre
-                </a>
+            <a href="/soumettre.html">
+                Soumettre
+            </a>
 
-                <a href="/erreur.html">
-                    Signaler
-                </a>
+            <a href="/erreur.html">
+                Signaler
+            </a>
 
-                <a href="/a-propos.html">
-                    À propos
-                </a>
+            <a href="/a-propos.html">
+                À propos
+            </a>
 
-            </div>
+        </div>
 
 
-            <!-- MOBILE -->
+        <!-- MOBILE -->
 
-            <div class="nav-mobile">
+        <div class="nav-mobile">
 
-                <a href="/">
-                    Accueil
-                </a>
+            <a href="/">
+                Accueil
+            </a>
 
-                <a href="/personnes.html">
-                    Candidats
-                </a>
+            <a href="/personnes.html">
+                Candidats
+            </a>
 
-                <a href="/badges.html">
-                    Badges
-                </a>
+            <a href="/badges.html">
+                Badges
+            </a>
 
-                <details class="nav-more">
+            <details class="nav-more">
 
-                    <summary>
-                        Plus
-                    </summary>
+                <summary>
+                    Plus
+                </summary>
 
-                    <div class="nav-more-menu">
+                <div class="nav-more-menu">
 
-                        <a href="/statuts.html">
-                            Statuts
-                        </a>
+                    <a href="/statuts.html">
+                        Statuts
+                    </a>
 
-                        <a href="/trophees.html">
-                            Trophées
-                        </a>
+                    <a href="/trophees.html">
+                        Trophées
+                    </a>
 
-                        <a href="/soumettre.html">
-                            Soumettre
-                        </a>
+                    <a href="/soumettre.html">
+                        Soumettre
+                    </a>
 
-                        <a href="/erreur.html">
-                            Signaler
-                        </a>
+                    <a href="/erreur.html">
+                        Signaler
+                    </a>
 
-                        <a href="/a-propos.html">
-                            À propos
-                        </a>
+                    <a href="/a-propos.html">
+                        À propos
+                    </a>
 
-                    </div>
+                </div>
 
-                </details>
+            </details>
 
-            </div>
+        </div>
 
-        </nav>
+    </nav>
 
-    </div>
+</div>
 
 </header>
-
 
 <main>
 
 <section class="hero">
 
-    <div class="hero-inner">
+<div class="hero-inner">
 
-        <h1>
-            Discrédit <span>125</span>
-        </h1>
+    <h1>
+        Discrédit <span>125</span>
+    </h1>
 
-        <p>
-            Répertoire satirique des candidats aux élections québécoises.
-        </p>
+    <p>
+        Répertoire satirique des candidats aux élections québécoises.
+    </p>
 
-        <p class="hero-tagline">
-            « Certains font des agrégateurs de sondages. Nous, on fait des agrégats de marde.&nbsp;» — La direction
-        </p>
+    <p class="hero-tagline">
+        « Certains font des agrégateurs de sondages. Nous, on fait des agrégats de marde.&nbsp;» — La direction
+    </p>
 
-    </div>
+</div>
 
 </section>
-
 
 <div class="container">
 
 <section class="section">
 
-    <div class="stats">
+<div class="stats">
 
-        <div class="stat-card">
+    <div class="stat-card">
 
-            <div class="stat-number">
-                127
-            </div>
-
-            <div class="stat-label">
-                Circonscriptions
-            </div>
-
+        <div class="stat-number">
+            127
         </div>
 
-
-        <div class="stat-card">
-
-            <div
-                class="stat-number"
-                id="candidate-count"
-            >
-                —
-            </div>
-
-            <div class="stat-label">
-                Candidats identifiés
-            </div>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <div
-                class="stat-number"
-                id="badge-count"
-            >
-                —
-            </div>
-
-            <div class="stat-label">
-                Badges attribués
-            </div>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <div
-                class="stat-number"
-                id="top-party-count"
-            >
-                —
-            </div>
-
-            <div class="stat-label">
-                Parti avec le plus de candidats décorés
-            </div>
-
+        <div class="stat-label">
+            Circonscriptions
         </div>
 
     </div>
+
+
+    <div class="stat-card">
+
+        <div
+            class="stat-number"
+            id="candidate-count"
+        >
+            —
+        </div>
+
+        <div class="stat-label">
+            Candidats identifiés
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div
+            class="stat-number"
+            id="badge-count"
+        >
+            —
+        </div>
+
+        <div class="stat-label">
+            Badges attribués
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div
+            class="stat-number"
+            id="top-party-count"
+        >
+            —
+        </div>
+
+        <div class="stat-label">
+            Parti avec le plus de candidats décorés
+        </div>
+
+    </div>
+
+</div>
 
 </section>
 
-
 <section class="section">
 
-    <h2 class="section-title">
-        Badges attribués par parti
-    </h2>
+<h2 class="section-title">
+    Badges attribués par parti
+</h2>
 
-    <div class="chart-container">
+<div class="chart-container">
 
-        <div id="party-chart">
-            Chargement des données…
-        </div>
-
+    <div id="party-chart">
+        Chargement des données…
     </div>
+
+</div>
 
 </section>
 
-
 <section class="section">
 
-    <h2 class="section-title">
-        Derniers badges décernés
-    </h2>
+<h2 class="section-title">
+    Derniers badges décernés
+</h2>
 
-    <div class="chart-container">
+<div class="chart-container">
 
-        <div id="recent-badges">
-            Chargement des données…
-        </div>
-
+    <div id="recent-badges">
+        Chargement des données…
     </div>
+
+</div>
 
 </section>
 
-
 <section class="section">
 
-    <h2 class="section-title">
-        Explorer
-    </h2>
+<h2 class="section-title">
+    Explorer
+</h2>
 
 
-    <div class="stats">
+<div class="stats">
 
 
-        <div class="stat-card">
+    <div class="stat-card">
 
-            <h3>
-                Candidats
-            </h3>
+        <h3>
+            Candidats
+        </h3>
 
-            <p>
-                Consultez les candidats et découvrez les badges qui leur sont attribués.
-            </p>
+        <p>
+            Consultez les candidats et découvrez les badges qui leur sont attribués.
+        </p>
 
-            <a
-                href="/personnes.html"
-                class="button"
-            >
-                Voir les candidats
-            </a>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <h3>
-                Badges
-            </h3>
-
-            <p>
-                Parcourez les différentes catégories de badges satiriques.
-            </p>
-
-            <a
-                href="/badges.html"
-                class="button"
-            >
-                Voir les badges
-            </a>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <h3>
-                Statuts
-            </h3>
-
-            <p>
-                Découvrez les candidats ayant atteint les différents niveaux de statut.
-            </p>
-
-            <a
-                href="/statuts.html"
-                class="button"
-            >
-                Voir les statuts
-            </a>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <h3>
-                Trophées
-            </h3>
-
-            <p>
-                Les distinctions les plus douteusement prestigieuses de Discrédit 125.
-            </p>
-
-            <a
-                href="/trophees.html"
-                class="button"
-            >
-                Voir les trophées
-            </a>
-
-        </div>
-
+        <a
+            href="/personnes.html"
+            class="button"
+        >
+            Voir les candidats
+        </a>
 
     </div>
+
+
+    <div class="stat-card">
+
+        <h3>
+            Badges
+        </h3>
+
+        <p>
+            Parcourez les différentes catégories de badges satiriques.
+        </p>
+
+        <a
+            href="/badges.html"
+            class="button"
+        >
+            Voir les badges
+        </a>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <h3>
+            Statuts
+        </h3>
+
+        <p>
+            Découvrez les candidats ayant atteint les différents niveaux de statut.
+        </p>
+
+        <a
+            href="/statuts.html"
+            class="button"
+        >
+            Voir les statuts
+        </a>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <h3>
+            Trophées
+        </h3>
+
+        <p>
+            Les distinctions les plus douteusement prestigieuses de Discrédit 125.
+        </p>
+
+        <a
+            href="/trophees.html"
+            class="button"
+        >
+            Voir les trophées
+        </a>
+
+    </div>
+
+
+</div>
 
 </section>
 
 </div>
 
 </main>
-
 
 <!-- FENÊTRE MODALE -->
 
@@ -657,54 +652,52 @@
     class="statut-modal"
 >
 
-    <div class="statut-modal-window">
+<div class="statut-modal-window">
 
-        <button
-            id="statut-modal-close"
-            class="statut-modal-close"
-            aria-label="Fermer"
-        >
-            ×
-        </button>
+    <button
+        id="statut-modal-close"
+        class="statut-modal-close"
+        aria-label="Fermer"
+    >
+        ×
+    </button>
 
-        <iframe
-            id="statut-modal-frame"
-            title="Détail du candidat"
-        ></iframe>
-
-    </div>
+    <iframe
+        id="statut-modal-frame"
+        title="Détail du candidat"
+    ></iframe>
 
 </div>
 
+</div>
 
 <footer>
 
-    <p>
-        Discrédit 125 — Projet satirique et humoristique.
-    </p>
+<p>
+    Discrédit 125 — Projet satirique et humoristique.
+</p>
 
-    <p>
+<p>
 
-        <a href="/a-propos.html">
-            À propos
-        </a>
+    <a href="/a-propos.html">
+        À propos
+    </a>
 
-        ·
+    ·
 
-        <a href="/soumettre.html">
-            Soumettre
-        </a>
+    <a href="/soumettre.html">
+        Soumettre
+    </a>
 
-        ·
+    ·
 
-        <a href="/erreur.html">
-            Signaler une erreur
-        </a>
+    <a href="/erreur.html">
+        Signaler une erreur
+    </a>
 
-    </p>
+</p>
 
 </footer>
-
 
 <script>
 
@@ -824,6 +817,27 @@ function estGameOver(personne) {
             .toUpperCase()
             .includes("GAME OVER")
     );
+
+}
+
+
+
+/* =========================
+   NAVIGATION VERS UN PARTI
+========================= */
+
+function ouvrirParti(parti) {
+
+    if (!parti) {
+        return;
+    }
+
+
+    window.location.href =
+        "/personnes.html?parti=" +
+        encodeURIComponent(
+            parti.trim()
+        );
 
 }
 
@@ -1092,13 +1106,16 @@ async function chargerAccueil() {
         /*
             PARTI AVEC LE PLUS DE
             CANDIDATS DÉCORÉS
+
+            Les candidats GAME OVER sont exclus
+            grâce à l'utilisation de personnesActives.
         */
 
         const candidatsParParti =
             {};
 
 
-        personnes.forEach(
+        personnesActives.forEach(
             personne => {
 
                 const personneId =
@@ -1487,6 +1504,26 @@ function afficherGraphiquePartis(
                     parti;
 
 
+                /*
+                    NOM DU PARTI CLIQUABLE
+                */
+
+                nomParti.style.cursor =
+                    "pointer";
+
+
+                nomParti.addEventListener(
+                    "click",
+                    function() {
+
+                        ouvrirParti(
+                            parti
+                        );
+
+                    }
+                );
+
+
                 etiquette.appendChild(
                     nomParti
                 );
@@ -1546,6 +1583,22 @@ function afficherGraphiquePartis(
 
                 barreBadges.style.overflow =
                     "hidden";
+
+
+                barreBadges.style.cursor =
+                    "pointer";
+
+
+                barreBadges.addEventListener(
+                    "click",
+                    function() {
+
+                        ouvrirParti(
+                            parti
+                        );
+
+                    }
+                );
 
 
                 const barreBadgesInterne =
@@ -1670,6 +1723,22 @@ function afficherGraphiquePartis(
 
                 barreCandidats.style.overflow =
                     "hidden";
+
+
+                barreCandidats.style.cursor =
+                    "pointer";
+
+
+                barreCandidats.addEventListener(
+                    "click",
+                    function() {
+
+                        ouvrirParti(
+                            parti
+                        );
+
+                    }
+                );
 
 
                 const barreCandidatsInterne =
